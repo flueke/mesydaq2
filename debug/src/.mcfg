@@ -1,0 +1,35 @@
+mesydaq configuration file   15.10.08 17.15.52
+
+Config Path
+\
+Histogram Path
+\
+Listfile Path
+\
+Setup:
+MPSD-8 settings
+
+MPSD-8 #0:
+gains:
+222
+222
+222
+222
+222
+222
+222
+222
+threshold:
+63
+MPSD-8 #1:
+gains:
+92
+92
+92
+92
+92
+92
+92
+92
+threshold:
+44

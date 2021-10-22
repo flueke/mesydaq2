@@ -1,0 +1,1127 @@
+#include <kdialog.h>
+#include <klocale.h>
+/****************************************************************************
+** Form implementation generated from reading ui file '/home/gregor/mesydaq2_aktuell/src/mesydaq2mainwindow.ui'
+**
+** Created: Do Okt 16 04:36:04 2008
+**
+** WARNING! All changes made in this file will be lost!
+****************************************************************************/
+
+#include "mesydaq2mainwindow.h"
+
+#include <qvariant.h>
+#include <qframe.h>
+#include <qtabwidget.h>
+#include <qgroupbox.h>
+#include <qpushbutton.h>
+#include <qlineedit.h>
+#include <qcheckbox.h>
+#include <qlabel.h>
+#include <qspinbox.h>
+#include <qbuttongroup.h>
+#include <qradiobutton.h>
+#include <qcombobox.h>
+#include <qlayout.h>
+#include <qtooltip.h>
+#include <qwhatsthis.h>
+
+/*
+ *  Constructs a mesydaq2mainwindow as a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'.
+ */
+mesydaq2mainwindow::mesydaq2mainwindow( QWidget* parent, const char* name, WFlags fl )
+    : QWidget( parent, name, fl )
+{
+    if ( !name )
+	setName( "widget2" );
+    setMinimumSize( QSize( 1200, 800 ) );
+    setBaseSize( QSize( 1200, 800 ) );
+
+    mainFrame = new QFrame( this, "mainFrame" );
+    mainFrame->setGeometry( QRect( 10, 10, 1150, 520 ) );
+    mainFrame->setMinimumSize( QSize( 1150, 520 ) );
+    mainFrame->setMaximumSize( QSize( 1150, 520 ) );
+    mainFrame->setFrameShape( QFrame::StyledPanel );
+    mainFrame->setFrameShadow( QFrame::Raised );
+
+    dataFrame = new QFrame( mainFrame, "dataFrame" );
+    dataFrame->setGeometry( QRect( 80, 10, 960, 480 ) );
+    dataFrame->setMinimumSize( QSize( 960, 480 ) );
+    dataFrame->setFrameShape( QFrame::StyledPanel );
+    dataFrame->setFrameShadow( QFrame::Raised );
+
+    tabWidget2 = new QTabWidget( this, "tabWidget2" );
+    tabWidget2->setGeometry( QRect( 10, 540, 1180, 260 ) );
+
+    tab = new QWidget( tabWidget2, "tab" );
+
+    groupBox1 = new QGroupBox( tab, "groupBox1" );
+    groupBox1->setGeometry( QRect( 8, 14, 131, 200 ) );
+
+    startStopButton = new QPushButton( groupBox1, "startStopButton" );
+    startStopButton->setGeometry( QRect( 20, 30, 81, 21 ) );
+    startStopButton->setToggleButton( TRUE );
+
+    daqStatusLine = new QLineEdit( groupBox1, "daqStatusLine" );
+    daqStatusLine->setEnabled( FALSE );
+    daqStatusLine->setGeometry( QRect( 10, 60, 110, 21 ) );
+    daqStatusLine->setAlignment( int( QLineEdit::AlignHCenter ) );
+
+    acquireFile = new QCheckBox( groupBox1, "acquireFile" );
+    acquireFile->setGeometry( QRect( 20, 100, 101, 30 ) );
+
+    pushButton31 = new QPushButton( groupBox1, "pushButton31" );
+    pushButton31->setGeometry( QRect( 20, 170, 90, 21 ) );
+
+    groupBox80 = new QGroupBox( tab, "groupBox80" );
+    groupBox80->setGeometry( QRect( 820, 10, 350, 200 ) );
+
+    textLabel1_2 = new QLabel( groupBox80, "textLabel1_2" );
+    textLabel1_2->setGeometry( QRect( 10, 60, 135, 20 ) );
+
+    cmdTx = new QLabel( groupBox80, "cmdTx" );
+    cmdTx->setGeometry( QRect( 260, 60, 75, 20 ) );
+    cmdTx->setAlignment( int( QLabel::AlignVCenter | QLabel::AlignRight ) );
+
+    textLabel1_2_3 = new QLabel( groupBox80, "textLabel1_2_3" );
+    textLabel1_2_3->setGeometry( QRect( 10, 80, 118, 20 ) );
+
+    textLabel1_2_2 = new QLabel( groupBox80, "textLabel1_2_2" );
+    textLabel1_2_2->setGeometry( QRect( 10, 100, 135, 20 ) );
+
+    dataRx = new QLabel( groupBox80, "dataRx" );
+    dataRx->setGeometry( QRect( 260, 100, 75, 20 ) );
+    dataRx->setAlignment( int( QLabel::AlignVCenter | QLabel::AlignRight ) );
+
+    cmdRx = new QLabel( groupBox80, "cmdRx" );
+    cmdRx->setGeometry( QRect( 260, 80, 75, 20 ) );
+    cmdRx->setAlignment( int( QLabel::AlignVCenter | QLabel::AlignRight ) );
+
+    textLabel1_2_3_2 = new QLabel( groupBox80, "textLabel1_2_3_2" );
+    textLabel1_2_3_2->setGeometry( QRect( 10, 130, 118, 20 ) );
+
+    statusWord = new QLabel( groupBox80, "statusWord" );
+    statusWord->setGeometry( QRect( 250, 170, 90, 20 ) );
+    statusWord->setAlignment( int( QLabel::AlignVCenter | QLabel::AlignRight ) );
+
+    textLabel1_2_3_2_2 = new QLabel( groupBox80, "textLabel1_2_3_2_2" );
+    textLabel1_2_3_2_2->setGeometry( QRect( 10, 170, 118, 20 ) );
+
+    hTimeText = new QLabel( groupBox80, "hTimeText" );
+    hTimeText->setGeometry( QRect( 160, 130, 180, 20 ) );
+    hTimeText->setAlignment( int( QLabel::AlignVCenter | QLabel::AlignRight ) );
+
+    hTime = new QLabel( groupBox80, "hTime" );
+    hTime->setGeometry( QRect( 160, 150, 180, 20 ) );
+    hTime->setAlignment( int( QLabel::AlignVCenter | QLabel::AlignRight ) );
+
+    textLabel1 = new QLabel( groupBox80, "textLabel1" );
+    textLabel1->setGeometry( QRect( 10, 20, 75, 20 ) );
+
+    totalCounts = new QLabel( groupBox80, "totalCounts" );
+    totalCounts->setGeometry( QRect( 260, 20, 75, 20 ) );
+    totalCounts->setAlignment( int( QLabel::AlignVCenter | QLabel::AlignRight ) );
+
+    groupBox17 = new QGroupBox( tab, "groupBox17" );
+    groupBox17->setGeometry( QRect( 530, 70, 271, 150 ) );
+
+    textLabel1_3_6 = new QLabel( groupBox17, "textLabel1_3_6" );
+    textLabel1_3_6->setGeometry( QRect( 10, 20, 56, 21 ) );
+
+    textLabel1_3 = new QLabel( groupBox17, "textLabel1_3" );
+    textLabel1_3->setGeometry( QRect( 10, 50, 30, 21 ) );
+
+    textLabel1_3_3 = new QLabel( groupBox17, "textLabel1_3_3" );
+    textLabel1_3_3->setGeometry( QRect( 10, 70, 30, 21 ) );
+
+    textLabel1_3_4 = new QLabel( groupBox17, "textLabel1_3_4" );
+    textLabel1_3_4->setGeometry( QRect( 10, 90, 30, 21 ) );
+
+    textLabel1_3_5 = new QLabel( groupBox17, "textLabel1_3_5" );
+    textLabel1_3_5->setGeometry( QRect( 10, 110, 30, 21 ) );
+
+    param0 = new QLabel( groupBox17, "param0" );
+    param0->setGeometry( QRect( 140, 50, 110, 21 ) );
+
+    param1 = new QLabel( groupBox17, "param1" );
+    param1->setGeometry( QRect( 140, 70, 110, 21 ) );
+
+    param2 = new QLabel( groupBox17, "param2" );
+    param2->setGeometry( QRect( 140, 90, 110, 21 ) );
+
+    param3 = new QLabel( groupBox17, "param3" );
+    param3->setGeometry( QRect( 140, 110, 110, 21 ) );
+
+    paramId = new QSpinBox( groupBox17, "paramId" );
+    paramId->setEnabled( FALSE );
+    paramId->setGeometry( QRect( 210, 20, 41, 21 ) );
+    paramId->setMaxValue( 15 );
+
+    groupBox15 = new QGroupBox( tab, "groupBox15" );
+    groupBox15->setGeometry( QRect( 530, 10, 271, 51 ) );
+
+    runId = new QSpinBox( groupBox15, "runId" );
+    runId->setEnabled( FALSE );
+    runId->setGeometry( QRect( 10, 20, 101, 21 ) );
+    runId->setMaxValue( 65536 );
+
+    runIdAuto = new QCheckBox( groupBox15, "runIdAuto" );
+    runIdAuto->setGeometry( QRect( 120, 20, 70, 21 ) );
+    runIdAuto->setChecked( TRUE );
+
+    runIdButton = new QPushButton( groupBox15, "runIdButton" );
+    runIdButton->setEnabled( FALSE );
+    runIdButton->setGeometry( QRect( 200, 20, 61, 21 ) );
+
+    groupBox49 = new QGroupBox( tab, "groupBox49" );
+    groupBox49->setGeometry( QRect( 160, 10, 360, 190 ) );
+
+    clearAll = new QPushButton( groupBox49, "clearAll" );
+    clearAll->setGeometry( QRect( 150, 20, 71, 21 ) );
+
+    useThresh = new QCheckBox( groupBox49, "useThresh" );
+    useThresh->setGeometry( QRect( 250, 20, 90, 20 ) );
+
+    loLim = new QLineEdit( groupBox49, "loLim" );
+    loLim->setEnabled( FALSE );
+    loLim->setGeometry( QRect( 270, 50, 81, 21 ) );
+
+    clearMcpd = new QPushButton( groupBox49, "clearMcpd" );
+    clearMcpd->setGeometry( QRect( 150, 50, 71, 21 ) );
+
+    textLabel1_6 = new QLabel( groupBox49, "textLabel1_6" );
+    textLabel1_6->setGeometry( QRect( 240, 50, 30, 20 ) );
+
+    textLabel1_6_2 = new QLabel( groupBox49, "textLabel1_6_2" );
+    textLabel1_6_2->setGeometry( QRect( 250, 80, 20, 20 ) );
+
+    hiLim = new QLineEdit( groupBox49, "hiLim" );
+    hiLim->setEnabled( FALSE );
+    hiLim->setGeometry( QRect( 270, 80, 81, 21 ) );
+
+    clearMpsd = new QPushButton( groupBox49, "clearMpsd" );
+    clearMpsd->setGeometry( QRect( 150, 80, 71, 21 ) );
+
+    applyDispThreshButton = new QPushButton( groupBox49, "applyDispThreshButton" );
+    applyDispThreshButton->setGeometry( QRect( 260, 110, 81, 21 ) );
+
+    clearChan = new QPushButton( groupBox49, "clearChan" );
+    clearChan->setGeometry( QRect( 150, 110, 71, 21 ) );
+
+    dispAll = new QCheckBox( groupBox49, "dispAll" );
+    dispAll->setGeometry( QRect( 20, 30, 100, 20 ) );
+    dispAll->setChecked( TRUE );
+
+    textLabel1_4_2_3_4_2_2_2 = new QLabel( groupBox49, "textLabel1_4_2_3_4_2_2_2" );
+    textLabel1_4_2_3_4_2_2_2->setGeometry( QRect( 10, 120, 50, 21 ) );
+
+    textLabel1_4_2_3_4_2_2 = new QLabel( groupBox49, "textLabel1_4_2_3_4_2_2" );
+    textLabel1_4_2_3_4_2_2->setGeometry( QRect( 10, 90, 40, 21 ) );
+
+    textLabel1_4_2_3_4_2 = new QLabel( groupBox49, "textLabel1_4_2_3_4_2" );
+    textLabel1_4_2_3_4_2->setGeometry( QRect( 10, 60, 40, 21 ) );
+
+    dispChan = new QSpinBox( groupBox49, "dispChan" );
+    dispChan->setEnabled( FALSE );
+    dispChan->setGeometry( QRect( 70, 120, 50, 21 ) );
+    dispChan->setMaxValue( 15 );
+
+    dispMcpd = new QSpinBox( groupBox49, "dispMcpd" );
+    dispMcpd->setEnabled( FALSE );
+    dispMcpd->setGeometry( QRect( 70, 60, 50, 21 ) );
+    dispMcpd->setMaxValue( 7 );
+
+    dispMpsd = new QSpinBox( groupBox49, "dispMpsd" );
+    dispMpsd->setEnabled( FALSE );
+    dispMpsd->setGeometry( QRect( 70, 90, 50, 21 ) );
+    dispMpsd->setMaxValue( 7 );
+
+    textLabel2 = new QLabel( groupBox49, "textLabel2" );
+    textLabel2->setGeometry( QRect( 40, 150, 81, 29 ) );
+
+    logGroup = new QButtonGroup( groupBox49, "logGroup" );
+    logGroup->setEnabled( FALSE );
+    logGroup->setGeometry( QRect( 250, 140, 100, 30 ) );
+
+    lin = new QRadioButton( logGroup, "lin" );
+    lin->setGeometry( QRect( 10, 10, 40, 16 ) );
+    lin->setChecked( TRUE );
+
+    log = new QRadioButton( logGroup, "log" );
+    log->setGeometry( QRect( 50, 10, 40, 16 ) );
+    tabWidget2->insertTab( tab, QString::fromLatin1("") );
+
+    tab_2 = new QWidget( tabWidget2, "tab_2" );
+
+    textLabel1_5_2 = new QLabel( tab_2, "textLabel1_5_2" );
+    textLabel1_5_2->setGeometry( QRect( 10, 10, 20, 20 ) );
+
+    groupBox30 = new QGroupBox( tab_2, "groupBox30" );
+    groupBox30->setGeometry( QRect( 10, 40, 130, 150 ) );
+
+    master = new QCheckBox( groupBox30, "master" );
+    master->setGeometry( QRect( 20, 20, 70, 20 ) );
+    master->setChecked( TRUE );
+
+    terminate = new QCheckBox( groupBox30, "terminate" );
+    terminate->setEnabled( FALSE );
+    terminate->setGeometry( QRect( 20, 50, 80, 20 ) );
+    terminate->setChecked( TRUE );
+
+    resetTimer = new QPushButton( groupBox30, "resetTimer" );
+    resetTimer->setGeometry( QRect( 20, 100, 91, 20 ) );
+
+    tabWidget5 = new QTabWidget( tab_2, "tabWidget5" );
+    tabWidget5->setGeometry( QRect( 150, 10, 980, 210 ) );
+
+    tab_3 = new QWidget( tabWidget5, "tab_3" );
+
+    groupBox9 = new QGroupBox( tab_3, "groupBox9" );
+    groupBox9->setGeometry( QRect( 10, 20, 360, 70 ) );
+
+    textLabel1_7 = new QLabel( groupBox9, "textLabel1_7" );
+    textLabel1_7->setGeometry( QRect( 10, 20, 30, 16 ) );
+
+    textLabel1_7_3 = new QLabel( groupBox9, "textLabel1_7_3" );
+    textLabel1_7_3->setGeometry( QRect( 110, 20, 41, 16 ) );
+
+    textLabel1_7_2 = new QLabel( groupBox9, "textLabel1_7_2" );
+    textLabel1_7_2->setGeometry( QRect( 210, 20, 54, 16 ) );
+
+    sendCellButton = new QPushButton( groupBox9, "sendCellButton" );
+    sendCellButton->setGeometry( QRect( 280, 40, 61, 21 ) );
+
+    cellSource = new QComboBox( FALSE, groupBox9, "cellSource" );
+    cellSource->setGeometry( QRect( 10, 40, 90, 20 ) );
+
+    cellTrigger = new QComboBox( FALSE, groupBox9, "cellTrigger" );
+    cellTrigger->setGeometry( QRect( 110, 40, 90, 20 ) );
+
+    cellCompare = new QSpinBox( groupBox9, "cellCompare" );
+    cellCompare->setGeometry( QRect( 210, 40, 50, 20 ) );
+    cellCompare->setMaxValue( 22 );
+
+    groupBox9_2 = new QGroupBox( tab_3, "groupBox9_2" );
+    groupBox9_2->setGeometry( QRect( 10, 100, 250, 70 ) );
+
+    textLabel1_7_4 = new QLabel( groupBox9_2, "textLabel1_7_4" );
+    textLabel1_7_4->setGeometry( QRect( 20, 20, 34, 16 ) );
+
+    textLabel1_7_3_2 = new QLabel( groupBox9_2, "textLabel1_7_3_2" );
+    textLabel1_7_3_2->setGeometry( QRect( 80, 20, 54, 16 ) );
+
+    sendAux = new QPushButton( groupBox9_2, "sendAux" );
+    sendAux->setGeometry( QRect( 180, 40, 61, 21 ) );
+
+    timer = new QSpinBox( groupBox9_2, "timer" );
+    timer->setGeometry( QRect( 20, 40, 40, 20 ) );
+    timer->setMaxValue( 3 );
+
+    compareAux = new QLineEdit( groupBox9_2, "compareAux" );
+    compareAux->setGeometry( QRect( 80, 40, 80, 21 ) );
+
+    groupBox9_2_2 = new QGroupBox( tab_3, "groupBox9_2_2" );
+    groupBox9_2_2->setGeometry( QRect( 400, 20, 270, 70 ) );
+
+    textLabel1_7_4_2_2 = new QLabel( groupBox9_2_2, "textLabel1_7_4_2_2" );
+    textLabel1_7_4_2_2->setGeometry( QRect( 80, 20, 41, 16 ) );
+
+    textLabel1_7_4_2 = new QLabel( groupBox9_2_2, "textLabel1_7_4_2" );
+    textLabel1_7_4_2->setGeometry( QRect( 20, 20, 60, 16 ) );
+
+    sendParam = new QPushButton( groupBox9_2_2, "sendParam" );
+    sendParam->setGeometry( QRect( 190, 40, 61, 21 ) );
+
+    paramSource = new QComboBox( FALSE, groupBox9_2_2, "paramSource" );
+    paramSource->setGeometry( QRect( 80, 40, 90, 20 ) );
+
+    param = new QSpinBox( groupBox9_2_2, "param" );
+    param->setGeometry( QRect( 20, 40, 40, 20 ) );
+    param->setMaxValue( 3 );
+
+    groupBox16 = new QGroupBox( tab_3, "groupBox16" );
+    groupBox16->setGeometry( QRect( 400, 100, 171, 70 ) );
+
+    statusStream = new QCheckBox( groupBox16, "statusStream" );
+    statusStream->setGeometry( QRect( 10, 30, 70, 21 ) );
+
+    setStream = new QPushButton( groupBox16, "setStream" );
+    setStream->setGeometry( QRect( 90, 29, 61, 21 ) );
+    tabWidget5->insertTab( tab_3, QString::fromLatin1("") );
+
+    tab_4 = new QWidget( tabWidget5, "tab_4" );
+
+    groupBox29 = new QGroupBox( tab_4, "groupBox29" );
+    groupBox29->setGeometry( QRect( 10, 10, 121, 80 ) );
+
+    setID = new QPushButton( groupBox29, "setID" );
+    setID->setGeometry( QRect( 62, 37, 41, 21 ) );
+
+    deviceId = new QSpinBox( groupBox29, "deviceId" );
+    deviceId->setGeometry( QRect( 12, 37, 41, 21 ) );
+
+    groupBox6 = new QGroupBox( tab_4, "groupBox6" );
+    groupBox6->setGeometry( QRect( 170, 10, 600, 160 ) );
+
+    textLabel1_3_2_2 = new QLabel( groupBox6, "textLabel1_3_2_2" );
+    textLabel1_3_2_2->setGeometry( QRect( 20, 50, 61, 21 ) );
+
+    textLabel1_3_3_2_2 = new QLabel( groupBox6, "textLabel1_3_3_2_2" );
+    textLabel1_3_3_2_2->setGeometry( QRect( 200, 20, 61, 21 ) );
+
+    setIP = new QPushButton( groupBox6, "setIP" );
+    setIP->setGeometry( QRect( 480, 80, 90, 30 ) );
+
+    cmdUdpPort = new QSpinBox( groupBox6, "cmdUdpPort" );
+    cmdUdpPort->setGeometry( QRect( 350, 110, 70, 21 ) );
+    cmdUdpPort->setMaxValue( 65536 );
+    cmdUdpPort->setValue( 0 );
+
+    dataUdpPort = new QSpinBox( groupBox6, "dataUdpPort" );
+    dataUdpPort->setGeometry( QRect( 350, 80, 70, 21 ) );
+    dataUdpPort->setMaxValue( 65536 );
+    dataUdpPort->setValue( 0 );
+
+    textLabel1_3_3_2 = new QLabel( groupBox6, "textLabel1_3_3_2" );
+    textLabel1_3_3_2->setGeometry( QRect( 360, 20, 61, 21 ) );
+
+    textLabel1_3_2 = new QLabel( groupBox6, "textLabel1_3_2" );
+    textLabel1_3_2->setGeometry( QRect( 20, 80, 61, 21 ) );
+
+    textLabel1_3_2_2_2 = new QLabel( groupBox6, "textLabel1_3_2_2_2" );
+    textLabel1_3_2_2_2->setGeometry( QRect( 20, 110, 61, 21 ) );
+
+    dataIpAddress0 = new QLineEdit( groupBox6, "dataIpAddress0" );
+    dataIpAddress0->setEnabled( FALSE );
+    dataIpAddress0->setGeometry( QRect( 180, 80, 30, 20 ) );
+
+    dataIpAddress1 = new QLineEdit( groupBox6, "dataIpAddress1" );
+    dataIpAddress1->setEnabled( FALSE );
+    dataIpAddress1->setGeometry( QRect( 220, 80, 30, 20 ) );
+
+    dataIpAddress2 = new QLineEdit( groupBox6, "dataIpAddress2" );
+    dataIpAddress2->setEnabled( FALSE );
+    dataIpAddress2->setGeometry( QRect( 260, 80, 30, 20 ) );
+
+    dataIpAddress3 = new QLineEdit( groupBox6, "dataIpAddress3" );
+    dataIpAddress3->setEnabled( FALSE );
+    dataIpAddress3->setGeometry( QRect( 300, 80, 30, 20 ) );
+
+    cmdIpAddress0 = new QLineEdit( groupBox6, "cmdIpAddress0" );
+    cmdIpAddress0->setEnabled( FALSE );
+    cmdIpAddress0->setGeometry( QRect( 180, 110, 30, 20 ) );
+
+    cmdIpAddress1 = new QLineEdit( groupBox6, "cmdIpAddress1" );
+    cmdIpAddress1->setEnabled( FALSE );
+    cmdIpAddress1->setGeometry( QRect( 220, 110, 30, 20 ) );
+
+    cmdIpAddress2 = new QLineEdit( groupBox6, "cmdIpAddress2" );
+    cmdIpAddress2->setEnabled( FALSE );
+    cmdIpAddress2->setGeometry( QRect( 260, 110, 30, 20 ) );
+
+    cmdIpAddress3 = new QLineEdit( groupBox6, "cmdIpAddress3" );
+    cmdIpAddress3->setEnabled( FALSE );
+    cmdIpAddress3->setGeometry( QRect( 300, 110, 30, 20 ) );
+
+    cmdThisPc = new QCheckBox( groupBox6, "cmdThisPc" );
+    cmdThisPc->setGeometry( QRect( 90, 110, 60, 20 ) );
+    cmdThisPc->setChecked( TRUE );
+
+    dataThisPc = new QCheckBox( groupBox6, "dataThisPc" );
+    dataThisPc->setGeometry( QRect( 90, 80, 60, 20 ) );
+    dataThisPc->setChecked( TRUE );
+
+    modifyIp = new QCheckBox( groupBox6, "modifyIp" );
+    modifyIp->setGeometry( QRect( 90, 50, 60, 20 ) );
+    modifyIp->setChecked( FALSE );
+
+    mcpdIpAddress1 = new QLineEdit( groupBox6, "mcpdIpAddress1" );
+    mcpdIpAddress1->setEnabled( FALSE );
+    mcpdIpAddress1->setGeometry( QRect( 220, 50, 30, 20 ) );
+
+    mcpdIpAddress2 = new QLineEdit( groupBox6, "mcpdIpAddress2" );
+    mcpdIpAddress2->setEnabled( FALSE );
+    mcpdIpAddress2->setGeometry( QRect( 260, 50, 30, 20 ) );
+
+    mcpdIpAddress0 = new QLineEdit( groupBox6, "mcpdIpAddress0" );
+    mcpdIpAddress0->setEnabled( FALSE );
+    mcpdIpAddress0->setGeometry( QRect( 180, 50, 30, 20 ) );
+
+    mcpdIpAddress3 = new QLineEdit( groupBox6, "mcpdIpAddress3" );
+    mcpdIpAddress3->setEnabled( FALSE );
+    mcpdIpAddress3->setGeometry( QRect( 300, 50, 30, 20 ) );
+    tabWidget5->insertTab( tab_4, QString::fromLatin1("") );
+
+    mcpdId = new QSpinBox( tab_2, "mcpdId" );
+    mcpdId->setEnabled( FALSE );
+    mcpdId->setGeometry( QRect( 40, 10, 61, 21 ) );
+    mcpdId->setMaxValue( 8 );
+    tabWidget2->insertTab( tab_2, QString::fromLatin1("") );
+
+    TabPage = new QWidget( tabWidget2, "TabPage" );
+
+    textLabel1_4_2 = new QLabel( TabPage, "textLabel1_4_2" );
+    textLabel1_4_2->setGeometry( QRect( 10, 10, 63, 21 ) );
+
+    groupBox17_2 = new QGroupBox( TabPage, "groupBox17_2" );
+    groupBox17_2->setGeometry( QRect( 160, 0, 630, 61 ) );
+
+    textLabel1_4 = new QLabel( groupBox17_2, "textLabel1_4" );
+    textLabel1_4->setGeometry( QRect( 20, 20, 20, 16 ) );
+
+    textLabel1_4_10 = new QLabel( groupBox17_2, "textLabel1_4_10" );
+    textLabel1_4_10->setGeometry( QRect( 60, 20, 20, 16 ) );
+
+    textLabel1_4_9 = new QLabel( groupBox17_2, "textLabel1_4_9" );
+    textLabel1_4_9->setGeometry( QRect( 100, 20, 20, 16 ) );
+
+    textLabel1_4_8 = new QLabel( groupBox17_2, "textLabel1_4_8" );
+    textLabel1_4_8->setGeometry( QRect( 140, 20, 20, 16 ) );
+
+    scanPeri = new QPushButton( groupBox17_2, "scanPeri" );
+    scanPeri->setGeometry( QRect( 480, 20, 80, 21 ) );
+
+    textLabel1_4_7 = new QLabel( groupBox17_2, "textLabel1_4_7" );
+    textLabel1_4_7->setGeometry( QRect( 180, 20, 20, 16 ) );
+
+    textLabel1_4_6 = new QLabel( groupBox17_2, "textLabel1_4_6" );
+    textLabel1_4_6->setGeometry( QRect( 220, 20, 20, 16 ) );
+
+    textLabel1_4_5 = new QLabel( groupBox17_2, "textLabel1_4_5" );
+    textLabel1_4_5->setGeometry( QRect( 260, 20, 20, 16 ) );
+
+    textLabel1_4_4 = new QLabel( groupBox17_2, "textLabel1_4_4" );
+    textLabel1_4_4->setGeometry( QRect( 300, 20, 20, 16 ) );
+
+    status3 = new QLabel( groupBox17_2, "status3" );
+    status3->setGeometry( QRect( 140, 40, 40, 16 ) );
+
+    status2 = new QLabel( groupBox17_2, "status2" );
+    status2->setGeometry( QRect( 100, 40, 40, 16 ) );
+
+    status1 = new QLabel( groupBox17_2, "status1" );
+    status1->setGeometry( QRect( 60, 40, 40, 16 ) );
+
+    status0 = new QLabel( groupBox17_2, "status0" );
+    status0->setGeometry( QRect( 20, 40, 40, 16 ) );
+
+    status4 = new QLabel( groupBox17_2, "status4" );
+    status4->setGeometry( QRect( 180, 40, 40, 16 ) );
+
+    status5 = new QLabel( groupBox17_2, "status5" );
+    status5->setGeometry( QRect( 220, 40, 40, 16 ) );
+
+    status6 = new QLabel( groupBox17_2, "status6" );
+    status6->setGeometry( QRect( 260, 40, 40, 16 ) );
+
+    status7 = new QLabel( groupBox17_2, "status7" );
+    status7->setGeometry( QRect( 300, 40, 40, 16 ) );
+
+    groupBox35 = new QGroupBox( TabPage, "groupBox35" );
+    groupBox35->setGeometry( QRect( 160, 70, 560, 61 ) );
+
+    setPulser = new QPushButton( groupBox35, "setPulser" );
+    setPulser->setGeometry( QRect( 460, 20, 80, 21 ) );
+
+    textLabel1_4_2_3_2_2 = new QLabel( groupBox35, "textLabel1_4_2_3_2_2" );
+    textLabel1_4_2_3_2_2->setGeometry( QRect( 210, 20, 57, 21 ) );
+
+    textLabel1_4_2_3_2_2_2 = new QLabel( groupBox35, "textLabel1_4_2_3_2_2_2" );
+    textLabel1_4_2_3_2_2_2->setGeometry( QRect( 340, 20, 47, 21 ) );
+
+    pulser = new QCheckBox( groupBox35, "pulser" );
+    pulser->setGeometry( QRect( 20, 20, 60, 20 ) );
+
+    textLabel1_4_2_3_4 = new QLabel( groupBox35, "textLabel1_4_2_3_4" );
+    textLabel1_4_2_3_4->setGeometry( QRect( 90, 20, 50, 21 ) );
+
+    pulsPos = new QComboBox( FALSE, groupBox35, "pulsPos" );
+    pulsPos->setGeometry( QRect( 390, 20, 60, 21 ) );
+
+    pulsChan = new QSpinBox( groupBox35, "pulsChan" );
+    pulsChan->setGeometry( QRect( 140, 20, 50, 21 ) );
+    pulsChan->setMaxValue( 7 );
+
+    pulsAmp = new QSpinBox( groupBox35, "pulsAmp" );
+    pulsAmp->setGeometry( QRect( 270, 20, 50, 21 ) );
+    pulsAmp->setMaxValue( 255 );
+
+    textLabel1_4_2_2 = new QLabel( TabPage, "textLabel1_4_2_2" );
+    textLabel1_4_2_2->setGeometry( QRect( 10, 80, 47, 29 ) );
+
+    modeGroup = new QButtonGroup( TabPage, "modeGroup" );
+    modeGroup->setGeometry( QRect( 810, 70, 180, 60 ) );
+
+    pos = new QRadioButton( modeGroup, "pos" );
+    pos->setGeometry( QRect( 10, 30, 70, 20 ) );
+    pos->setChecked( TRUE );
+
+    amp = new QRadioButton( modeGroup, "amp" );
+    amp->setGeometry( QRect( 90, 30, 80, 20 ) );
+
+    groupBox13 = new QGroupBox( TabPage, "groupBox13" );
+    groupBox13->setGeometry( QRect( 160, 140, 631, 80 ) );
+
+    textLabel1_4_2_3 = new QLabel( groupBox13, "textLabel1_4_2_3" );
+    textLabel1_4_2_3->setGeometry( QRect( 200, 20, 32, 21 ) );
+
+    setThreshold = new QPushButton( groupBox13, "setThreshold" );
+    setThreshold->setGeometry( QRect( 480, 50, 80, 21 ) );
+
+    textLabel1_4_2_3_2 = new QLabel( groupBox13, "textLabel1_4_2_3_2" );
+    textLabel1_4_2_3_2->setGeometry( QRect( 30, 20, 32, 21 ) );
+
+    textLabel1_4_2_3_3 = new QLabel( groupBox13, "textLabel1_4_2_3_3" );
+    textLabel1_4_2_3_3->setGeometry( QRect( 30, 50, 58, 21 ) );
+
+    comgain = new QCheckBox( groupBox13, "comgain" );
+    comgain->setGeometry( QRect( 110, 20, 80, 20 ) );
+
+    setGain = new QPushButton( groupBox13, "setGain" );
+    setGain->setGeometry( QRect( 480, 20, 80, 21 ) );
+
+    textLabel1_4_2_3_3_3 = new QLabel( groupBox13, "textLabel1_4_2_3_3_3" );
+    textLabel1_4_2_3_3_3->setGeometry( QRect( 310, 20, 84, 21 ) );
+
+    gain = new QLineEdit( groupBox13, "gain" );
+    gain->setGeometry( QRect( 400, 20, 50, 20 ) );
+    gain->setCursorPosition( 0 );
+
+    textLabel1_4_2_3_3_2 = new QLabel( groupBox13, "textLabel1_4_2_3_3_2" );
+    textLabel1_4_2_3_3_2->setGeometry( QRect( 310, 50, 80, 21 ) );
+
+    channel = new QSpinBox( groupBox13, "channel" );
+    channel->setGeometry( QRect( 240, 20, 50, 21 ) );
+    channel->setMaxValue( 255 );
+
+    threshold = new QLineEdit( groupBox13, "threshold" );
+    threshold->setGeometry( QRect( 400, 50, 50, 20 ) );
+
+    devid = new QSpinBox( TabPage, "devid" );
+    devid->setEnabled( FALSE );
+    devid->setGeometry( QRect( 80, 10, 50, 21 ) );
+    devid->setMaxValue( 255 );
+
+    module = new QSpinBox( TabPage, "module" );
+    module->setGeometry( QRect( 80, 80, 50, 21 ) );
+    module->setMaxValue( 255 );
+    tabWidget2->insertTab( TabPage, QString::fromLatin1("") );
+
+    TabPage_2 = new QWidget( tabWidget2, "TabPage_2" );
+
+    LoadhistButton = new QPushButton( TabPage_2, "LoadhistButton" );
+    LoadhistButton->setEnabled( FALSE );
+    LoadhistButton->setGeometry( QRect( 580, 70, 100, 26 ) );
+
+    writeHistButton = new QPushButton( TabPage_2, "writeHistButton" );
+    writeHistButton->setEnabled( FALSE );
+    writeHistButton->setGeometry( QRect( 580, 30, 100, 26 ) );
+
+    groupBox79 = new QGroupBox( TabPage_2, "groupBox79" );
+    groupBox79->setGeometry( QRect( 8, 14, 470, 90 ) );
+
+    selectButton = new QPushButton( groupBox79, "selectButton" );
+    selectButton->setGeometry( QRect( 260, 40, 50, 26 ) );
+
+    acqListfile = new QCheckBox( groupBox79, "acqListfile" );
+    acqListfile->setGeometry( QRect( 20, 20, 100, 20 ) );
+
+    listFilename = new QLineEdit( groupBox79, "listFilename" );
+    listFilename->setGeometry( QRect( 20, 40, 230, 26 ) );
+
+    replayButton = new QPushButton( groupBox79, "replayButton" );
+    replayButton->setGeometry( QRect( 350, 40, 100, 26 ) );
+
+    groupBox79_2 = new QGroupBox( TabPage_2, "groupBox79_2" );
+    groupBox79_2->setGeometry( QRect( 10, 120, 341, 100 ) );
+
+    textLabel1_5 = new QLabel( groupBox79_2, "textLabel1_5" );
+    textLabel1_5->setGeometry( QRect( 20, 61, 81, 16 ) );
+
+    setupName = new QLabel( groupBox79_2, "setupName" );
+    setupName->setGeometry( QRect( 20, 80, 211, 16 ) );
+
+    saveSetupButton = new QPushButton( groupBox79_2, "saveSetupButton" );
+    saveSetupButton->setGeometry( QRect( 20, 20, 50, 26 ) );
+
+    restoreSetupButton = new QPushButton( groupBox79_2, "restoreSetupButton" );
+    restoreSetupButton->setGeometry( QRect( 90, 20, 50, 26 ) );
+    tabWidget2->insertTab( TabPage_2, QString::fromLatin1("") );
+    languageChange();
+    resize( QSize(1200, 801).expandedTo(minimumSizeHint()) );
+    clearWState( WState_Polished );
+
+    // signals and slots connections
+    connect( acqListfile, SIGNAL( toggled(bool) ), acquireFile, SLOT( setChecked(bool) ) );
+    connect( acqListfile, SIGNAL( toggled(bool) ), this, SLOT( acqListfileSlot() ) );
+    connect( acquireFile, SIGNAL( toggled(bool) ), acqListfile, SLOT( setChecked(bool) ) );
+    connect( acquireFile, SIGNAL( toggled(bool) ), this, SLOT( acqListfileSlot() ) );
+    connect( cellSource, SIGNAL( activated(int) ), this, SLOT( displayMcpdSlot() ) );
+    connect( clearAll, SIGNAL( clicked() ), this, SLOT( clearAllSlot() ) );
+    connect( clearChan, SIGNAL( clicked() ), this, SLOT( clearChanSlot() ) );
+    connect( clearMcpd, SIGNAL( clicked() ), this, SLOT( clearMcpdSlot() ) );
+    connect( clearMpsd, SIGNAL( clicked() ), this, SLOT( clearMpsdSlot() ) );
+    connect( cmdThisPc, SIGNAL( toggled(bool) ), cmdIpAddress0, SLOT( setDisabled(bool) ) );
+    connect( cmdThisPc, SIGNAL( toggled(bool) ), cmdIpAddress1, SLOT( setDisabled(bool) ) );
+    connect( cmdThisPc, SIGNAL( toggled(bool) ), cmdIpAddress2, SLOT( setDisabled(bool) ) );
+    connect( cmdThisPc, SIGNAL( toggled(bool) ), cmdIpAddress3, SLOT( setDisabled(bool) ) );
+    connect( comgain, SIGNAL( toggled(bool) ), channel, SLOT( setDisabled(bool) ) );
+    connect( dataThisPc, SIGNAL( toggled(bool) ), dataIpAddress0, SLOT( setDisabled(bool) ) );
+    connect( dataThisPc, SIGNAL( toggled(bool) ), dataIpAddress1, SLOT( setDisabled(bool) ) );
+    connect( dataThisPc, SIGNAL( toggled(bool) ), dataIpAddress2, SLOT( setDisabled(bool) ) );
+    connect( dataThisPc, SIGNAL( toggled(bool) ), dataIpAddress3, SLOT( setDisabled(bool) ) );
+    connect( dispAll, SIGNAL( toggled(bool) ), dispMcpd, SLOT( setDisabled(bool) ) );
+    connect( dispAll, SIGNAL( toggled(bool) ), dispMpsd, SLOT( setDisabled(bool) ) );
+    connect( dispAll, SIGNAL( toggled(bool) ), dispChan, SLOT( setDisabled(bool) ) );
+    connect( dispAll, SIGNAL( toggled(bool) ), clearMcpd, SLOT( setDisabled(bool) ) );
+    connect( dispAll, SIGNAL( toggled(bool) ), clearMpsd, SLOT( setDisabled(bool) ) );
+    connect( dispAll, SIGNAL( toggled(bool) ), clearChan, SLOT( setDisabled(bool) ) );
+    connect( master, SIGNAL( toggled(bool) ), this, SLOT( setTimingSlot() ) );
+    connect( master, SIGNAL( toggled(bool) ), terminate, SLOT( setDisabled(bool) ) );
+    connect( master, SIGNAL( toggled(bool) ), resetTimer, SLOT( setEnabled(bool) ) );
+    connect( master, SIGNAL( toggled(bool) ), terminate, SLOT( setChecked(bool) ) );
+    connect( mcpdId, SIGNAL( valueChanged(int) ), this, SLOT( displayMcpdSlot() ) );
+    connect( modifyIp, SIGNAL( toggled(bool) ), mcpdIpAddress0, SLOT( setEnabled(bool) ) );
+    connect( modifyIp, SIGNAL( toggled(bool) ), mcpdIpAddress1, SLOT( setEnabled(bool) ) );
+    connect( modifyIp, SIGNAL( toggled(bool) ), mcpdIpAddress2, SLOT( setEnabled(bool) ) );
+    connect( modifyIp, SIGNAL( toggled(bool) ), mcpdIpAddress3, SLOT( setEnabled(bool) ) );
+    connect( param, SIGNAL( valueChanged(int) ), this, SLOT( displayMcpdSlot() ) );
+    connect( pushButton31, SIGNAL( clicked() ), this, SLOT( allPulserSlot() ) );
+    connect( replayButton, SIGNAL( clicked() ), this, SLOT( replayListfileSlot() ) );
+    connect( resetTimer, SIGNAL( clicked() ), this, SLOT( resetTimerSlot() ) );
+    connect( runIdAuto, SIGNAL( toggled(bool) ), runId, SLOT( setDisabled(bool) ) );
+    connect( runIdAuto, SIGNAL( toggled(bool) ), runIdButton, SLOT( setDisabled(bool) ) );
+    connect( runIdButton, SIGNAL( clicked() ), this, SLOT( setRunIdSlot() ) );
+    connect( selectButton, SIGNAL( clicked() ), this, SLOT( selectListfileSlot() ) );
+    connect( sendAux, SIGNAL( clicked() ), this, SLOT( sendAuxSlot() ) );
+    connect( sendCellButton, SIGNAL( clicked() ), this, SLOT( sendCellSlot() ) );
+    connect( sendParam, SIGNAL( clicked() ), this, SLOT( sendParamSlot() ) );
+    connect( setGain, SIGNAL( clicked() ), this, SLOT( setGainSlot() ) );
+    connect( setID, SIGNAL( clicked() ), this, SLOT( setMcpdIdSlot() ) );
+    connect( setIP, SIGNAL( clicked() ), this, SLOT( setIpUdpSlot() ) );
+    connect( setPulser, SIGNAL( clicked() ), this, SLOT( setPulserSlot() ) );
+    connect( setStream, SIGNAL( clicked() ), this, SLOT( setStreamSlot() ) );
+    connect( setThreshold, SIGNAL( clicked() ), this, SLOT( setThresholdSlot() ) );
+    connect( startStopButton, SIGNAL( clicked() ), this, SLOT( startStopSlot() ) );
+    connect( tabWidget2, SIGNAL( selected(const QString&) ), this, SLOT( displayMcpdSlot() ) );
+    connect( tabWidget5, SIGNAL( selected(const QString&) ), this, SLOT( displayMcpdSlot() ) );
+    connect( terminate, SIGNAL( toggled(bool) ), this, SLOT( setTimingSlot() ) );
+    connect( timer, SIGNAL( valueChanged(int) ), this, SLOT( displayMcpdSlot() ) );
+    connect( scanPeri, SIGNAL( clicked() ), this, SLOT( scanPeriSlot() ) );
+    connect( modeGroup, SIGNAL( clicked(int) ), this, SLOT( setModeSlot(int) ) );
+    connect( module, SIGNAL( valueChanged(int) ), this, SLOT( displayMpsdSlot() ) );
+    connect( channel, SIGNAL( valueChanged(int) ), this, SLOT( displayMpsdSlot() ) );
+    connect( saveSetupButton, SIGNAL( clicked() ), this, SLOT( saveSetupSlot() ) );
+    connect( restoreSetupButton, SIGNAL( clicked() ), this, SLOT( restoreSetupSlot() ) );
+    connect( saveSetupButton, SIGNAL( clicked() ), this, SLOT( saveConfigSlot() ) );
+    connect( useThresh, SIGNAL( toggled(bool) ), loLim, SLOT( setEnabled(bool) ) );
+    connect( useThresh, SIGNAL( toggled(bool) ), hiLim, SLOT( setEnabled(bool) ) );
+    connect( logGroup, SIGNAL( toggled(bool) ), this, SLOT( redrawSlot() ) );
+    connect( useThresh, SIGNAL( clicked() ), this, SLOT( applyThreshSlot() ) );
+    connect( applyDispThreshButton, SIGNAL( clicked() ), this, SLOT( applyThreshSlot() ) );
+    connect( logGroup, SIGNAL( clicked(int) ), this, SLOT( linlogSlot() ) );
+}
+
+/*
+ *  Destroys the object and frees any allocated resources
+ */
+mesydaq2mainwindow::~mesydaq2mainwindow()
+{
+    // no need to delete child widgets, Qt does it all for us
+}
+
+/*
+ *  Sets the strings of the subwidgets using the current
+ *  language.
+ */
+void mesydaq2mainwindow::languageChange()
+{
+    setCaption( tr2i18n( "mesydaq3" ) );
+    setProperty( "windowTitle", tr2i18n( "Form" ) );
+    groupBox1->setTitle( tr2i18n( "DAQ" ) );
+    startStopButton->setText( tr2i18n( "S&tart" ) );
+    startStopButton->setAccel( QKeySequence( tr2i18n( "Alt+T" ) ) );
+    QToolTip::add( startStopButton, tr2i18n( "start / stop data acquisition" ) );
+    daqStatusLine->setText( tr2i18n( "idle" ) );
+    QToolTip::add( daqStatusLine, tr2i18n( "current DAQ status display" ) );
+    acquireFile->setText( tr2i18n( "acquire\n"
+"Listfile" ) );
+    acquireFile->setAccel( QKeySequence( QString::null ) );
+    pushButton31->setText( tr2i18n( "All pulsers off" ) );
+    groupBox80->setTitle( tr2i18n( "Statistics" ) );
+    textLabel1_2->setText( tr2i18n( "cmd buffers transmitted:" ) );
+    cmdTx->setText( tr2i18n( "0" ) );
+    textLabel1_2_3->setText( tr2i18n( "cmd buffers reveived:" ) );
+    textLabel1_2_2->setText( tr2i18n( "data buffers received:" ) );
+    dataRx->setText( tr2i18n( "0" ) );
+    cmdRx->setText( tr2i18n( "0" ) );
+    textLabel1_2_3_2->setText( tr2i18n( "header time:" ) );
+    statusWord->setText( tr2i18n( "0" ) );
+    textLabel1_2_3_2_2->setText( tr2i18n( "status word:" ) );
+    hTimeText->setText( tr2i18n( "0" ) );
+    hTime->setText( tr2i18n( "0" ) );
+    textLabel1->setText( tr2i18n( "total counts:" ) );
+    totalCounts->setText( tr2i18n( "0" ) );
+    groupBox17->setTitle( tr2i18n( "Parameters" ) );
+    textLabel1_3_6->setText( tr2i18n( "MCPD-ID:" ) );
+    textLabel1_3->setText( tr2i18n( "P0:" ) );
+    textLabel1_3_3->setText( tr2i18n( "P1:" ) );
+    textLabel1_3_4->setText( tr2i18n( "P2:" ) );
+    textLabel1_3_5->setText( tr2i18n( "P3:" ) );
+    param0->setText( tr2i18n( "<p align=\"right\">0</p>" ) );
+    param1->setText( tr2i18n( "<p align=\"right\">0</p>" ) );
+    param2->setText( tr2i18n( "<p align=\"right\">0</p>" ) );
+    param3->setText( tr2i18n( "<p align=\"right\">0</p>" ) );
+    groupBox15->setTitle( tr2i18n( "Run ID" ) );
+    QToolTip::add( runId, tr2i18n( "RUN ID will be transmitted in every data buffer header" ) );
+    runIdAuto->setText( tr2i18n( "Auto Incr." ) );
+    runIdAuto->setAccel( QKeySequence( QString::null ) );
+    QToolTip::add( runIdAuto, tr2i18n( "increment run ID automatically at every start cmd" ) );
+    runIdButton->setText( tr2i18n( "set Run ID" ) );
+    groupBox49->setTitle( tr2i18n( "Display" ) );
+    clearAll->setText( tr2i18n( "clear hist" ) );
+    clearAll->setAccel( QKeySequence( QString::null ) );
+    useThresh->setText( tr2i18n( "Thresholds" ) );
+    loLim->setText( tr2i18n( "0" ) );
+    clearMcpd->setText( tr2i18n( "clear hist" ) );
+    clearMcpd->setAccel( QKeySequence( QString::null ) );
+    textLabel1_6->setText( tr2i18n( "low" ) );
+    textLabel1_6_2->setText( tr2i18n( "hi" ) );
+    hiLim->setText( tr2i18n( "1000000000" ) );
+    clearMpsd->setText( tr2i18n( "clear hist" ) );
+    clearMpsd->setAccel( QKeySequence( QString::null ) );
+    applyDispThreshButton->setText( tr2i18n( "apply" ) );
+    clearChan->setText( tr2i18n( "clear hist" ) );
+    clearChan->setAccel( QKeySequence( QString::null ) );
+    dispAll->setText( tr2i18n( "Position sum" ) );
+    dispAll->setAccel( QKeySequence( QString::null ) );
+    textLabel1_4_2_3_4_2_2_2->setText( tr2i18n( "Channel" ) );
+    textLabel1_4_2_3_4_2_2->setText( tr2i18n( "MPSD" ) );
+    textLabel1_4_2_3_4_2->setText( tr2i18n( "MCPD" ) );
+    textLabel2->setText( tr2i18n( "0-7: position\n"
+"8-15: energy" ) );
+    logGroup->setTitle( QString::null );
+    lin->setText( tr2i18n( "lin" ) );
+    log->setText( tr2i18n( "log" ) );
+    tabWidget2->changeTab( tab, tr2i18n( "S&tatus" ) );
+    textLabel1_5_2->setText( tr2i18n( "ID" ) );
+    groupBox30->setTitle( tr2i18n( "Master / Termination" ) );
+    QToolTip::add( groupBox30, QString::null );
+    master->setText( tr2i18n( "Master" ) );
+    master->setAccel( QKeySequence( QString::null ) );
+    terminate->setText( tr2i18n( "&terminate" ) );
+    terminate->setAccel( QKeySequence( tr2i18n( "Alt+T" ) ) );
+    resetTimer->setText( tr2i18n( "&Reset Timer" ) );
+    resetTimer->setAccel( QKeySequence( tr2i18n( "Alt+R" ) ) );
+    QToolTip::add( resetTimer, tr2i18n( "reset master clock" ) );
+    groupBox9->setTitle( tr2i18n( "Counter/ ADC-Cell" ) );
+    QToolTip::add( groupBox9, QString::null );
+    textLabel1_7->setText( tr2i18n( "Cell" ) );
+    textLabel1_7_3->setText( tr2i18n( "Trigger" ) );
+    textLabel1_7_2->setText( tr2i18n( "Compare" ) );
+    sendCellButton->setText( tr2i18n( "Send" ) );
+    QToolTip::add( sendCellButton, tr2i18n( "send cell data" ) );
+    cellSource->clear();
+    cellSource->insertItem( tr2i18n( "mon/chop1" ) );
+    cellSource->insertItem( tr2i18n( "mon/chop2" ) );
+    cellSource->insertItem( tr2i18n( "mon/chop3" ) );
+    cellSource->insertItem( tr2i18n( "mon/chop4" ) );
+    cellSource->insertItem( tr2i18n( "digInput1" ) );
+    cellSource->insertItem( tr2i18n( "digInput2" ) );
+    cellSource->insertItem( tr2i18n( "ADC1" ) );
+    cellSource->insertItem( tr2i18n( "ADC2" ) );
+    QToolTip::add( cellSource, tr2i18n( "Select counter / ADC cell" ) );
+    cellTrigger->clear();
+    cellTrigger->insertItem( tr2i18n( "no Trig" ) );
+    cellTrigger->insertItem( tr2i18n( "auxTimer1" ) );
+    cellTrigger->insertItem( tr2i18n( "auxTimer2" ) );
+    cellTrigger->insertItem( tr2i18n( "auxTimer3" ) );
+    cellTrigger->insertItem( tr2i18n( "auxTimer4" ) );
+    cellTrigger->insertItem( tr2i18n( "digInput1" ) );
+    cellTrigger->insertItem( tr2i18n( "digInput2" ) );
+    cellTrigger->insertItem( tr2i18n( "compareReg" ) );
+    QToolTip::add( cellTrigger, tr2i18n( "Select trigger for cell" ) );
+    QToolTip::add( cellCompare, tr2i18n( "Define compare source for cell" ) );
+    groupBox9_2->setTitle( tr2i18n( "Aux Timer" ) );
+    QToolTip::add( groupBox9_2, QString::null );
+    textLabel1_7_4->setText( tr2i18n( "Timer" ) );
+    textLabel1_7_3_2->setText( tr2i18n( "Compare" ) );
+    sendAux->setText( tr2i18n( "Send" ) );
+    QToolTip::add( sendAux, tr2i18n( "send timer setting" ) );
+    QToolTip::add( timer, tr2i18n( "select timer number" ) );
+    QToolTip::add( compareAux, tr2i18n( "define compare value" ) );
+    groupBox9_2_2->setTitle( tr2i18n( "Parameter Source" ) );
+    QToolTip::add( groupBox9_2_2, QString::null );
+    textLabel1_7_4_2_2->setText( tr2i18n( "Source" ) );
+    textLabel1_7_4_2->setText( tr2i18n( "Param." ) );
+    sendParam->setText( tr2i18n( "Send" ) );
+    QToolTip::add( sendParam, tr2i18n( "send parameter settings for selected parameter" ) );
+    paramSource->clear();
+    paramSource->insertItem( tr2i18n( "mon/chop1" ) );
+    paramSource->insertItem( tr2i18n( "mon/chop2" ) );
+    paramSource->insertItem( tr2i18n( "mon/chop3" ) );
+    paramSource->insertItem( tr2i18n( "mon/chop4" ) );
+    paramSource->insertItem( tr2i18n( "digInput1" ) );
+    paramSource->insertItem( tr2i18n( "digInput2" ) );
+    paramSource->insertItem( tr2i18n( "ADC1,2, DigIn1,2" ) );
+    paramSource->insertItem( tr2i18n( "event counter" ) );
+    paramSource->insertItem( tr2i18n( "master clock" ) );
+    QToolTip::add( paramSource, tr2i18n( "select parameter source" ) );
+    QToolTip::add( param, tr2i18n( "select parameter number" ) );
+    groupBox16->setTitle( tr2i18n( "Status Stream" ) );
+    statusStream->setText( tr2i18n( "stream" ) );
+    QToolTip::add( statusStream, tr2i18n( "send status stream when daq is stopped" ) );
+    setStream->setText( tr2i18n( "send" ) );
+    tabWidget5->changeTab( tab_3, tr2i18n( "Settings" ) );
+    groupBox29->setTitle( tr2i18n( "MCPD-8 device ID" ) );
+    setID->setText( tr2i18n( "set ID" ) );
+    groupBox6->setTitle( tr2i18n( "IP / UDP settings" ) );
+    textLabel1_3_2_2->setText( tr2i18n( "<b>MCPD-8</b>" ) );
+    textLabel1_3_3_2_2->setText( tr2i18n( "ip address" ) );
+    setIP->setText( tr2i18n( "set &comm\n"
+"parameters" ) );
+    setIP->setAccel( QKeySequence( tr2i18n( "Alt+C" ) ) );
+    textLabel1_3_3_2->setText( tr2i18n( "udp port" ) );
+    textLabel1_3_2->setText( tr2i18n( "<b>Data pc</b>" ) );
+    textLabel1_3_2_2_2->setText( tr2i18n( "<b>Cmd pc</b>" ) );
+    dataIpAddress0->setText( tr2i18n( "192" ) );
+    dataIpAddress1->setText( tr2i18n( "168" ) );
+    dataIpAddress2->setText( tr2i18n( "168" ) );
+    dataIpAddress3->setText( tr2i18n( "5" ) );
+    cmdIpAddress0->setText( tr2i18n( "0" ) );
+    cmdIpAddress1->setText( tr2i18n( "168" ) );
+    cmdIpAddress2->setText( tr2i18n( "168" ) );
+    cmdIpAddress3->setText( tr2i18n( "5" ) );
+    cmdThisPc->setText( tr2i18n( "this pc" ) );
+    dataThisPc->setText( tr2i18n( "this pc" ) );
+    modifyIp->setText( tr2i18n( "modify" ) );
+    mcpdIpAddress1->setText( tr2i18n( "168" ) );
+    mcpdIpAddress2->setText( tr2i18n( "168" ) );
+    mcpdIpAddress0->setText( tr2i18n( "192" ) );
+    mcpdIpAddress3->setText( tr2i18n( "121" ) );
+    tabWidget5->changeTab( tab_4, tr2i18n( "Communication / Networ&k" ) );
+    QToolTip::add( mcpdId, tr2i18n( "MCPD-ID to address " ) );
+    tabWidget2->changeTab( tab_2, tr2i18n( "MCPD-&8" ) );
+    textLabel1_4_2->setText( tr2i18n( "MCPD-8 ID" ) );
+    groupBox17_2->setTitle( tr2i18n( "MPSD-8 status" ) );
+    textLabel1_4->setText( tr2i18n( "0:" ) );
+    textLabel1_4_10->setText( tr2i18n( "1:" ) );
+    textLabel1_4_9->setText( tr2i18n( "2:" ) );
+    textLabel1_4_8->setText( tr2i18n( "3:" ) );
+    scanPeri->setText( tr2i18n( "scan" ) );
+    textLabel1_4_7->setText( tr2i18n( "4:" ) );
+    textLabel1_4_6->setText( tr2i18n( "5:" ) );
+    textLabel1_4_5->setText( tr2i18n( "6:" ) );
+    textLabel1_4_4->setText( tr2i18n( "7:" ) );
+    status3->setText( tr2i18n( "active" ) );
+    status2->setText( tr2i18n( "active" ) );
+    status1->setText( tr2i18n( "active" ) );
+    status0->setText( tr2i18n( "active" ) );
+    status4->setText( tr2i18n( "active" ) );
+    status5->setText( tr2i18n( "active" ) );
+    status6->setText( tr2i18n( "active" ) );
+    status7->setText( tr2i18n( "active" ) );
+    groupBox35->setTitle( tr2i18n( "Pulser" ) );
+    setPulser->setText( tr2i18n( "set pulser" ) );
+    textLabel1_4_2_3_2_2->setText( tr2i18n( "Amplitude" ) );
+    textLabel1_4_2_3_2_2_2->setText( tr2i18n( "Position" ) );
+    pulser->setText( tr2i18n( "Pu&lser" ) );
+    pulser->setAccel( QKeySequence( tr2i18n( "Alt+L" ) ) );
+    textLabel1_4_2_3_4->setText( tr2i18n( "Channel" ) );
+    pulsPos->clear();
+    pulsPos->insertItem( tr2i18n( "Left" ) );
+    pulsPos->insertItem( tr2i18n( "Right" ) );
+    pulsPos->insertItem( tr2i18n( "Middle" ) );
+    textLabel1_4_2_2->setText( tr2i18n( "MPSD-8\n"
+"(Bus-#)" ) );
+    modeGroup->setTitle( tr2i18n( "Mode" ) );
+    pos->setText( tr2i18n( "Position" ) );
+    amp->setText( tr2i18n( "Amplitude" ) );
+    groupBox13->setTitle( tr2i18n( "Amplifiers, Discriminator" ) );
+    textLabel1_4_2_3->setText( tr2i18n( "Chan" ) );
+    setThreshold->setText( tr2i18n( "set &threshold" ) );
+    textLabel1_4_2_3_2->setText( tr2i18n( "Gain" ) );
+    textLabel1_4_2_3_3->setText( tr2i18n( "Threshold" ) );
+    comgain->setText( tr2i18n( "common" ) );
+    setGain->setText( tr2i18n( "set gain" ) );
+    textLabel1_4_2_3_3_3->setText( tr2i18n( "Gain (0.5-1.88)" ) );
+    gain->setText( tr2i18n( "1" ) );
+    textLabel1_4_2_3_3_2->setText( tr2i18n( "Threshold [%]" ) );
+    threshold->setText( tr2i18n( "20" ) );
+    tabWidget2->changeTab( TabPage, tr2i18n( "MPSD-8" ) );
+    LoadhistButton->setText( tr2i18n( "Load Histogram" ) );
+    writeHistButton->setText( tr2i18n( "&Write Histogram" ) );
+    writeHistButton->setAccel( QKeySequence( tr2i18n( "Alt+W" ) ) );
+    groupBox79->setTitle( tr2i18n( "Listmode data acquisition" ) );
+    selectButton->setText( tr2i18n( "select" ) );
+    acqListfile->setText( tr2i18n( "ac&quire listfile:" ) );
+    acqListfile->setAccel( QKeySequence( tr2i18n( "Alt+Q" ) ) );
+    replayButton->setText( tr2i18n( "Repla&y Listfile" ) );
+    replayButton->setAccel( QKeySequence( tr2i18n( "Alt+Y" ) ) );
+    groupBox79_2->setTitle( tr2i18n( "Setup" ) );
+    textLabel1_5->setText( tr2i18n( "Current setup:" ) );
+    setupName->setText( tr2i18n( "Software Default" ) );
+    saveSetupButton->setText( tr2i18n( "sa&ve" ) );
+    saveSetupButton->setAccel( QKeySequence( tr2i18n( "Alt+V" ) ) );
+    restoreSetupButton->setText( tr2i18n( "restore" ) );
+    restoreSetupButton->setAccel( QKeySequence( QString::null ) );
+    tabWidget2->changeTab( TabPage_2, tr2i18n( "Fi&les" ) );
+}
+
+void mesydaq2mainwindow::startStopSlot()
+{
+    qWarning( "mesydaq2mainwindow::startStopSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::sendCellSlot()
+{
+    qWarning( "mesydaq2mainwindow::sendCellSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::sendParamSlot()
+{
+    qWarning( "mesydaq2mainwindow::sendParamSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::sendAuxSlot()
+{
+    qWarning( "mesydaq2mainwindow::sendAuxSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::resetTimerSlot()
+{
+    qWarning( "mesydaq2mainwindow::resetTimerSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::setTimingSlot()
+{
+    qWarning( "mesydaq2mainwindow::setTimingSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::setMcpdIdSlot()
+{
+    qWarning( "mesydaq2mainwindow::setMcpdIdSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::setIpUdpSlot()
+{
+    qWarning( "mesydaq2mainwindow::setIpUdpSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::setPulserSlot()
+{
+    qWarning( "mesydaq2mainwindow::setPulserSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::setGainSlot()
+{
+    qWarning( "mesydaq2mainwindow::setGainSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::setThresholdSlot()
+{
+    qWarning( "mesydaq2mainwindow::setThresholdSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::allPulserSlot()
+{
+    qWarning( "mesydaq2mainwindow::allPulserSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::selectListfileSlot()
+{
+    qWarning( "mesydaq2mainwindow::selectListfileSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::acqListfileSlot()
+{
+    qWarning( "mesydaq2mainwindow::acqListfileSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::setStreamSlot()
+{
+    qWarning( "mesydaq2mainwindow::setStreamSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::clearAllSlot()
+{
+    qWarning( "mesydaq2mainwindow::clearAllSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::clearMcpdSlot()
+{
+    qWarning( "mesydaq2mainwindow::clearMcpdSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::clearMpsdSlot()
+{
+    qWarning( "mesydaq2mainwindow::clearMpsdSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::clearChanSlot()
+{
+    qWarning( "mesydaq2mainwindow::clearChanSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::replayListfileSlot()
+{
+    qWarning( "mesydaq2mainwindow::replayListfileSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::setRunIdSlot()
+{
+    qWarning( "mesydaq2mainwindow::setRunIdSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::displayMcpdSlot()
+{
+    qWarning( "mesydaq2mainwindow::displayMcpdSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::displayMpsdSlot()
+{
+    qWarning( "mesydaq2mainwindow::displayMpsdSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::scanPeriSlot()
+{
+    qWarning( "mesydaq2mainwindow::scanPeriSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::setModeSlot(int)
+{
+    qWarning( "mesydaq2mainwindow::setModeSlot(int): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::saveSetupSlot()
+{
+    qWarning( "mesydaq2mainwindow::saveSetupSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::restoreSetupSlot()
+{
+    qWarning( "mesydaq2mainwindow::restoreSetupSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::saveConfigSlot()
+{
+    qWarning( "mesydaq2mainwindow::saveConfigSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::redrawSlot()
+{
+    qWarning( "mesydaq2mainwindow::redrawSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::applyThreshSlot()
+{
+    qWarning( "mesydaq2mainwindow::applyThreshSlot(): Not implemented yet" );
+}
+
+void mesydaq2mainwindow::linlogSlot()
+{
+    qWarning( "mesydaq2mainwindow::linlogSlot(): Not implemented yet" );
+}
+
+#include "mesydaq2mainwindow.moc"

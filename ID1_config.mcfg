@@ -1,0 +1,29 @@
+mesydaq configuration file   28.04.09 15.53.02
+
+[MESYDAQ]
+configPath =/home/gregor/measfiles
+histogramPath =/home/gregor/measfiles
+listfilePath =/home/gregor/measfiles
+
+[MCPD-8]
+id = 0
+ipAddress = 192.168.168.122
+master = 1
+terminate = 1
+counterCell0 = 7 22
+counterCell1 = 7 22
+counterCell2 = 7 22
+counterCell3 = 7 22
+counterCell4 = 0 0
+counterCell5 = 0 0
+counterCell6 = 0 0
+counterCell7 = 0 0
+auxTimer0 = 0
+auxTimer1 = 0
+auxTimer2 = 0
+auxTimer3 = 0
+paramSource0 = 0
+paramSource1 = 1
+paramSource2 = 2
+paramSource3 = 3
+

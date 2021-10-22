@@ -1,0 +1,77 @@
+/***************************************************************************
+ *   Copyright (C) 2008 by Gregor Montermann   *
+ *   g.montermann@mesytec.com   *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
+
+#include "mesydaq2.h"
+#include <kapplication.h>
+#include <kaboutdata.h>
+#include <kcmdlineargs.h>
+#include <klocale.h>
+#include <corba_generic.h>
+
+static const char description[] =
+    I18N_NOOP("A KDE KPart Application");
+
+static const char version[] = "0.8";
+
+static KCmdLineOptions options[] =
+{
+//    { "+[URL]", I18N_NOOP( "Document to open" ), 0 },
+    KCmdLineLastOption
+};
+
+int main(int argc, char **argv)
+{
+	
+    CORBAInit(&argc,&argv,0);
+
+    KAboutData about("mesydaq2", I18N_NOOP("mesydaq2"), version, description,
+                     KAboutData::License_GPL, "(C) 2009 Gregor Montermann", 0, 0, "g.montermann@mesytec.com");
+    about.addAuthor( "Gregor Montermann", 0, "g.montermann@mesytec.com" );
+    KCmdLineArgs::init(argc, argv, &about);
+    KCmdLineArgs::addCmdLineOptions( options );
+    KApplication app;
+    mesydaq2 *mainWin = 0;
+
+    if (app.isRestored())
+    {
+        RESTORE(mesydaq2);
+    }
+    else
+    {
+        // no session.. just start up normally
+        KCmdLineArgs *args = KCmdLineArgs::parsedArgs();
+
+        /// @todo do something with the command line args here
+        
+        qDebug("argc: %d", argc);
+		qDebug("arg0: %s",argv[0]);
+		qDebug("arg1: %s",argv[1]);
+
+        mainWin = new mesydaq2();
+        app.setMainWidget( mainWin );
+        mainWin->show();
+        args->clear();
+    }
+
+    // mainWin has WDestructiveClose flag by default, so it will delete itself.
+    return app.exec();
+}
+

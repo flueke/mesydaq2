@@ -1,0 +1,242 @@
+/****************************************************************************
+** mainWindow meta object code from reading C++ file 'mainwindow.h'
+**
+** Created: 
+**      by: The Qt MOC ($Id: qt/moc_yacc.cpp   3.3.8   edited Feb 2 14:59 $)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#undef QT_NO_COMPAT
+#include "mainwindow.h"
+#include <qmetaobject.h>
+#include <qapplication.h>
+
+#include <private/qucomextra_p.h>
+#if !defined(Q_MOC_OUTPUT_REVISION) || (Q_MOC_OUTPUT_REVISION != 26)
+#error "This file was generated using the moc from 3.3.8b. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+const char *mainWindow::className() const
+{
+    return "mainWindow";
+}
+
+QMetaObject *mainWindow::metaObj = 0;
+static QMetaObjectCleanUp cleanUp_mainWindow( "mainWindow", &mainWindow::staticMetaObject );
+
+#ifndef QT_NO_TRANSLATION
+QString mainWindow::tr( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "mainWindow", s, c, QApplication::DefaultCodec );
+    else
+	return QString::fromLatin1( s );
+}
+#ifndef QT_NO_TRANSLATION_UTF8
+QString mainWindow::trUtf8( const char *s, const char *c )
+{
+    if ( qApp )
+	return qApp->translate( "mainWindow", s, c, QApplication::UnicodeUTF8 );
+    else
+	return QString::fromUtf8( s );
+}
+#endif // QT_NO_TRANSLATION_UTF8
+
+#endif // QT_NO_TRANSLATION
+
+QMetaObject* mainWindow::staticMetaObject()
+{
+    if ( metaObj )
+	return metaObj;
+    QMetaObject* parentObject = mesydaq2mainwindow::staticMetaObject();
+    static const QUMethod slot_0 = {"sendAuxSlot", 0, 0 };
+    static const QUMethod slot_1 = {"sendParamSlot", 0, 0 };
+    static const QUMethod slot_2 = {"sendCellSlot", 0, 0 };
+    static const QUMethod slot_3 = {"startStopSlot", 0, 0 };
+    static const QUMethod slot_4 = {"setTimingSlot", 0, 0 };
+    static const QUMethod slot_5 = {"resetTimerSlot", 0, 0 };
+    static const QUMethod slot_6 = {"clearChanSlot", 0, 0 };
+    static const QUMethod slot_7 = {"clearMpsdSlot", 0, 0 };
+    static const QUMethod slot_8 = {"clearMcpdSlot", 0, 0 };
+    static const QUMethod slot_9 = {"clearAllSlot", 0, 0 };
+    static const QUMethod slot_10 = {"setStreamSlot", 0, 0 };
+    static const QUMethod slot_11 = {"replayListfileSlot", 0, 0 };
+    static const QUMethod slot_12 = {"setRunIdSlot", 0, 0 };
+    static const QUMethod slot_13 = {"displayMpsdSlot", 0, 0 };
+    static const QUMethod slot_14 = {"displayMcpdSlot", 0, 0 };
+    static const QUParameter param_slot_15[] = {
+	{ 0, &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_15 = {"setModeSlot", 1, param_slot_15 };
+    static const QUMethod slot_16 = {"scanPeriSlot", 0, 0 };
+    static const QUMethod slot_17 = {"restoreSetupSlot", 0, 0 };
+    static const QUMethod slot_18 = {"linlogSlot", 0, 0 };
+    static const QUMethod slot_19 = {"applyThreshSlot", 0, 0 };
+    static const QUMethod slot_20 = {"saveSetupSlot", 0, 0 };
+    static const QUMethod slot_21 = {"redrawSlot", 0, 0 };
+    static const QUMethod slot_22 = {"readRegisterSlot", 0, 0 };
+    static const QUMethod slot_23 = {"writeRegisterSlot", 0, 0 };
+    static const QUMethod slot_24 = {"selectConfigpathSlot", 0, 0 };
+    static const QUMethod slot_25 = {"selectHistpathSlot", 0, 0 };
+    static const QUMethod slot_26 = {"selectListpathSlot", 0, 0 };
+    static const QUMethod slot_27 = {"writeHistSlot", 0, 0 };
+    static const QUParameter param_slot_28[] = {
+	{ "pr", &static_QUType_bool, 0, QUParameter::In }
+    };
+    static const QUMethod slot_28 = {"m2PresetSlot", 1, param_slot_28 };
+    static const QUParameter param_slot_29[] = {
+	{ "pr", &static_QUType_bool, 0, QUParameter::In }
+    };
+    static const QUMethod slot_29 = {"m1PresetSlot", 1, param_slot_29 };
+    static const QUParameter param_slot_30[] = {
+	{ "pr", &static_QUType_bool, 0, QUParameter::In }
+    };
+    static const QUMethod slot_30 = {"tPresetSlot", 1, param_slot_30 };
+    static const QUParameter param_slot_31[] = {
+	{ "pr", &static_QUType_bool, 0, QUParameter::In }
+    };
+    static const QUMethod slot_31 = {"ePresetSlot", 1, param_slot_31 };
+    static const QUMethod slot_32 = {"m2ResetSlot", 0, 0 };
+    static const QUMethod slot_33 = {"m1ResetSlot", 0, 0 };
+    static const QUMethod slot_34 = {"eResetSlot", 0, 0 };
+    static const QUMethod slot_35 = {"tResetSlot", 0, 0 };
+    static const QUMethod slot_36 = {"applyMIpSlot", 0, 0 };
+    static const QUParameter param_slot_37[] = {
+	{ "level", &static_QUType_int, 0, QUParameter::In }
+    };
+    static const QUMethod slot_37 = {"debugLevelSlot", 1, param_slot_37 };
+    static const QUMethod slot_38 = {"mcpdSearchSlot", 0, 0 };
+    static const QUParameter param_slot_39[] = {
+	{ "on", &static_QUType_bool, 0, QUParameter::In }
+    };
+    static const QUMethod slot_39 = {"pulsertestSlot", 1, param_slot_39 };
+    static const QUMethod slot_40 = {"assignCounterSlot", 0, 0 };
+    static const QMetaData slot_tbl[] = {
+	{ "sendAuxSlot()", &slot_0, QMetaData::Public },
+	{ "sendParamSlot()", &slot_1, QMetaData::Public },
+	{ "sendCellSlot()", &slot_2, QMetaData::Public },
+	{ "startStopSlot()", &slot_3, QMetaData::Public },
+	{ "setTimingSlot()", &slot_4, QMetaData::Public },
+	{ "resetTimerSlot()", &slot_5, QMetaData::Public },
+	{ "clearChanSlot()", &slot_6, QMetaData::Public },
+	{ "clearMpsdSlot()", &slot_7, QMetaData::Public },
+	{ "clearMcpdSlot()", &slot_8, QMetaData::Public },
+	{ "clearAllSlot()", &slot_9, QMetaData::Public },
+	{ "setStreamSlot()", &slot_10, QMetaData::Public },
+	{ "replayListfileSlot()", &slot_11, QMetaData::Public },
+	{ "setRunIdSlot()", &slot_12, QMetaData::Public },
+	{ "displayMpsdSlot()", &slot_13, QMetaData::Public },
+	{ "displayMcpdSlot()", &slot_14, QMetaData::Public },
+	{ "setModeSlot(int)", &slot_15, QMetaData::Public },
+	{ "scanPeriSlot()", &slot_16, QMetaData::Public },
+	{ "restoreSetupSlot()", &slot_17, QMetaData::Public },
+	{ "linlogSlot()", &slot_18, QMetaData::Public },
+	{ "applyThreshSlot()", &slot_19, QMetaData::Public },
+	{ "saveSetupSlot()", &slot_20, QMetaData::Public },
+	{ "redrawSlot()", &slot_21, QMetaData::Public },
+	{ "readRegisterSlot()", &slot_22, QMetaData::Public },
+	{ "writeRegisterSlot()", &slot_23, QMetaData::Public },
+	{ "selectConfigpathSlot()", &slot_24, QMetaData::Public },
+	{ "selectHistpathSlot()", &slot_25, QMetaData::Public },
+	{ "selectListpathSlot()", &slot_26, QMetaData::Public },
+	{ "writeHistSlot()", &slot_27, QMetaData::Public },
+	{ "m2PresetSlot(bool)", &slot_28, QMetaData::Public },
+	{ "m1PresetSlot(bool)", &slot_29, QMetaData::Public },
+	{ "tPresetSlot(bool)", &slot_30, QMetaData::Public },
+	{ "ePresetSlot(bool)", &slot_31, QMetaData::Public },
+	{ "m2ResetSlot()", &slot_32, QMetaData::Public },
+	{ "m1ResetSlot()", &slot_33, QMetaData::Public },
+	{ "eResetSlot()", &slot_34, QMetaData::Public },
+	{ "tResetSlot()", &slot_35, QMetaData::Public },
+	{ "applyMIpSlot()", &slot_36, QMetaData::Public },
+	{ "debugLevelSlot(int)", &slot_37, QMetaData::Public },
+	{ "mcpdSearchSlot()", &slot_38, QMetaData::Public },
+	{ "pulsertestSlot(bool)", &slot_39, QMetaData::Public },
+	{ "assignCounterSlot()", &slot_40, QMetaData::Public }
+    };
+    metaObj = QMetaObject::new_metaobject(
+	"mainWindow", parentObject,
+	slot_tbl, 41,
+	0, 0,
+#ifndef QT_NO_PROPERTIES
+	0, 0,
+	0, 0,
+#endif // QT_NO_PROPERTIES
+	0, 0 );
+    cleanUp_mainWindow.setMetaObject( metaObj );
+    return metaObj;
+}
+
+void* mainWindow::qt_cast( const char* clname )
+{
+    if ( !qstrcmp( clname, "mainWindow" ) )
+	return this;
+    return mesydaq2mainwindow::qt_cast( clname );
+}
+
+bool mainWindow::qt_invoke( int _id, QUObject* _o )
+{
+    switch ( _id - staticMetaObject()->slotOffset() ) {
+    case 0: sendAuxSlot(); break;
+    case 1: sendParamSlot(); break;
+    case 2: sendCellSlot(); break;
+    case 3: startStopSlot(); break;
+    case 4: setTimingSlot(); break;
+    case 5: resetTimerSlot(); break;
+    case 6: clearChanSlot(); break;
+    case 7: clearMpsdSlot(); break;
+    case 8: clearMcpdSlot(); break;
+    case 9: clearAllSlot(); break;
+    case 10: setStreamSlot(); break;
+    case 11: replayListfileSlot(); break;
+    case 12: setRunIdSlot(); break;
+    case 13: displayMpsdSlot(); break;
+    case 14: displayMcpdSlot(); break;
+    case 15: setModeSlot((int)static_QUType_int.get(_o+1)); break;
+    case 16: scanPeriSlot(); break;
+    case 17: restoreSetupSlot(); break;
+    case 18: linlogSlot(); break;
+    case 19: applyThreshSlot(); break;
+    case 20: saveSetupSlot(); break;
+    case 21: redrawSlot(); break;
+    case 22: readRegisterSlot(); break;
+    case 23: writeRegisterSlot(); break;
+    case 24: selectConfigpathSlot(); break;
+    case 25: selectHistpathSlot(); break;
+    case 26: selectListpathSlot(); break;
+    case 27: writeHistSlot(); break;
+    case 28: m2PresetSlot((bool)static_QUType_bool.get(_o+1)); break;
+    case 29: m1PresetSlot((bool)static_QUType_bool.get(_o+1)); break;
+    case 30: tPresetSlot((bool)static_QUType_bool.get(_o+1)); break;
+    case 31: ePresetSlot((bool)static_QUType_bool.get(_o+1)); break;
+    case 32: m2ResetSlot(); break;
+    case 33: m1ResetSlot(); break;
+    case 34: eResetSlot(); break;
+    case 35: tResetSlot(); break;
+    case 36: applyMIpSlot(); break;
+    case 37: debugLevelSlot((int)static_QUType_int.get(_o+1)); break;
+    case 38: mcpdSearchSlot(); break;
+    case 39: pulsertestSlot((bool)static_QUType_bool.get(_o+1)); break;
+    case 40: assignCounterSlot(); break;
+    default:
+	return mesydaq2mainwindow::qt_invoke( _id, _o );
+    }
+    return TRUE;
+}
+
+bool mainWindow::qt_emit( int _id, QUObject* _o )
+{
+    return mesydaq2mainwindow::qt_emit(_id,_o);
+}
+#ifndef QT_NO_PROPERTIES
+
+bool mainWindow::qt_property( int id, int f, QVariant* v)
+{
+    return mesydaq2mainwindow::qt_property( id, f, v);
+}
+
+bool mainWindow::qt_static_property( QObject* , int , int , QVariant* ){ return FALSE; }
+#endif // QT_NO_PROPERTIES

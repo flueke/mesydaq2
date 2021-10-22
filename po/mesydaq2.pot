@@ -1,0 +1,1499 @@
+# SOME DESCRIPTIVE TITLE.
+# This file is put in the public domain.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-22 16:22+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: _translatorinfo.cpp:1
+msgid ""
+"_: NAME OF TRANSLATORS\n"
+"Your names"
+msgstr ""
+
+#: _translatorinfo.cpp:3
+msgid ""
+"_: EMAIL OF TRANSLATORS\n"
+"Your emails"
+msgstr ""
+
+#: main.cpp:30
+msgid "A KDE KPart Application"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 28
+#: main.cpp:45 rc.cpp:226
+#, no-c-format
+msgid "mesydaq2"
+msgstr ""
+
+#. i18n: file ./mesydaq2ui.rc line 4
+#: rc.cpp:3
+#, no-c-format
+msgid "C&ustom"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 35
+#: rc.cpp:6
+#, no-c-format
+msgid "mesydaq2widgetbase"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 50
+#: rc.cpp:9
+#, no-c-format
+msgid "Network Buffer"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 79
+#: rc.cpp:12
+#, no-c-format
+msgid "Commands"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 94
+#: rc.cpp:15
+#, no-c-format
+msgid "Command"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 110
+#. i18n: file ./mesydaq2widgetbase.ui line 744
+#. i18n: file ./mesydaq2widgetbase.ui line 1263
+#. i18n: file ./mesydaq2mainwindow.ui line 1512
+#: rc.cpp:18 rc.cpp:112 rc.cpp:175 rc.cpp:483
+#, no-c-format
+msgid "ID"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 197
+#. i18n: file ./mesydaq2widgetbase.ui line 853
+#. i18n: file ./mesydaq2widgetbase.ui line 965
+#. i18n: file ./mesydaq2widgetbase.ui line 1090
+#. i18n: file ./mesydaq2mainwindow.ui line 1723
+#. i18n: file ./mesydaq2mainwindow.ui line 1924
+#. i18n: file ./mesydaq2mainwindow.ui line 2029
+#: rc.cpp:21 rc.cpp:130 rc.cpp:142 rc.cpp:154 rc.cpp:528 rc.cpp:601 rc.cpp:623
+#, no-c-format
+msgid "Send"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 214
+#: rc.cpp:24
+#, no-c-format
+msgid "Comm Data"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 242
+#: rc.cpp:27
+#, no-c-format
+msgid "MCPD-8 Device ID"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 258
+#. i18n: file ./mesydaq2mainwindow.ui line 2216
+#: rc.cpp:30 rc.cpp:680
+#, no-c-format
+msgid "set ID"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 289
+#. i18n: file ./mesydaq2widgetbase.ui line 385
+#. i18n: file ./mesydaq2mainwindow.ui line 2448
+#: rc.cpp:34 rc.cpp:52 rc.cpp:719
+#, no-c-format
+msgid "ip address"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 305
+#: rc.cpp:37
+#, no-c-format
+msgid "<b>Data Sink</b>"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 321
+#. i18n: file ./mesydaq2mainwindow.ui line 2264
+#: rc.cpp:40 rc.cpp:689
+#, no-c-format
+msgid "<b>MCPD-8</b>"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 337
+#: rc.cpp:43
+#, no-c-format
+msgid "<b>UDP ports</b>"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 353
+#: rc.cpp:46
+#, no-c-format
+msgid "data"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 369
+#: rc.cpp:49
+#, no-c-format
+msgid "cmd"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 401
+#. i18n: file ./mesydaq2widgetbase.ui line 417
+#. i18n: file ./mesydaq2widgetbase.ui line 465
+#. i18n: file ./mesydaq2widgetbase.ui line 481
+#. i18n: file ./mesydaq2mainwindow.ui line 2394
+#. i18n: file ./mesydaq2mainwindow.ui line 2413
+#. i18n: file ./mesydaq2mainwindow.ui line 2432
+#. i18n: file ./mesydaq2mainwindow.ui line 2486
+#. i18n: file ./mesydaq2mainwindow.ui line 2543
+#. i18n: file ./mesydaq2mainwindow.ui line 2562
+#: rc.cpp:55 rc.cpp:58 rc.cpp:67 rc.cpp:70 rc.cpp:710 rc.cpp:713 rc.cpp:716
+#: rc.cpp:725 rc.cpp:734 rc.cpp:737
+#, no-c-format
+msgid "168"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 433
+#. i18n: file ./mesydaq2widgetbase.ui line 567
+#. i18n: file ./mesydaq2mainwindow.ui line 2505
+#. i18n: file ./mesydaq2mainwindow.ui line 2524
+#: rc.cpp:61 rc.cpp:79 rc.cpp:728 rc.cpp:731
+#, no-c-format
+msgid "5"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 449
+#. i18n: file ./mesydaq2mainwindow.ui line 2356
+#. i18n: file ./mesydaq2mainwindow.ui line 2375
+#: rc.cpp:64 rc.cpp:704 rc.cpp:707
+#, no-c-format
+msgid "192"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 497
+#. i18n: file ./mesydaq2widgetbase.ui line 616
+#. i18n: file ./mesydaq2widgetbase.ui line 632
+#. i18n: file ./mesydaq2mainwindow.ui line 562
+#. i18n: file ./mesydaq2mainwindow.ui line 985
+#. i18n: file ./mesydaq2mainwindow.ui line 1104
+#. i18n: file ./mesydaq2mainwindow.ui line 1155
+#. i18n: file ./mesydaq2mainwindow.ui line 1174
+#. i18n: file ./mesydaq2mainwindow.ui line 1193
+#. i18n: file ./mesydaq2mainwindow.ui line 1212
+#. i18n: file ./mesydaq2mainwindow.ui line 1231
+#. i18n: file ./mesydaq2mainwindow.ui line 1266
+#. i18n: file ./mesydaq2mainwindow.ui line 1325
+#. i18n: file ./mesydaq2mainwindow.ui line 1344
+#. i18n: file ./mesydaq2mainwindow.ui line 1379
+#. i18n: file ./mesydaq2mainwindow.ui line 2581
+#: rc.cpp:73 rc.cpp:88 rc.cpp:91 rc.cpp:305 rc.cpp:387 rc.cpp:408 rc.cpp:417
+#: rc.cpp:420 rc.cpp:423 rc.cpp:426 rc.cpp:429 rc.cpp:435 rc.cpp:447
+#: rc.cpp:450 rc.cpp:456 rc.cpp:740
+#, no-c-format
+msgid "0"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 551
+#: rc.cpp:76
+#, no-c-format
+msgid "set &comm data"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 585
+#: rc.cpp:82
+#, no-c-format
+msgid "Frames"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 600
+#: rc.cpp:85
+#, no-c-format
+msgid "Received"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 648
+#: rc.cpp:94
+#, no-c-format
+msgid "Sent"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 665
+#: rc.cpp:97
+#, no-c-format
+msgid "Timing"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 680
+#. i18n: file ./mesydaq2mainwindow.ui line 1546
+#: rc.cpp:100 rc.cpp:490
+#, no-c-format
+msgid "Master"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 696
+#. i18n: file ./mesydaq2mainwindow.ui line 1571
+#: rc.cpp:103 rc.cpp:494
+#, no-c-format
+msgid "&terminate"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 712
+#. i18n: file ./mesydaq2mainwindow.ui line 1593
+#: rc.cpp:106 rc.cpp:500
+#, no-c-format
+msgid "&Reset Timer"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 729
+#: rc.cpp:109
+#, no-c-format
+msgid "Run"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 773
+#: rc.cpp:115
+#, no-c-format
+msgid "Set ID"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 790
+#. i18n: file ./mesydaq2mainwindow.ui line 1657
+#: rc.cpp:118 rc.cpp:515
+#, no-c-format
+msgid "Counter/ ADC-Cell"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 805
+#. i18n: file ./mesydaq2mainwindow.ui line 1691
+#: rc.cpp:121 rc.cpp:522
+#, no-c-format
+msgid "Trigger"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 821
+#. i18n: file ./mesydaq2widgetbase.ui line 949
+#. i18n: file ./mesydaq2mainwindow.ui line 1707
+#. i18n: file ./mesydaq2mainwindow.ui line 1908
+#: rc.cpp:124 rc.cpp:139 rc.cpp:525 rc.cpp:598
+#, no-c-format
+msgid "Compare"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 837
+#. i18n: file ./mesydaq2mainwindow.ui line 1675
+#: rc.cpp:127 rc.cpp:519
+#, no-c-format
+msgid "Cell"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 918
+#. i18n: file ./mesydaq2mainwindow.ui line 1874
+#: rc.cpp:133 rc.cpp:591
+#, no-c-format
+msgid "Aux Timer"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 933
+#. i18n: file ./mesydaq2mainwindow.ui line 1892
+#: rc.cpp:136 rc.cpp:595
+#, no-c-format
+msgid "Timer"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1011
+#. i18n: file ./mesydaq2mainwindow.ui line 1979
+#: rc.cpp:145 rc.cpp:613
+#, no-c-format
+msgid "Parameter Source"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1026
+#. i18n: file ./mesydaq2mainwindow.ui line 1997
+#: rc.cpp:148 rc.cpp:617
+#, no-c-format
+msgid "Source"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1042
+#. i18n: file ./mesydaq2mainwindow.ui line 2013
+#: rc.cpp:151 rc.cpp:620
+#, no-c-format
+msgid "Param."
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1107
+#: rc.cpp:157
+#, no-c-format
+msgid "Peripherals"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1122
+#. i18n: file ./mesydaq2widgetbase.ui line 1308
+#: rc.cpp:160 rc.cpp:181
+#, no-c-format
+msgid "Mod"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1138
+#. i18n: file ./mesydaq2widgetbase.ui line 1324
+#. i18n: file ./mesydaq2mainwindow.ui line 3192
+#: rc.cpp:163 rc.cpp:184 rc.cpp:844
+#, no-c-format
+msgid "Chan"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1154
+#. i18n: file ./mesydaq2mainwindow.ui line 3160
+#: rc.cpp:166 rc.cpp:838
+#, no-c-format
+msgid "Threshold"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1170
+#. i18n: file ./mesydaq2mainwindow.ui line 3259
+#: rc.cpp:169 rc.cpp:856
+#, no-c-format
+msgid "set gain"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1186
+#: rc.cpp:172
+#, no-c-format
+msgid "set threshold"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1279
+#. i18n: file ./mesydaq2mainwindow.ui line 3144
+#: rc.cpp:178 rc.cpp:835
+#, no-c-format
+msgid "Gain"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1340
+#. i18n: file ./mesydaq2mainwindow.ui line 512
+#: rc.cpp:187 rc.cpp:295
+#, no-c-format
+msgid "Pos"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1356
+#: rc.cpp:190
+#, no-c-format
+msgid "Pu&lser"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1372
+#. i18n: file ./mesydaq2mainwindow.ui line 493
+#: rc.cpp:193 rc.cpp:291
+#, no-c-format
+msgid "Ampl"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1388
+#: rc.cpp:196
+#, no-c-format
+msgid "set pulser"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1469
+#: rc.cpp:199
+#, no-c-format
+msgid "File Actions"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1484
+#: rc.cpp:202
+#, no-c-format
+msgid "&Write Histogram"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1487
+#: rc.cpp:205
+#, no-c-format
+msgid "Alt+W"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1503
+#: rc.cpp:208
+#, no-c-format
+msgid "Load Histogram"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1519
+#: rc.cpp:211
+#, no-c-format
+msgid "Repla&yListfile"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1522
+#. i18n: file ./mesydaq2mainwindow.ui line 4114
+#: rc.cpp:214 rc.cpp:1002
+#, no-c-format
+msgid "Alt+Y"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1538
+#. i18n: file ./mesydaq2mainwindow.ui line 4092
+#: rc.cpp:217 rc.cpp:993
+#, no-c-format
+msgid "ac&quire listfile:"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1541
+#. i18n: file ./mesydaq2mainwindow.ui line 691
+#. i18n: file ./mesydaq2mainwindow.ui line 4095
+#: rc.cpp:220 rc.cpp:333 rc.cpp:996
+#, no-c-format
+msgid "Alt+Q"
+msgstr ""
+
+#. i18n: file ./mesydaq2widgetbase.ui line 1570
+#. i18n: file ./mesydaq2mainwindow.ui line 4028
+#. i18n: file ./mesydaq2mainwindow.ui line 4044
+#. i18n: file ./mesydaq2mainwindow.ui line 4060
+#. i18n: file ./mesydaq2mainwindow.ui line 4143
+#: rc.cpp:223 rc.cpp:981 rc.cpp:984 rc.cpp:987 rc.cpp:1005
+#, no-c-format
+msgid "select"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 31
+#: rc.cpp:229
+#, no-c-format
+msgid "Form"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 101
+#: rc.cpp:232
+#, no-c-format
+msgid "Sigma:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 117
+#: rc.cpp:235
+#, no-c-format
+msgid "Sliding Mean:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 133
+#. i18n: file ./mesydaq2mainwindow.ui line 149
+#: rc.cpp:238 rc.cpp:241
+#, no-c-format
+msgid "0.0"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 170
+#: rc.cpp:244
+#, no-c-format
+msgid "Display"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 203
+#: rc.cpp:248
+#, no-c-format
+msgid "&lin"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 222
+#: rc.cpp:251
+#, no-c-format
+msgid "log"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 242
+#: rc.cpp:254
+#, no-c-format
+msgid "delta-t"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 258
+#: rc.cpp:257
+#, no-c-format
+msgid "Sum spectra"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 300
+#: rc.cpp:261
+#, no-c-format
+msgid ""
+"0-7: position\n"
+"8-15: energy"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 316
+#. i18n: file ./mesydaq2mainwindow.ui line 354
+#. i18n: file ./mesydaq2mainwindow.ui line 440
+#: rc.cpp:265 rc.cpp:269 rc.cpp:282
+#, no-c-format
+msgid "clear"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 373
+#. i18n: file ./mesydaq2mainwindow.ui line 3418
+#: rc.cpp:273 rc.cpp:880
+#, no-c-format
+msgid "Channel"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 408
+#: rc.cpp:276
+#, no-c-format
+msgid "MCPD"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 424
+#: rc.cpp:279
+#, no-c-format
+msgid "MPSD"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 459
+#: rc.cpp:286
+#, no-c-format
+msgid "clear all"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 528
+#. i18n: file ./mesydaq2mainwindow.ui line 543
+#: rc.cpp:299 rc.cpp:302
+#, no-c-format
+msgid "Thresholds"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 578
+#: rc.cpp:308
+#, no-c-format
+msgid "low"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 594
+#: rc.cpp:311
+#, no-c-format
+msgid "hi"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 613
+#: rc.cpp:314
+#, no-c-format
+msgid "1000000000"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 629
+#: rc.cpp:317
+#, no-c-format
+msgid "apply"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 647
+#: rc.cpp:320
+#, no-c-format
+msgid "DAQ"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 665
+#: rc.cpp:323
+#, no-c-format
+msgid "idle"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 671
+#: rc.cpp:326
+#, no-c-format
+msgid "current DAQ status display"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 688
+#: rc.cpp:329
+#, no-c-format
+msgid ""
+"ac&quire\n"
+"Listfile"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 707
+#: rc.cpp:336
+#, no-c-format
+msgid "S&tart"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 710
+#. i18n: file ./mesydaq2mainwindow.ui line 1574
+#: rc.cpp:339 rc.cpp:497
+#, no-c-format
+msgid "Alt+T"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 716
+#: rc.cpp:342
+#, no-c-format
+msgid "start / stop data acquisition"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 732
+#: rc.cpp:345
+#, no-c-format
+msgid "All pulsers off"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 755
+#: rc.cpp:348
+#, no-c-format
+msgid "<p align=\"center\">Pulser!</p>"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 776
+#: rc.cpp:351
+#, no-c-format
+msgid "S&tatus"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 791
+#: rc.cpp:354
+#, no-c-format
+msgid "mesydaq 2.1.0   16.10.2008"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 807
+#: rc.cpp:357
+#, no-c-format
+msgid "Parameters"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 822
+#: rc.cpp:360
+#, no-c-format
+msgid "MCPD-ID:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 838
+#: rc.cpp:363
+#, no-c-format
+msgid "P0:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 854
+#: rc.cpp:366
+#, no-c-format
+msgid "P1:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 870
+#: rc.cpp:369
+#, no-c-format
+msgid "P2:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 886
+#: rc.cpp:372
+#, no-c-format
+msgid "P3:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 902
+#. i18n: file ./mesydaq2mainwindow.ui line 918
+#. i18n: file ./mesydaq2mainwindow.ui line 934
+#. i18n: file ./mesydaq2mainwindow.ui line 969
+#. i18n: file ./mesydaq2mainwindow.ui line 1454
+#. i18n: file ./mesydaq2mainwindow.ui line 1470
+#. i18n: file ./mesydaq2mainwindow.ui line 1486
+#: rc.cpp:375 rc.cpp:378 rc.cpp:381 rc.cpp:384 rc.cpp:471 rc.cpp:474
+#: rc.cpp:477
+#, no-c-format
+msgid "<p align=\"right\">0</p>"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1004
+#: rc.cpp:390
+#, no-c-format
+msgid "header time:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1025
+#: rc.cpp:393
+#, no-c-format
+msgid "meas. data"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1040
+#: rc.cpp:396
+#, no-c-format
+msgid "Event counter"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1056
+#: rc.cpp:399
+#, no-c-format
+msgid "Event rate"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1072
+#: rc.cpp:402
+#, no-c-format
+msgid "Monitor 1"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1088
+#: rc.cpp:405
+#, no-c-format
+msgid "Monitor 1 rate"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1123
+#: rc.cpp:411
+#, no-c-format
+msgid "Monitor 2"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1139
+#: rc.cpp:414
+#, no-c-format
+msgid "Monitor 2 rate"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1250
+#: rc.cpp:432
+#, no-c-format
+msgid "Timer:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1278
+#: rc.cpp:438
+#, no-c-format
+msgid "statistics"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1293
+#: rc.cpp:441
+#, no-c-format
+msgid "cmd buffers reveived:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1309
+#: rc.cpp:444
+#, no-c-format
+msgid "cmd buffers transmitted:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1363
+#: rc.cpp:453
+#, no-c-format
+msgid "data buffers received:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1391
+#: rc.cpp:459
+#, no-c-format
+msgid "Caress"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1406
+#: rc.cpp:462
+#, no-c-format
+msgid "height:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1422
+#: rc.cpp:465
+#, no-c-format
+msgid "width:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1438
+#: rc.cpp:468
+#, no-c-format
+msgid "run#"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1497
+#: rc.cpp:480
+#, no-c-format
+msgid "MCPD-&8"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1528
+#: rc.cpp:486
+#, no-c-format
+msgid "Master / Termination"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1596
+#: rc.cpp:503
+#, no-c-format
+msgid "Alt+R"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1599
+#: rc.cpp:506
+#, no-c-format
+msgid "reset master clock"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1622
+#: rc.cpp:509
+#, no-c-format
+msgid "MCPD-ID to address "
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1642
+#. i18n: file ./mesydaq2mainwindow.ui line 3097
+#: rc.cpp:512 rc.cpp:825
+#, no-c-format
+msgid "Settings"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1726
+#: rc.cpp:531
+#, no-c-format
+msgid "send cell data"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1732
+#. i18n: file ./mesydaq2mainwindow.ui line 2038
+#: rc.cpp:534 rc.cpp:629
+#, no-c-format
+msgid "mon/chop1"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1737
+#. i18n: file ./mesydaq2mainwindow.ui line 2043
+#: rc.cpp:537 rc.cpp:632
+#, no-c-format
+msgid "mon/chop2"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1742
+#. i18n: file ./mesydaq2mainwindow.ui line 2048
+#: rc.cpp:540 rc.cpp:635
+#, no-c-format
+msgid "mon/chop3"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1747
+#. i18n: file ./mesydaq2mainwindow.ui line 2053
+#: rc.cpp:543 rc.cpp:638
+#, no-c-format
+msgid "mon/chop4"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1752
+#. i18n: file ./mesydaq2mainwindow.ui line 1813
+#. i18n: file ./mesydaq2mainwindow.ui line 2058
+#: rc.cpp:546 rc.cpp:576 rc.cpp:641
+#, no-c-format
+msgid "digInput1"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1757
+#. i18n: file ./mesydaq2mainwindow.ui line 1818
+#. i18n: file ./mesydaq2mainwindow.ui line 2063
+#: rc.cpp:549 rc.cpp:579 rc.cpp:644
+#, no-c-format
+msgid "digInput2"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1762
+#: rc.cpp:552
+#, no-c-format
+msgid "ADC1"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1767
+#: rc.cpp:555
+#, no-c-format
+msgid "ADC2"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1782
+#: rc.cpp:558
+#, no-c-format
+msgid "Select counter / ADC cell"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1788
+#: rc.cpp:561
+#, no-c-format
+msgid "no Trig"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1793
+#: rc.cpp:564
+#, no-c-format
+msgid "auxTimer1"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1798
+#: rc.cpp:567
+#, no-c-format
+msgid "auxTimer2"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1803
+#: rc.cpp:570
+#, no-c-format
+msgid "auxTimer3"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1808
+#: rc.cpp:573
+#, no-c-format
+msgid "auxTimer4"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1823
+#: rc.cpp:582
+#, no-c-format
+msgid "compareReg"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1838
+#: rc.cpp:585
+#, no-c-format
+msgid "Select trigger for cell"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1857
+#: rc.cpp:588
+#, no-c-format
+msgid "Define compare source for cell"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1927
+#: rc.cpp:604
+#, no-c-format
+msgid "send timer setting"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1946
+#: rc.cpp:607
+#, no-c-format
+msgid "select timer number"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 1962
+#: rc.cpp:610
+#, no-c-format
+msgid "define compare value"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2032
+#: rc.cpp:626
+#, no-c-format
+msgid "send parameter settings for selected parameter"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2068
+#: rc.cpp:647
+#, no-c-format
+msgid "ADC1,2, DigIn1,2"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2073
+#: rc.cpp:650
+#, no-c-format
+msgid "event counter"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2078
+#: rc.cpp:653
+#, no-c-format
+msgid "master clock"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2093
+#: rc.cpp:656
+#, no-c-format
+msgid "select parameter source"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2112
+#: rc.cpp:659
+#, no-c-format
+msgid "select parameter number"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2129
+#: rc.cpp:662
+#, no-c-format
+msgid "Status Stream"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2144
+#: rc.cpp:665
+#, no-c-format
+msgid "stream"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2147
+#: rc.cpp:668
+#, no-c-format
+msgid "send status stream when daq is stopped"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2163
+#: rc.cpp:671
+#, no-c-format
+msgid "send"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2173
+#: rc.cpp:674
+#, no-c-format
+msgid "Communication / Networ&k"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2188
+#. i18n: file ./mesydaq2mainwindow.ui line 2720
+#. i18n: file ./mesydaq2mainwindow.ui line 3330
+#: rc.cpp:677 rc.cpp:759 rc.cpp:865
+#, no-c-format
+msgid "MCPD-8 ID"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2233
+#: rc.cpp:683
+#, no-c-format
+msgid "IP / UDP settings"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2248
+#: rc.cpp:686
+#, no-c-format
+msgid "<b>Data pc</b>"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2280
+#: rc.cpp:692
+#, no-c-format
+msgid "<b>Cmd pc</b>"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2296
+#. i18n: file ./mesydaq2mainwindow.ui line 2315
+#: rc.cpp:695 rc.cpp:698
+#, no-c-format
+msgid "this pc"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2334
+#: rc.cpp:701
+#, no-c-format
+msgid "modify"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2467
+#: rc.cpp:722
+#, no-c-format
+msgid "121"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2597
+#: rc.cpp:743
+#, no-c-format
+msgid "udp port"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2652
+#: rc.cpp:746
+#, no-c-format
+msgid ""
+"set &comm\n"
+"parameters"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2655
+#: rc.cpp:750
+#, no-c-format
+msgid "Alt+C"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2667
+#: rc.cpp:753
+#, no-c-format
+msgid "MPSD-8"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2686
+#: rc.cpp:756
+#, no-c-format
+msgid "Status"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2736
+#: rc.cpp:762
+#, no-c-format
+msgid "MPSD-8 status"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2751
+#: rc.cpp:765
+#, no-c-format
+msgid "0:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2767
+#: rc.cpp:768
+#, no-c-format
+msgid "1:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2783
+#: rc.cpp:771
+#, no-c-format
+msgid "2:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2799
+#: rc.cpp:774
+#, no-c-format
+msgid "3:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2815
+#: rc.cpp:777
+#, no-c-format
+msgid "4:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2831
+#: rc.cpp:780
+#, no-c-format
+msgid "5:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2847
+#: rc.cpp:783
+#, no-c-format
+msgid "6:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2863
+#: rc.cpp:786
+#, no-c-format
+msgid "7:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2879
+#. i18n: file ./mesydaq2mainwindow.ui line 2895
+#. i18n: file ./mesydaq2mainwindow.ui line 2911
+#. i18n: file ./mesydaq2mainwindow.ui line 2927
+#. i18n: file ./mesydaq2mainwindow.ui line 2943
+#. i18n: file ./mesydaq2mainwindow.ui line 2959
+#. i18n: file ./mesydaq2mainwindow.ui line 2975
+#. i18n: file ./mesydaq2mainwindow.ui line 3007
+#: rc.cpp:789 rc.cpp:792 rc.cpp:795 rc.cpp:798 rc.cpp:801 rc.cpp:804
+#: rc.cpp:807 rc.cpp:813
+#, no-c-format
+msgid "active"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 2991
+#: rc.cpp:810
+#, no-c-format
+msgid "rescan"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3027
+#: rc.cpp:816
+#, no-c-format
+msgid "Register op"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3042
+#: rc.cpp:819
+#, no-c-format
+msgid "Read"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3087
+#. i18n: file ./mesydaq2mainwindow.ui line 4210
+#: rc.cpp:822 rc.cpp:1017
+#, no-c-format
+msgid "Write"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3113
+#: rc.cpp:828
+#, no-c-format
+msgid ""
+"MPSD-8\n"
+"(Bus-#)"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3129
+#: rc.cpp:832
+#, no-c-format
+msgid "Amplifiers, Discriminator"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3176
+#: rc.cpp:841
+#, no-c-format
+msgid "set &threshold"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3208
+#: rc.cpp:847
+#, no-c-format
+msgid "1"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3227
+#: rc.cpp:850
+#, no-c-format
+msgid "Gain (0.5-1.88)"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3243
+#: rc.cpp:853
+#, no-c-format
+msgid "20"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3275
+#: rc.cpp:859
+#, no-c-format
+msgid "Threshold [%]"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3291
+#: rc.cpp:862
+#, no-c-format
+msgid "common"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3346
+#: rc.cpp:868
+#, no-c-format
+msgid "Mode"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3361
+#. i18n: file ./mesydaq2mainwindow.ui line 3434
+#: rc.cpp:871 rc.cpp:883
+#, no-c-format
+msgid "Position"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3383
+#: rc.cpp:874
+#, no-c-format
+msgid "Amplitude"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3403
+#. i18n: file ./mesydaq2mainwindow.ui line 3630
+#: rc.cpp:877 rc.cpp:915
+#, no-c-format
+msgid "Pulser"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3449
+#: rc.cpp:886
+#, no-c-format
+msgid "left"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3465
+#: rc.cpp:889
+#, no-c-format
+msgid "mid"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3487
+#: rc.cpp:892
+#, no-c-format
+msgid "right"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3507
+#: rc.cpp:895
+#, no-c-format
+msgid "Amplitude [%]"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3525
+#: rc.cpp:898
+#, no-c-format
+msgid "90"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3531
+#: rc.cpp:901
+#, no-c-format
+msgid "alternative pulser amplitude"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3588
+#: rc.cpp:906
+#, no-c-format
+msgid "50"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3594
+#: rc.cpp:909
+#, no-c-format
+msgid "main pulser amplitude"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3614
+#: rc.cpp:912
+#, no-c-format
+msgid "pulser channel"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3636
+#: rc.cpp:918
+#, no-c-format
+msgid "toggle pulser on/off"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3683
+#: rc.cpp:921
+#, no-c-format
+msgid "General"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3698
+#: rc.cpp:924
+#, no-c-format
+msgid "Run ID"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3719
+#: rc.cpp:927
+#, no-c-format
+msgid "RUN ID will be transmitted in every data buffer header"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3735
+#: rc.cpp:930
+#, no-c-format
+msgid "Auto Incr."
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3744
+#: rc.cpp:934
+#, no-c-format
+msgid "increment run ID automatically at every start cmd"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3763
+#: rc.cpp:937
+#, no-c-format
+msgid "set Run ID"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3780
+#: rc.cpp:940
+#, no-c-format
+msgid "Timing Delta Histogram"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3815
+#: rc.cpp:943
+#, no-c-format
+msgid ""
+"Binwidth [bits]\n"
+"1 bit = 100 ns"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3825
+#: rc.cpp:947
+#, no-c-format
+msgid "Fi&les"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3840
+#: rc.cpp:950
+#, no-c-format
+msgid "Setup"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3855
+#: rc.cpp:953
+#, no-c-format
+msgid "sa&ve"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3858
+#: rc.cpp:956
+#, no-c-format
+msgid "Alt+V"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3874
+#: rc.cpp:959
+#, no-c-format
+msgid "restore"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3893
+#. i18n: file ./mesydaq2mainwindow.ui line 4175
+#: rc.cpp:963 rc.cpp:1011
+#, no-c-format
+msgid "Currently loaded:"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3909
+#: rc.cpp:966
+#, no-c-format
+msgid "Default setup"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3926
+#: rc.cpp:969
+#, no-c-format
+msgid "Default paths"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3941
+#: rc.cpp:972
+#, no-c-format
+msgid "Config files"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3957
+#. i18n: file ./mesydaq2mainwindow.ui line 4160
+#: rc.cpp:975 rc.cpp:1008
+#, no-c-format
+msgid "Histograms"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 3973
+#: rc.cpp:978
+#, no-c-format
+msgid "Listmode files"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 4077
+#: rc.cpp:990
+#, no-c-format
+msgid "Listmode data acquisition"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 4111
+#: rc.cpp:999
+#, no-c-format
+msgid "Repla&y Listfile"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 4191
+#: rc.cpp:1014
+#, no-c-format
+msgid "-"
+msgstr ""
+
+#. i18n: file ./mesydaq2mainwindow.ui line 4232
+#: rc.cpp:1021
+#, no-c-format
+msgid "Load"
+msgstr ""

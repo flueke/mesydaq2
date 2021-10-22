@@ -1,0 +1,104 @@
+mesydaq configuration file   24.04.09 15.53.02
+
+[MESYDAQ]
+configPath =/home/gregor/measfiles
+histogramPath =/home/gregor/measfiles
+listfilePath =/home/gregor/measfiles
+
+// Possible debug levels: All, Details, Standard, Error
+debugLevel = All
+
+// Kommentarzeile
+
+[MCPD-8]
+id = 0
+ipAddress = 192.168.168.121
+master = 1
+terminate = 1
+counterCell0 = 7 22
+counterCell1 = 7 22
+counterCell2 = 7 22
+counterCell3 = 7 22
+counterCell4 = 0 0
+counterCell5 = 0 0
+counterCell6 = 0 0
+counterCell7 = 0 0
+auxTimer0 = 0
+auxTimer1 = 0
+auxTimer2 = 0
+auxTimer3 = 0
+paramSource0 = 0
+paramSource1 = 1
+paramSource2 = 2
+paramSource3 = 3
+
+[MCPD-8]
+id = 1
+ipAddress = 192.168.168.122
+master = 0
+terminate = 1
+counterCell0 = 7 22
+counterCell1 = 7 22
+counterCell2 = 7 22
+counterCell3 = 7 22
+counterCell4 = 0 0
+counterCell5 = 0 0
+counterCell6 = 0 0
+counterCell7 = 0 0
+auxTimer0 = 0
+auxTimer1 = 0
+auxTimer2 = 0
+auxTimer3 = 0
+paramSource0 = 0
+paramSource1 = 1
+paramSource2 = 2
+paramSource3 = 3
+
+[MPSD-8]
+id = 0
+gain0 = 92
+gain1 = 92	
+gain2 = 92
+gain3 = 92
+gain4 = 92
+gain5 = 92
+gain6 = 92
+gain7 = 92
+threshold = 22
+
+[MPSD-8]
+id = 1
+gain0 = 92
+gain1 = 92
+gain2 = 92
+gain3 = 92
+gain4 = 92
+gain5 = 92
+gain6 = 92
+gain7 = 92
+threshold = 22
+
+[MPSD-8]
+id = 2
+gain0 = 92
+gain1 = 92
+gain2 = 92
+gain3 = 92
+gain4 = 92
+gain5 = 92
+gain6 = 92
+gain7 = 92
+threshold = 22
+
+[MPSD-8]
+id = 3
+gain0 = 92
+gain1 = 92
+gain2 = 92
+gain3 = 92
+gain4 = 92
+gain5 = 92
+gain6 = 92
+gain7 = 92
+threshold = 22
+
