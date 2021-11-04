@@ -47,41 +47,41 @@ bool histogram::incVal(unsigned char chan, unsigned short linear, unsigned short
 	chanCounts[chan+8]++;
 	posHist[CHANNELS-2][linear]++;
 	posHist[CHANNELS-1][energy]++;
-	
+
 	if(posHist[chan][linear] > maximum[chan][0]){
 		maximum[chan][0] = posHist[chan][linear];
 		maximum[chan][1] = linear;
-	}		
+	}
 	if(posHist[chan+8][energy] > maximum[chan+8][0]){
 		maximum[chan+8][0] = posHist[chan+8][energy];
 		maximum[chan+8][1] = energy;
-	}		
+	}
 	if(posHist[CHANNELS-2][linear] > maximum[CHANNELS-2][0]){
 		maximum[CHANNELS-2][0] = posHist[CHANNELS-2][linear];
 		maximum[CHANNELS-2][1] = linear;
-	}		
+	}
 	if(posHist[CHANNELS-1][energy] > maximum[CHANNELS-1][0]){
 		maximum[CHANNELS-1][0] = posHist[CHANNELS-1][energy];
 		maximum[CHANNELS-1][1] = energy;
-	}		
-	
+	}
+
 	// remember values for mean calculation
 	floatingMean[chan][meanPos[chan]] = linear;
 	floatingMean[chan+8][meanPos[chan+8]] = energy;
 	floatingMean[CHANNELS+1][meanPos[CHANNELS+1]] = linear;
 	floatingMean[CHANNELS+2][meanPos[CHANNELS+2]] = energy;
-	
+
 	meanPos[chan]++;
 	meanPos[chan+8]++;
 	if(meanCount[chan]<255)
 		meanCount[chan]++;
 	if(meanCount[chan+8]<255)
 		meanCount[chan+8]++;
-	
+
 	meanPos[CHANNELS+1]++;
 	if(meanCount[CHANNELS+1]<255)
 		meanCount[CHANNELS+1]++;
-	
+
 	meanPos[CHANNELS+2]++;
 	if(meanCount[CHANNELS+2]<255)
 		meanCount[CHANNELS+2]++;
@@ -90,7 +90,7 @@ bool histogram::incVal(unsigned char chan, unsigned short linear, unsigned short
 	// do data reduction:
 	for(unsigned char c=0; c < twidth; c++)
 		time /= 2;
-	
+
 	// already a previous value?
 	if(lastTime){
 		// calculate timing difference
@@ -100,12 +100,12 @@ bool histogram::incVal(unsigned char chan, unsigned short linear, unsigned short
 //		if(deltat > 50 && deltat < 150){
 //			deltat*= 10;
 			if(deltat > 959)
-				deltat = 959; 
+				deltat = 959;
 			posHist[CHANNELS][(unsigned short)deltat]++;
 			if(posHist[CHANNELS][deltat] > maximum[CHANNELS][0]){
 				maximum[CHANNELS][0] = posHist[CHANNELS][deltat];
 				maximum[CHANNELS][1] = deltat;
-			}			
+			}
 			floatingMean[CHANNELS][meanPos[CHANNELS]] = deltat;
 			meanPos[CHANNELS]++;
 			if(meanCount[CHANNELS]<255)
@@ -114,7 +114,7 @@ bool histogram::incVal(unsigned char chan, unsigned short linear, unsigned short
 //	}
 	else
 		lastTime = time;
-		
+
 	return true;
 }
 
@@ -137,7 +137,7 @@ void histogram::clearHist(unsigned int channel)
 	}
 	totalCounts -= chanCounts[channel];
 	chanCounts[CHANNELS-1] -= chanCounts[channel];
-	
+
 	chanCounts[channel] = 0;
 	maximum[channel][0] = 0;
 	maximum[channel][1] = 0;
@@ -157,7 +157,7 @@ void histogram::clearAllHist(void)
 		}
 		chanCounts[i] = 0;
 		maximum[i][0] = 0;
-		maximum[i][1] = 0;	
+		maximum[i][1] = 0;
 		meanCount[i] = 0;
 		meanPos[i] = 0;
 	}
@@ -221,22 +221,22 @@ void histogram::getMean(unsigned short chan, float* vals)
 	float m = 0;
 	float s = 0;
 	unsigned char c;
-	
+
 	// calculate mean for given channel:
 	if(meanCount[chan] > 0){
 		for(c=0;c<meanCount[chan];c++)
 			m += floatingMean[chan][c];
 		m = m / meanCount[chan];
-		
+
 		// calculate sigma
 		for(c = 0; c < meanCount[chan]; c++)
-			s += pow((float)floatingMean[chan][c] - m, 2); 
+			s += pow((float)floatingMean[chan][c] - m, 2);
 		s = sqrt(s / meanCount[chan]);
-		s = 2.3 * s;	
+		s = 2.3 * s;
 	}
 	vals[0] = m;
 	vals[1] = s;
-//	qDebug("chan: %d, mean: %f +/- %f", chan, m, s);	
+//	qDebug("chan: %d, mean: %f +/- %f", chan, m, s);
 	return;
 }
 
@@ -246,7 +246,7 @@ void histogram::getMean(unsigned short chan, float* vals)
  */
 void histogram::setWidth(unsigned char width)
 {
-    twidth = width; 
+    twidth = width;
 }
 
 
@@ -265,7 +265,7 @@ void histogram::setId(unsigned char mcpdId)
 bool histogram::writeHistogram(QFile* f)
 {
   unsigned int i, j, k;
-  
+
 	QTextStream t( f );        // use a text stream
 	QString s;
 	// Title
@@ -286,7 +286,7 @@ bool histogram::writeHistogram(QFile* f)
       }
       t << '\r' << '\n';
     }
-    
+
     t << '\r' << '\n';
     t << "amplitude/energy data: 1 row title (8 x 8 detectors), amplitude data in columns";
     t << '\r' << '\n';

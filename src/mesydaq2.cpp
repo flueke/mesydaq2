@@ -104,10 +104,10 @@ void mesydaq2::initNetwork(void)
 	// check for usable interfaces
 	findInterfaces();
 	qDebug("found %d usable interfaces", numIf);
-	for(unsigned char c =0; c < numIf; c++){ 
+	for(unsigned char c =0; c < numIf; c++){
 		netDev[c] = new networkDevice(this);
 		netDev[c]->initSockets(&ifrs[c], c);
-	}	
+	}
 	cmdBuf = netDev[0]->getSbufpointer();
 	recBuf = netDev[0]->getRbufpointer();
 	pDataBuf = (PDATA_PACKET) recBuf;
@@ -127,35 +127,35 @@ int mesydaq2::setSocket(unsigned char netDevice)
     \fn mesydaq2::sendCommand(unsigned int cmd)
  */
 // is the central command interface for mesydaq
-// analyzes the command buffers, takes appropriate action 
+// analyzes the command buffers, takes appropriate action
 int mesydaq2::sendCommand(unsigned short * buffer)
 {
 	unsigned short cmd, buflen, id;
-	
+
 	// general buffer preparations:
 	id = buffer[0];
 	// get appropriate network device:
-	
+
 	cmd = buffer[1];
 	cmdBuf->bufferType = BUFTYPE;
 	cmdBuf->headerLength = CMDHEADLEN;
 	cmdBuf->cmd = cmd;
 	cmdBuf->bufferNumber = txCmdBufNum;
 	cmdBuf->deviceId = id;
-	
+
 //	qDebug("processing cmd: %d, id: %d", cmd, id);
-	
+
 	// don't send commands to offline MCPDs if it is not GETVER, STOP!
 	if((!myMcpd[id]->isOnline()) && cmd != GETVER && cmd != STOP)
 		return -1;
-	
+
 	// now do some command specific things:
 	switch(cmd){
-		
+
 		case RESET:
 			buflen = 2;
 		break;
-		
+
 		case START:
 			buflen = 2;
 			// start master
@@ -167,23 +167,23 @@ int mesydaq2::sendCommand(unsigned short * buffer)
 				}
 			}
 		break;
-		
+
 		case STOP:
 			buflen = 2;
 			if(buffer[2] == 1)
 				stopDaq();
 		break;
-		
+
 		case CONTINUE:
 			buflen = 2;
 		break;
-		
+
 		case SETID:
-			buflen = 3; 
+			buflen = 3;
 			cmdBuf->data[0] = buffer[2];
-			myMcpd[id]->setId((unsigned char)id);	
+			myMcpd[id]->setId((unsigned char)id);
 		break;
-		
+
 		case SETPROTOCOL:
 			buflen = 16;
 			for(int i=0; i<14; i++)
@@ -194,31 +194,31 @@ int mesydaq2::sendCommand(unsigned short * buffer)
 			}
 			// set cmd ip addr to this pc?
 			if(cmdBuf->data[12] == 0 && cmdBuf->data[13] == 0){
-				;	
+				;
 			}
 			// set cmd address
-			myMcpd[id]->setProtocol(&cmdBuf->data[0]);	
+			myMcpd[id]->setProtocol(&cmdBuf->data[0]);
 		break;
-		
+
 		case SETTIMING:
 			buflen = 4;
 			cmdBuf->data[0] = buffer[2];
 			cmdBuf->data[1] = buffer[3];
 		break;
-		
+
 		case SETCLOCK:
 			buflen = 5;
 			cmdBuf->data[0] = buffer[2];
 			cmdBuf->data[1] = buffer[3];
 			cmdBuf->data[2] = buffer[4];
 		break;
-	
+
 		case SETRUNID:
 			// run id in buffer 3
 			buflen = 3;
 			cmdBuf->data[0] = buffer[2];
 		break;
-		
+
 		case SETCELL:
 			buflen = 5;
 			cmdBuf->data[0] = buffer[2];
@@ -226,37 +226,37 @@ int mesydaq2::sendCommand(unsigned short * buffer)
 			cmdBuf->data[2] = buffer[4];
 			myMcpd[id]->setCounterCell(&cmdBuf->data[0]);
 		break;
-		
+
 		case SETAUXTIMER:
 			buflen = 4;
 			cmdBuf->data[0] = buffer[2];
 			cmdBuf->data[1] = buffer[3];
 			myMcpd[id]->setAuxTimer(buffer[2], buffer[3]);
 			break;
-		
+
 		case SETPARAM:
 			buflen = 4;
 			cmdBuf->data[0] = buffer[2];
 			cmdBuf->data[1] = buffer[3];
 			myMcpd[id]->setParamSource(buffer[2], buffer[3]);
 			break;
-		
+
 		case SETGAIN:
 			buflen = 5;
 			cmdBuf->data[0] = buffer[2];
 			cmdBuf->data[1] = buffer[3];
 			cmdBuf->data[2] = buffer[4];
-			myMpsd[8*id+buffer[2]]->setGain((unsigned char)buffer[3], 
+			myMpsd[8*id+buffer[2]]->setGain((unsigned char)buffer[3],
 											(unsigned char)buffer[4], 1);
 			break;
-		
+
 		case SETTHRESH:
 			buflen = 4;
 			cmdBuf->data[0] = buffer[2];
 			cmdBuf->data[1] = buffer[3];
 			myMpsd[8*id+buffer[2]]->setThreshpoti((unsigned char)buffer[3], 1);
 			break;
-		
+
 		case SETPULSER:
 			buflen = 6;
 			cmdBuf->data[0] = buffer[2];
@@ -266,7 +266,7 @@ int mesydaq2::sendCommand(unsigned short * buffer)
 			cmdBuf->data[3] = myMpsd[8*id+buffer[2]]->getPulspoti(1);
 			cmdBuf->data[4] = buffer[6];
 			break;
-		
+
 		case SETMODE:
 			buflen = 4;
 			cmdBuf->data[0] = buffer[2];
@@ -276,29 +276,29 @@ int mesydaq2::sendCommand(unsigned short * buffer)
 			else
 				myMpsd[8*id+buffer[2]]->setMode(false);
 			break;
-		
+
 		case QUIET:
 			buflen = 3;
 			cmdBuf->data[0] = buffer[2];
 			myMcpd[id]->setStream(buffer[2]);
 			break;
-		
+
 		case READID:
 			buflen = 3;
 			cmdBuf->data[0] = buffer[2];
 			break;
-		
+
 		case GETVER:
 			buflen = 3;
 			cmdBuf->data[0] = buffer[2];
 			break;
-		
+
 		case READPERIREG:
 			buflen = 4;
 			cmdBuf->data[0] = buffer[2];
 			cmdBuf->data[1] = buffer[3];
 			break;
-		
+
 		case WRITEPERIREG:
 			buflen = 5;
 			cmdBuf->data[0] = buffer[2];
@@ -306,7 +306,7 @@ int mesydaq2::sendCommand(unsigned short * buffer)
 			cmdBuf->data[2] = buffer[4];
 			myMpsd[8*id+buffer[2]]->setInternalreg(buffer[3], buffer[4], 1);
 			break;
-		
+
 		case WRITEREGISTER:
 			// 1 word length (buffer[2]) + 2 words per register (+ 2 overhead)
 			buflen = buffer[2] * 2 + 3;
@@ -317,15 +317,15 @@ int mesydaq2::sendCommand(unsigned short * buffer)
 			}
 			break;
 	}
-	
+
 	cmdBuf->bufferLength = CMDHEADLEN + buflen;
 	cmdBuf->data[buflen] = 0xFFFF;
 	cmdBuf->headerChksum = 0;
 	cmdBuf->headerChksum = calcChksum(cmdBuf);
-	
+
 //	for(unsigned char d = 0; d < buflen; d++)
 //		qDebug("%d: %d", d, cmdBuf->data[d]);
-	
+
 	unsigned char retry;
 	unsigned int timeoutLength;
 	if(cmd == START || cmd == STOP){
@@ -336,7 +336,7 @@ int mesydaq2::sendCommand(unsigned short * buffer)
 		retry = 2;
 		timeoutLength = 1000;
 	}
-		
+
 	while(retry){
 		if(netDev[0]->sendBuffer(id, cmdBuf)){
 			pstring.sprintf("sent cmd: %d to id: %d", cmd, id);
@@ -417,14 +417,14 @@ void mesydaq2::initValues()
  */
 int mesydaq2::writeRegister(unsigned int id, unsigned int addr, unsigned int val)
 {
-	cmdBuf->data[0] = (unsigned short) id; 
+	cmdBuf->data[0] = (unsigned short) id;
 	for(unsigned int i = 1; i < 2*id+1; i+=2){
-		cmdBuf->data[i] = (unsigned short) addr; 
+		cmdBuf->data[i] = (unsigned short) addr;
 		cmdBuf->data[i+1] = (unsigned short) val;
 	}
 //	sendCommand(WRITEREGISTER, 2 * id + 1);
 //	sendCommand(SETGAIN, 2 * id + 1);
-	
+
 	return 1;
 }
 
@@ -450,11 +450,11 @@ void mesydaq2::readBuf(void)
 	headertime = tim;
 	timeMsecs = headertime / 10000;
 	meas->setCurrentTime(timeMsecs);
-	
+
 	ht[0] = recBuf->time[0];
 	ht[1] = recBuf->time[1];
 	ht[2] = recBuf->time[2];
-	
+
 	status = recBuf->deviceStatus;
 	if(recBuf->bufferType & 0x8000){
 		cmdActive = false;
@@ -479,7 +479,7 @@ void mesydaq2::readBuf(void)
 						changeCaressListfile();
 						bytesWritten = cInt->caressHlen;
 					}
-				}	
+				}
 				unsigned short * pD;
 				pD = (unsigned short *) &pDataBuf->bufferLength;
 				unsigned int i;
@@ -553,7 +553,7 @@ void mesydaq2::stoppedDaq(void)
 	meas->stop(timeMsecs);
     // maybe some remote control is interested?
    	cInt->completeCar();
-	
+
 	if(acquireListfile){
 		if(datfile.isOpen()){
 			writeClosingSignature();
@@ -681,14 +681,14 @@ void mesydaq2::initDevices(void)
 	unsigned char i;
     for(i=0; i<MCPDS; i++){
 		myMcpd[i] = new mcpd8(this);
-		myMcpd[i]->setId(i); 
+		myMcpd[i]->setId(i);
 		hist[i] = new histogram(this);
 		hist[i]->setId(i);
 	}
 	// common histogram for all MCPDs
 	hist[MCPDS] = new histogram(this);
 	hist[MCPDS]->setId(MCPDS);
-	
+
     for(i=0; i<8*MCPDS; i++){
 		myMpsd[i] = new mpsd8(this);
 	}
@@ -704,7 +704,7 @@ void mesydaq2::initTimers(void)
     dispTimer = new QTimer(this);
     connect(dispTimer, SIGNAL(timeout()), this, SLOT(dispTime()));
 //    dispTimer->start(1000, false);
-	
+
 	// central dispatch timer
     theTimer = new QTimer(this);
     connect(theTimer, SIGNAL(timeout()), this, SLOT(centralDispatch()));
@@ -716,11 +716,11 @@ void mesydaq2::initTimers(void)
     commTimer = new QTimer(this);
     connect(commTimer, SIGNAL(timeout()), this, SLOT(commTimeout()));
     commId = 99;
-    
+
     // pulser test timer
     testTimer = new QTimer(this);
     connect(testTimer, SIGNAL(timeout()), this, SLOT(pulserTest()));
-	
+
 	testRunning = false;
 }
 
@@ -769,7 +769,7 @@ void mesydaq2::writeListfileHeader(void)
 */		str. sprintf("mesytec psd listmode data\n");
 		textStream << str;
 		str. sprintf("header length: %d lines \n", 2);
-		textStream << str;		
+		textStream << str;
 //	}
 }
 
@@ -812,7 +812,7 @@ void mesydaq2::readListfile(QString readfilename)
 	QString str;
 	bool ok = false;
 	unsigned short sep1, sep2, sep3, sep4;
-    
+
 	datfile.setName(readfilename);
 	datfile.open(IO_ReadOnly);
 	datStream.setDevice(&datfile);
@@ -871,8 +871,8 @@ void mesydaq2::readListfile(QString readfilename)
 			bcount = 0;
 			draw();
 //			kapp->processEvents();
-		}  
-	}	
+		}
+	}
 	datfile.close();
 	draw();
 }
@@ -955,12 +955,12 @@ void mesydaq2::initHardware(void)
 	// 1) load config file
 	// 2) check and initialize all configured and conneceted MCPDs
 	// 2) check and configure alle all connected MPSDs
-	
+
 	//set init values:
 	unsigned char c = 0, d = 0, mpsdid;
 	pstring.sprintf("initializing hardware");
 	protocol(pstring, 1);
-	 
+
 	// scan connected MCPDs
 	for(c = 0; c < MCPDS; c++){
 		if(confMcpd[c]){
@@ -974,15 +974,15 @@ void mesydaq2::initHardware(void)
 			}
 		}
 	}
-	
+
 	unsigned char p = 0;
 	for(c = 0; c < MCPDS*8; c++)
 		if(myMpsd[c]->getMpsdId())
 			p++;
-		
+
 	pstring.sprintf("%d mpsd-8 found during setup", p);
 	protocol(pstring, 1);
-	
+
 	for(c=0; c<MCPDS; c++){
 		if(confMcpd[c] && myMcpd[c]->isOnline()){
 			pstring.sprintf("initialize MPSDs on mcpd #%d",c);
@@ -1012,7 +1012,7 @@ bool mesydaq2::saveSetup(void)
   name = QFileDialog::getSaveFileName(configPath, "mesydaq config files (*.mcfg);;all files (*.*)", this, "Load Config File...");
   if(name.isEmpty())
   	return false;
-  
+
   configfilename = name;
   int i = configfilename.find(".mcfg");
   if(i == -1)
@@ -1047,14 +1047,14 @@ bool mesydaq2::saveSetup(void)
 		t << '\r' << '\n';
 		meas->serialize(&f);
 		t << '\r' << '\n';
-		
+
 		for(int i=0; i<MCPDS; i++){
 	    	myMcpd[i]->serialize(&f);
 	    }
 		for(int i=0; i<8*MCPDS; i++)
 			if(myMpsd[i]->getMpsdId())
 				myMpsd[i]->serialize(&f);
-  }  
+  }
   f.close();
   return true;
 }
@@ -1075,21 +1075,21 @@ bool mesydaq2::loadSetup(bool ask)
   }
   if(name.isEmpty())
   	return false;
-  
+
   configfilename = name;
-  
+
   QFile f(configfilename);
 
   QString s, str, s2;
 
   unsigned char section = 0;
   unsigned char modaddr, mcpd, id, chan, gain, thresh;
-  unsigned short cells[3]; 
-  
+  unsigned short cells[3];
+
   // clear configured MCPD list:
   for(unsigned char c = 0; c < MCPDS; c++)
   	confMcpd[c] = false;
-  
+
   if ( f.open(IO_ReadOnly) ) {    // file opened successfully
     if(!ask)
       pstring.sprintf("Reading standard configfile " + configfilename);
@@ -1103,14 +1103,14 @@ bool mesydaq2::loadSetup(bool ask)
     s = t.readLine();
     while(!s.isNull()){
 		// comment line
-		if((s.find("//") >= 0 && s.find("//") < 10) || 
+		if((s.find("//") >= 0 && s.find("//") < 10) ||
 		   (s.find(";") >= 0 && s.find(";") < 10))
 		   	;
 		else{
 		// mesydaq
 		if(s.find("[MESYDAQ]") >= 0){
 			section = 1;
-		}		
+		}
 		// MCPD-8
 		if(s.find("[MCPD-8]") >= 0){
 			section = 2;
@@ -1119,7 +1119,7 @@ bool mesydaq2::loadSetup(bool ask)
 		if(s.find("[MPSD-8]") >= 0){
 			section = 3;
 		}
-		
+
 		// mesydaq properties
 		if(section == 1 && s.contains("configPath =")){
 			s = s.mid(s.find("=")+1);
@@ -1162,7 +1162,7 @@ bool mesydaq2::loadSetup(bool ask)
 			cells[1] = s2.toUShort();
 			meas->assignCounter(0, cells[0], cells[1]);
 		}
-		
+
 		if(section == 1 && s.contains("monitor2")){
 			s = s.mid(s.find("=")+1);
 			while(s.find(" ") == 0)
@@ -1173,10 +1173,10 @@ bool mesydaq2::loadSetup(bool ask)
 			while(s2.find(" ") == 0)
 				s2 = s2.mid(1);
 			cells[1] = s2.toUShort();
-			meas->assignCounter(1, cells[0], cells[1]);		
+			meas->assignCounter(1, cells[0], cells[1]);
 		}
-				
-				
+
+
 		// MCPD-8 properties
 		if(section == 2 && s.contains("id =")){
 			s = s.mid(s.find("=")+1);
@@ -1196,20 +1196,20 @@ bool mesydaq2::loadSetup(bool ask)
 			netDev[0]->setAddress(modaddr, s2);
 		}
 		if(section == 2 && s.contains("udpPort =")){
-		}		
+		}
 		if(section == 2 && s.contains("master =")){
 			if(s.contains("1"))
 				myMcpd[modaddr]->setMaster(true);
 			else
-				myMcpd[modaddr]->setMaster(false);				
+				myMcpd[modaddr]->setMaster(false);
 		}
 		if(section == 2 && s.contains("terminate =")){
 			if(s.contains("1"))
 				myMcpd[modaddr]->setTermination(true);
 			else
-				myMcpd[modaddr]->setTermination(false);				
+				myMcpd[modaddr]->setTermination(false);
 		}
-		
+
 		if(section == 2 && s.contains("counterCell")){
 			s2 = s.mid(s.find("counterCell")+11, 1);
 			cells[0] = s2.toUShort();
@@ -1242,14 +1242,14 @@ bool mesydaq2::loadSetup(bool ask)
 			gain = s.toUShort();
 			myMcpd[modaddr]->setParamSource((unsigned short)chan, (unsigned short)gain);
 		}
-		
+
 		// MPSD-8 properties
 		if(section == 3 && s.contains("id =")){
 			s = s.mid(s.find("=")+1);
 			s.stripWhiteSpace();
 			modaddr = s.toUShort();
 			mcpd = (unsigned char)(modaddr / 8);
-			id = (unsigned char)(modaddr - mcpd*8); 
+			id = (unsigned char)(modaddr - mcpd*8);
 			pstring.sprintf("found config data for mpsd #%d", modaddr);
 			protocol(pstring, 2);
 		}
@@ -1276,7 +1276,7 @@ bool mesydaq2::loadSetup(bool ask)
 	    // read next line
 	    s = t.readLine();
 	}
-	
+
 	f.close();
 	mainWin->dispFiledata();
 	mainWin->dispCounterAssign();
@@ -1310,26 +1310,26 @@ void mesydaq2::centralDispatch()
 {
     if(cInt->caressTaskPending && (!cInt->asyncTaskPending))
     	cInt->caressTask();
-    	
+
 	dispatch[0]++;
 	if(dispatch[0] == 8){
 		dispatch[0] = 0;
 		meas->calcRates();
 	}
-	
+
 	// graphics update
 	dispatch[1]++;
 	if(dispatch[1] == 100){
 		dispTime();
 		dispatch[1] = 0;
 	}
-	
+
 	// commTimeout
 	dispatch[2]++;
 	if(cmdActive == true && dispatch[2] > 51){
 		commTimeout();
 	}
-	
+
 	// pulser test
 	dispatch[3]++;
 	if(testRunning == true && dispatch[3] == 11){
@@ -1349,9 +1349,9 @@ void mesydaq2::initMpsd(unsigned char mcpd, unsigned char id)
 	unsigned char stop = 0;
 	unsigned char num = 8 * mcpd + id;
 	bool common = false;
-	
+
 	commandBuffer[0] = mcpd;
-	
+
 	// gains:
 	commandBuffer[1] = SETGAIN;
 	commandBuffer[2] = id;
@@ -1372,12 +1372,12 @@ void mesydaq2::initMpsd(unsigned char mcpd, unsigned char id)
 		commandBuffer[4] = myMpsd[num]->getGainpoti(c, 1);
 		sendCommand(commandBuffer);
 	}
-	
+
 	// threshold:
 	commandBuffer[1] = SETTHRESH;
 	commandBuffer[3] = myMpsd[num]->getThreshpoti(1);
 	sendCommand(commandBuffer);
-	
+
 	// pulser
 	commandBuffer[1] = SETPULSER;
 	commandBuffer[2] = id;
@@ -1386,12 +1386,12 @@ void mesydaq2::initMpsd(unsigned char mcpd, unsigned char id)
 	commandBuffer[5] = 50;
 	commandBuffer[6] = 0;
 	sendCommand(commandBuffer);
-	
+
 	// mode
 	commandBuffer[1] = SETMODE;
 	commandBuffer[3] = 0;
 	sendCommand(commandBuffer);
-	
+
 	// now set tx capabilities, if id == 105
 	if(myMpsd[num]->getMpsdId() == 105){
 		myMpsd[num]->setInternalreg(1, 4, 1);
@@ -1400,8 +1400,8 @@ void mesydaq2::initMpsd(unsigned char mcpd, unsigned char id)
 		commandBuffer[3] = 1;	// write register 1
 		commandBuffer[4] = 4;
 		sendCommand(commandBuffer);
-	}	
-	
+	}
+
 	pstring.sprintf("initialized mpsd-8 on bus %d of mcpd %d", id, myMpsd[id]->getMcpdId());
 	protocol(pstring, 1);
 }
@@ -1413,7 +1413,7 @@ void mesydaq2::initMpsd(unsigned char mcpd, unsigned char id)
 void mesydaq2::initMcpd(unsigned char id)
 {
     unsigned char c;
-    
+
     if(!myMcpd[id]->isOnline())
     	return;
     // set master / slave and termination
@@ -1424,20 +1424,20 @@ void mesydaq2::initMcpd(unsigned char id)
     for(c=0; c < 8; c++){
 		myMcpd[id]->fillCounterCell(c, commandBuffer);
 		sendCommand(commandBuffer);
-	}    
-	
+	}
+
 	// set auxTimers
     for(c=0; c < 4; c++){
 		myMcpd[id]->fillAuxTimer(c, commandBuffer);
 		sendCommand(commandBuffer);
-	}    
-	
+	}
+
 	// set parameter sources
     for(c=0; c < 4; c++){
 		myMcpd[id]->fillParamSource(c, commandBuffer);
 		sendCommand(commandBuffer);
-	}    
-    
+	}
+
     // set tx capability to TAP
 	commandBuffer[0] = id;
    	commandBuffer[1] = WRITEREGISTER;
@@ -1459,14 +1459,14 @@ void mesydaq2::initMcpd(unsigned char id)
 void mesydaq2::allPulserOff()
 {
     // send pulser off to all connected MPSD
-    
+
 	commandBuffer[0] = 0;
    	commandBuffer[1] = SETPULSER;
 	commandBuffer[3] = 0;
 	commandBuffer[4] = 2;
 	commandBuffer[5] = 40;
 	commandBuffer[6] = 0;
-    
+
     for(unsigned int i = 0; i < MCPDS; i++){
     	if(confMcpd[i] && myMcpd[i]->isOnline()){
 			for(unsigned int j = 0; j < 8; j++){
@@ -1491,9 +1491,9 @@ void mesydaq2::setTimingwidth(unsigned char width)
     	timingwidth = width;
     else
     	timingwidth = 48;
-   
+
    	for(unsigned i=0; i < MCPDS; i++)
-   		hist[i]->setWidth(timingwidth);  
+   		hist[i]->setWidth(timingwidth);
 }
 
 
@@ -1537,7 +1537,7 @@ bool mesydaq2::checkListfilename(void)
 	// no - try ot get one...
 	if(listfilename.isEmpty()){
 		if(mainWin->listFilename->text().isEmpty()){
-			
+
 		}
 	}
 	datfile.setName(listfilename);
@@ -1559,7 +1559,7 @@ QString mesydaq2::getListfilepath()
  */
 bool mesydaq2::getListfilename()
 {
-	ovwList = false;	
+	ovwList = false;
 	QString name = QFileDialog::getSaveFileName(listPath, "mesydaq data files (*.mdat);;all files (*.*);;really all files (*)", this, "Save as...");
   	if(!name.isEmpty()){
     	int i = name.find(".mdat");
@@ -1682,7 +1682,7 @@ void mesydaq2::writeHistograms()
 {
    QFile f;
    int k;
-   
+
    histfilename = QFileDialog::getSaveFileName(histPath, "mesydaq histogram files (*.mtxt);;all files (*.*)", this, "Write Histogram...");
    if(histfilename.isEmpty())
       return;
@@ -1690,7 +1690,7 @@ void mesydaq2::writeHistograms()
    k = histfilename.find(".mtxt");
    if(k == -1)
       histfilename.append(".mtxt");
-     
+
    if(QFile::exists(histfilename)){
       int answer = QMessageBox::warning(
                  this, "Histogram File Exists -- Overwrite File",
@@ -1733,7 +1733,7 @@ void mesydaq2::setCountlimit(unsigned char cNum, unsigned long lim)
     	break;
 		case M2CT:
     		dc->setLimit(MON2ID, lim);
-    	break;    	
+    	break;
 		case EVCT:
     		dc->setLimit(EVID, lim);
     	break;
@@ -1753,22 +1753,22 @@ void mesydaq2::copyData(unsigned int start, unsigned int len, unsigned long * da
     unsigned long intermediate[960];
     unsigned int numLines = 0;
     unsigned int suffix = 0;
-    unsigned int startline = 0; 
+    unsigned int startline = 0;
     unsigned int offset = 0;
     unsigned int offsline = 0;
     unsigned int prefix = 0;
-    
+
     // first: find start line:
     startline = start / 960;
     // check for offset within line:
     offset = start - (startline * 960);
-    
+
     // ok - get first partial line if offset
     if(offset){
 	   	if(len > 960 - offset)
 	   		prefix = 960 - offset;
 	   	else
-	   		prefix = len; 
+	   		prefix = len;
 	    hist[0]->copyLine(startline, intermediate);
 		for(i = offset; i < offset+prefix; i++)
 			data[i-offset] = intermediate[i];
@@ -1778,7 +1778,7 @@ void mesydaq2::copyData(unsigned int start, unsigned int len, unsigned long * da
 	// now copy numLines complete lines into data buffer
 	for(i=0;i<numLines;i++)
 		hist[0]->copyLine(startline+i+offsline, &data[offset+i*960]);
-	
+
 	suffix = len - prefix  - 960 * numLines;
 	// and process possible suffix:
 	if(suffix){
@@ -1804,8 +1804,8 @@ unsigned char mesydaq2::isDaq(void)
 void mesydaq2::openCaressListfile(void)
 {
 //	cInt->completeCaressFileheader();
-	
-	listfilename = listPath; 
+
+	listfilename = listPath;
 	listfilename.append('/');
 	if(cInt->caressDatadir.length() > 0){
 		listfilename.append(cInt->caressDatadir);
@@ -1813,7 +1813,7 @@ void mesydaq2::openCaressListfile(void)
 	}
 	listfilename.append(cInt->caressFilename);
 	mainWin->listFilename->setText(listfilename);
-	
+
 	// try to find directory - create if not existing:
 	QString listfiledir = listPath;
 	listfiledir.append('/');
@@ -1871,22 +1871,22 @@ bool mesydaq2::checkDirectory(QString dir)
     // takes a given directory, checks existance, tries to create
     // if not existing
     QString directory("");
-    
+
     QDir checkDir(dir);
-    
+
     int pos1 = 1, pos2 = 0, len = 0;
-    
+
     if(checkDir.exists()){
     	pstring.sprintf("Directory ");
     	pstring.append(dir);
     	pstring.append(" exists. ->o.k.");
-    	protocol(pstring, 3);	
+    	protocol(pstring, 3);
     	return true;
     }
-    	
+
     len = dir.length();
     while(pos1){
-    	pos2 = dir.find('/', pos1, true); 
+    	pos2 = dir.find('/', pos1, true);
 		// check if '/' in pathname
 		// get directory name
 		directory.append('/');
@@ -1894,8 +1894,8 @@ bool mesydaq2::checkDirectory(QString dir)
 			directory.append(dir.mid(pos1, pos2-pos1));
 		else
 			directory.append(dir.right(len-pos1));
-		checkDir.setPath(directory);	
-		// check existance	
+		checkDir.setPath(directory);
+		// check existance
 		if(!checkDir.exists()){
 			// try to create
 			if(!checkDir.mkdir(directory, true)){
@@ -1965,7 +1965,7 @@ void mesydaq2::startAll(void)
    			pstring.sprintf("start slave %d", c);
    			protocol(pstring, 2);
    			commandBuffer[0] = c;
-			commandBuffer[2] = 0; // don't open listmodefile here!   	
+			commandBuffer[2] = 0; // don't open listmodefile here!
 			sendCommand(commandBuffer);
 		}
 		if(myMcpd[c]->isMaster())
@@ -1975,7 +1975,7 @@ void mesydaq2::startAll(void)
 	pstring.sprintf("start master %d", m);
 	protocol(pstring, 2);
 	commandBuffer[0] = m;
-	commandBuffer[2] = 1; // open listmodefile here!   	
+	commandBuffer[2] = 1; // open listmodefile here!
 	sendCommand(commandBuffer);
 }
 
@@ -1986,7 +1986,7 @@ void mesydaq2::startAll(void)
 void mesydaq2::stopAll(void)
 {
    	unsigned char c, m;
-   	
+
 	commandBuffer[1] = STOP;
    	// identify and stop master
    	for(c=0; c < 8; c++){
@@ -1995,7 +1995,7 @@ void mesydaq2::stopAll(void)
 			commandBuffer[0] = c;
 			sendCommand(commandBuffer);
 		}
-	}   	
+	}
    	// stop slaves
    	for(c=0; c < 8; c++){
    		if(confMcpd[c] && (c != m)){
@@ -2015,7 +2015,7 @@ void mesydaq2::buildListfileheader(void)
     QDateTime datetime;
     QString str;
     unsigned int hlength;
-    
+
     listfileHeader.sprintf("##############################################################################\n");
     listfileHeader.append("# ");
     listfileHeader.append(listfilename);
@@ -2035,15 +2035,15 @@ void mesydaq2::buildListfileheader(void)
     listfileHeader.append("\n");
     listfileHeader.append("#\n");
     listfileHeader.append("##############################################################################\n");
-	listfileHeader.append("[MSY_] # mesydaq data\n");	
+	listfileHeader.append("[MSY_] # mesydaq data\n");
 	listfileHeader.append("File_Name = ");
-	listfileHeader.append(listfilename);	
-	listfileHeader.append("\n");	
-	listfileHeader.append("Frequency = 1E+07\n");	
-    
+	listfileHeader.append(listfilename);
+	listfileHeader.append("\n");
+	listfileHeader.append("Frequency = 1E+07\n");
+
     str.sprintf("Start_Time = %d\n", (unsigned long) time(NULL));
-	listfileHeader.append(str);	
-	listfileHeader.append("# offset (bytes) where binary tof data begins\n");	
+	listfileHeader.append(str);
+	listfileHeader.append("# offset (bytes) where binary tof data begins\n");
 	listfileHeader.append("Data = ");
 	// text length plus trailing '\n'
 	hlength = listfileHeader.length() + 1;
@@ -2058,11 +2058,11 @@ void mesydaq2::buildListfileheader(void)
 	if(hlength > 99993 && hlength < 999994)
 		hlength += 6;
 	// should be enough here...
-	// convert into string: 
+	// convert into string:
 	str.sprintf("%d",hlength);
 	listfileHeader.append(str);
 	listfileHeader.append('\n');
-//	qDebug(listfileHeader);    
+//	qDebug(listfileHeader);
 }
 
 
@@ -2082,7 +2082,7 @@ void mesydaq2::getMcpdVersion(unsigned char id)
 		commandBuffer[0] = id;
 		commandBuffer[1] = STOP;
 		sendCommand(commandBuffer);
-		
+
 		commandBuffer[0] = id;
 		commandBuffer[1] = GETVER;
 		sendCommand(commandBuffer);
@@ -2137,19 +2137,19 @@ void mesydaq2::findInterfaces(void)
     int sockfd, i;
     char buf[1000];
     char * ptr;
-    
+
     numIf = 0;
-    
+
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
 //    qDebug("sockfd for search: %d", sockfd);
     ifc.ifc_len = 1000;
     ifc.ifc_buf = buf;
-    
+
     if(ioctl(sockfd, SIOCGIFCONF, &ifc) < 0){
     	qDebug("no info retrieved");
     	return;
     }
-    
+
     for(i=0, ptr = buf; ptr < buf+ifc.ifc_len;i++){
     	ifr = (struct ifreq *) ptr;
     	sa = (struct sockaddr_in*)&ifr->ifr_addr;
@@ -2170,7 +2170,7 @@ void mesydaq2::findInterfaces(void)
     			qDebug("Interface UP and LOOPBACK");
     			// do not use for MCPD-8 communication!
 			}
-		}    	
+		}
     	ptr = ptr + sizeof(struct ifreq);
     }
 }
@@ -2201,12 +2201,12 @@ void mesydaq2::initSystem(void)
 	}
 	// initialize connected hardware modules according to config file
 	initHardware();
-	
+
 	mainWin->displayMcpdSlot();
 	mainWin->displayMpsdSlot();
 	mainWin->dispFiledata();
 	mainWin->debugLevelBox->setCurrentItem(debugLevel);
-	
+
 //	qDebug("running on qt %s", qVersion());
 
 }
@@ -2256,11 +2256,11 @@ void mesydaq2::startPulsertest(void)
 		return;
 	}
 //	qDebug("starting with mod: %d", testMod);
-	
+
 	testChan = 0;
 	testPos = 0;
 	testAmpl = 0;
-//	testTimer->start(500, false);	
+//	testTimer->start(500, false);
 	testJustStarted = true;
 	dispatch[3] = 0;
 	testRunning = true;
@@ -2287,7 +2287,7 @@ void mesydaq2::pulserTest()
 {
 	unsigned char ampval;
     bool ok;
-    
+
 //	testTimer->stop();
 	if(testJustStarted){
 		testJustStarted = false;
@@ -2295,7 +2295,7 @@ void mesydaq2::pulserTest()
 	else{
 //		qDebug("switching off: cpu%d, mod%d, chan%d, pos%d, ampl%d", testCpu, testMod, testChan, testPos, testAmpl);
 		// switch off old pulser position
-	
+
 		commandBuffer[0] = testCpu;
 		commandBuffer[1] = SETPULSER;
 		commandBuffer[2] = testMod;
@@ -2304,7 +2304,7 @@ void mesydaq2::pulserTest()
 		commandBuffer[5] = testAmpl;
 		commandBuffer[6] = 0;
 		sendCommand(commandBuffer);
-		
+
 		if(!testStopping){
 			// now increment pulser position:
 			// switch to new mpsd-8 device?
@@ -2333,10 +2333,10 @@ void mesydaq2::pulserTest()
 					testCpu = (unsigned char) testMod / 8;
 					}
 				}
-			}	
+			}
 //			qDebug("next position: cpu%d, mod%d, chan%d, pos%d, ampl%d", testCpu, testMod, testChan, testPos, testAmpl);
 		}
-	}	
+	}
 	if(testStopping){
 		testRunning = false;
 		testStopping = false;
@@ -2355,9 +2355,9 @@ void mesydaq2::pulserTest()
 		commandBuffer[4] = testPos;
 		commandBuffer[5] = ampval;
 		commandBuffer[6] = 1;
-		sendCommand(commandBuffer);	
+		sendCommand(commandBuffer);
 //		testTimer->start(500, false);
-		
+
 	}
 }
 

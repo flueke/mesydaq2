@@ -108,7 +108,7 @@ protected:
     unsigned short * pBuffer;
     mesydaq2 * theApp;
     QString pstring;
-    
+
     unsigned long int * pDispBuffer;
     unsigned long int dispMax;
     float dispRange;

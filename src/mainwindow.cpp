@@ -71,7 +71,7 @@ void mainWindow::startStopSlot()
 	if(startStopButton->isOn()){
 		// get timing binwidth
 		theApp->setTimingwidth(timingBox->value());
-		
+
 		// get latest preset entry
 		if(theApp->meas->isMaster(TCT))
 			theApp->meas->setPreset(TCT, tPreset->value(), true);
@@ -81,7 +81,7 @@ void mainWindow::startStopSlot()
 			theApp->meas->setPreset(M1CT, m1Preset->value(), true);
 		if(theApp->meas->isMaster(M2CT))
 			theApp->meas->setPreset(M2CT, m2Preset->value(), true);
-		
+
 		startStopButton->setText("Stop");
 		theApp->startAll();
 		// set device id to 0 -> will be filled by mesydaq for master
@@ -101,12 +101,12 @@ void mainWindow::sendCellSlot()
 	cmdBuffer[3] = (unsigned short) cellTrigger->currentItem();
 	cmdBuffer[4] = (unsigned short) cellCompare->value();
 	theApp->protocol("set cell", 2);
-	theApp->sendCommand(pBuffer);	
+	theApp->sendCommand(pBuffer);
 }
 
 void mainWindow::sendParamSlot()
 {
-	cmdBuffer[0] = mcpdId->value();	
+	cmdBuffer[0] = mcpdId->value();
 	cmdBuffer[1] = SETPARAM;
 	cmdBuffer[2] = (unsigned short) param->value();
 	cmdBuffer[3] = (unsigned short) paramSource->currentItem();
@@ -119,7 +119,7 @@ void mainWindow::sendAuxSlot()
 	bool ok;
 	QString str;
 	unsigned short compare;
-		
+
 	str = compareAux->text();
 	compare = (unsigned short) (str.toInt(&ok,0));
 	cmdBuffer[0] = mcpdId->value();
@@ -152,7 +152,7 @@ void mainWindow::setTimingSlot()
 	else{
 		cmdBuffer[2] = 0;
 		resetTimer->setEnabled(false);
-	}	
+	}
 	if(terminate->isChecked())
 		cmdBuffer[3] = 1;
 	else
@@ -163,7 +163,7 @@ void mainWindow::setTimingSlot()
 
 void mainWindow::setMcpdIdSlot()
 {
-	unsigned short id = (unsigned short) deviceId->value();	
+	unsigned short id = (unsigned short) deviceId->value();
 	cmdBuffer[0] = mcpdId->value();
 	cmdBuffer[1] = SETID;
 	cmdBuffer[2] = id;
@@ -172,13 +172,13 @@ void mainWindow::setMcpdIdSlot()
 
 void mainWindow::setStreamSlot()
 {
-	unsigned short id = (unsigned short) deviceId->value();	
+	unsigned short id = (unsigned short) deviceId->value();
 	cmdBuffer[0] = mcpdId->value();
 	cmdBuffer[1] = QUIET;
 	if(statusStream->isChecked())
 		cmdBuffer[2] = 1;
 	else
-		cmdBuffer[2] = 0;	
+		cmdBuffer[2] = 0;
 	pstring.sprintf("Set stream %d", cmdBuffer[2]);
 	theApp->protocol(pstring, 2);
 	theApp->sendCommand(pBuffer);
@@ -192,7 +192,7 @@ void mainWindow::setIpUdpSlot()
 	unsigned char dip0, dip1, dip2, dip3;
 	unsigned char cip0, cip1, cip2, cip3;
 	unsigned short cUdp, dUdp;
-		
+
 	if(modifyIp->isChecked()){
 		stri = mcpdIpAddress0->text();
 		ip0 = (unsigned char) (stri.toInt(&ok));
@@ -209,7 +209,7 @@ void mainWindow::setIpUdpSlot()
 		ip2 = 0;
 		ip3 = 0;
 	}
-		
+
 	if(dataThisPc->isChecked()){
 		dip0 = 0;
 		dip1 = 0;
@@ -226,7 +226,7 @@ void mainWindow::setIpUdpSlot()
 		stri = dataIpAddress3->text();
 		dip3 = (unsigned char) (stri.toInt(&ok));
 	}
-	
+
 	if(cmdThisPc->isChecked()){
 		cip0 = 0;
 		cip1 = 0;
@@ -243,7 +243,7 @@ void mainWindow::setIpUdpSlot()
 		stri = cmdIpAddress3->text();
 		cip3 = (unsigned char) (stri.toInt(&ok));
 	}
-		
+
 	cUdp = (unsigned short) cmdUdpPort->value();
 	dUdp = (unsigned short) dataUdpPort->value();
 
@@ -264,29 +264,29 @@ void mainWindow::setIpUdpSlot()
 	cmdBuffer[13] = cip1;
 	cmdBuffer[14] = cip2;
 	cmdBuffer[15] = cip3;
-	theApp->sendCommand(pBuffer);	
+	theApp->sendCommand(pBuffer);
 }
 
 void mainWindow::setPulserSlot()
 {
 	qDebug("pulserSlot");
-	
+
 	if(dontSend){
 		dontSend = false;
 		return;
 	}
 	qDebug("send");
 	bool ok;
-	unsigned short id = (unsigned short) devid->value();	
+	unsigned short id = (unsigned short) devid->value();
 	unsigned short mod = module->value();
 	unsigned short chan = pulsChan->value();
-	
+
 	unsigned char ampl;
 	if(pulsampRadio1->isChecked())
 		ampl = (unsigned char) pulsAmp1->text().toInt(&ok);
 	else
 		ampl = (unsigned char) pulsAmp2->text().toInt(&ok);
-	
+
 	unsigned short pos;
 	if(pulsLeft->isChecked())
 		pos = 0;
@@ -294,7 +294,7 @@ void mainWindow::setPulserSlot()
 		pos = 1;
 	if(pulsMid->isChecked())
 		pos = 2;
-	
+
 	unsigned short pulse;
 	if(pulserButton->isOn()){
 		pulse = 1;
@@ -304,7 +304,7 @@ void mainWindow::setPulserSlot()
 		pulse = 0;
 		pulserButton->setPaletteForegroundColor(QColor(0,0,0));
 	}
-		
+
 	cmdBuffer[0] = id;
 	cmdBuffer[1] = SETPULSER;
 	cmdBuffer[2] = mod;
@@ -318,16 +318,16 @@ void mainWindow::setPulserSlot()
 void mainWindow::setGainSlot()
 {
 	bool ok;
-	unsigned short id = (unsigned short) devid->value();	
+	unsigned short id = (unsigned short) devid->value();
 	unsigned short addr = module->value();
 	unsigned short chan = channel->text().toUInt(&ok, 0);
 	float gainval = gain->text().toFloat(&ok);
-	
+
 	if(gainval < 0.5)
 		gainval = 0.5;
 	if(gainval > 1.88)
 		gainval = 1.88;
-		
+
 	cmdBuffer[0] = id;
 	cmdBuffer[1] = SETGAIN;
 	cmdBuffer[2] = addr;
@@ -335,7 +335,7 @@ void mainWindow::setGainSlot()
 		cmdBuffer[3] = 8;
 	else
 		cmdBuffer[3] = chan;
-		
+
 	cmdBuffer[4] = theApp->myMpsd[addr]->calcGainpoti(gainval);
 	qDebug("set gain to potival: %d", cmdBuffer[4]);
 	theApp->sendCommand(pBuffer);
@@ -344,7 +344,7 @@ void mainWindow::setGainSlot()
 void mainWindow::setThresholdSlot()
 {
 	bool ok;
-	unsigned short id = (unsigned short) devid->value();	
+	unsigned short id = (unsigned short) devid->value();
 	unsigned short addr = module->value();
 	unsigned short thresh = threshold->text().toUInt(&ok, 0);
 	cmdBuffer[0] = id;
@@ -378,7 +378,7 @@ void mainWindow::acqListfileSlot()
  */
 void mainWindow::update(void)
 {
-   	unsigned short id = (unsigned short) mcpdId->value();	
+   	unsigned short id = (unsigned short) mcpdId->value();
     pstring.sprintf("%ld", theApp->dataRxd);
     dataRx->setText(pstring);
     pstring.sprintf("%ld", theApp->cmdTxd);
@@ -388,8 +388,8 @@ void mainWindow::update(void)
     pstring = buildTimestring(theApp->headertime, true);
     hTimeText->setText(pstring);
     pstring = buildTimestring(theApp->meas->getMeastime(), false);
-    mTimeText->setText(pstring);   
-    
+    mTimeText->setText(pstring);
+
     // parameter values for selected ID
     pstring.sprintf("%lu", theApp->myMcpd[id]->getParameter(0));
     param0->setText(pstring);
@@ -399,9 +399,9 @@ void mainWindow::update(void)
     param2->setText(pstring);
     pstring.sprintf("%lu", theApp->myMcpd[id]->getParameter(3));
     param3->setText(pstring);
-    
+
 	theApp->meas->calcMeanRates();
-    
+
     // measurement values
     // counters and rates
     pstring.sprintf("%lu", theApp->meas->getCounter(EVCT));
@@ -418,7 +418,7 @@ void mainWindow::update(void)
     monRate1->setText(pstring);
     pstring.sprintf("%lu", theApp->meas->getRate(M2CT));
     monRate2->setText(pstring);
-    
+
 }
 
 /*!
@@ -427,7 +427,7 @@ void mainWindow::update(void)
 QString mainWindow::buildTimestring(unsigned long timeval, bool nano)
 {
 	// nsec = time in 100 nsecs
-	//-> usec = 
+	//-> usec =
 	//->
 	QString str;
 	unsigned long nsec, val, sec, min, hr;
@@ -476,21 +476,21 @@ void mainWindow::drawData(void)
 	if(zoomBox->isChecked()){
 		start = zoomStart->value();
 	}
-		
+
 	if(dispThresh)
 		dispRange -= dispLoThresh;
-	
+
 	if(dispLog){
 		dispRange = ceil(log10(dispRange));
 	}
-		
+
 	if(dispRange > 0)
 		ystep = histHeight / dispRange;
 	else
 		ystep = 1;
-	
+
 //	qDebug("dispRange: %f, height: %d, ystep: %f", dispRange, height, ystep);
-		
+
 	dispChannelCounts = 0;
 	for(unsigned int i=start; i<start+dispLen; i++){
 		val2 = 0;
@@ -510,7 +510,7 @@ void mainWindow::drawData(void)
 		// horizontal line
 		p2.drawLine((i-start)*xstep, yStart-val1,(i+1-start)*xstep, yStart-val1);
 		// vertical line right
-		p2.drawLine((i+1-start)*xstep, yStart-val1, (i+1-start)*xstep, yStart-val2); 
+		p2.drawLine((i+1-start)*xstep, yStart-val1, (i+1-start)*xstep, yStart-val2);
 		dispChannelCounts += pDispBuffer[i];
 	}
 	if(multi){
@@ -532,7 +532,7 @@ void mainWindow::drawData(void)
 				str.append(str2);
 				str.append(" (amplitude)");
 			}
-			else{			
+			else{
 				str2.sprintf("mcpd: %d, mpsd: %d, channel: %d", dispMcpd->value(), dispMpsd->value(), dispChan->value());
 				str.append(str2);
 				str.append(" (position)");
@@ -548,11 +548,11 @@ void mainWindow::drawData(void)
 	else
 		str.sprintf(" ");
 	p2.drawText(500, 20, str);
-	
 
-		
+
+
 	p2.end();
-	
+
 }
 
 
@@ -583,13 +583,13 @@ void mainWindow::setData(unsigned long * data, unsigned int len, unsigned long i
     dispMax = 10;
     dispRange = dispMax;
     scale = 1;
-    
+
     // reduce data in case of threshold settings:
     if(dispThresh){
     	for(unsigned int i = start; i < dispLen; i++){
 //    		if(pDispBuffer[i] > dispLoThresh && pDispBuffer[i] < dispHiThresh)
 //    			pDispBuffer[i] -= dispLoThresh;
-//    		else{ 
+//    		else{
 				if(pDispBuffer[i] < dispLoThresh)
 					pDispBuffer[i] = 0;
 				if(pDispBuffer[i] > dispHiThresh)
@@ -635,14 +635,14 @@ void mainWindow::drawDataGrid(void)
 {
 	QPainter p2;
 	QString str;
-	
+
 	// clear old grid:
   	p2.begin(this->mainFrame);
 	p2.setPen(QPen(black, 1, NoPen));
 	p2.setBrush(QBrush(lightGray));
 	p2.drawRect(mainFrame->contentsRect());
   	p2.end();
-  	
+
 	// clear old frame:
   	p2.begin(this->dataFrame);
 	p2.setPen(QPen(black, 1, NoPen));
@@ -666,20 +666,20 @@ void mainWindow::drawXAxis(void)
 	if(zoomBox->isChecked()){
 		start = zoomStart->value();
 		scalestep = step / 4;
-	}	
+	}
  	p2.begin(this->mainFrame);
 	p2.setPen(QPen(black, 1, SolidLine));
 	p2.setBrush(QBrush(black));
-  	
+
 	fo = p2.font();
 	fo.setStyleStrategy(QFont::PreferAntialias);
 	fo.setPointSize(8);
 	p2.setFont(fo);
-	
+
   	if(zoomBox->isChecked()){
 		for(int i=0;i<5;i++){
-			p2.drawLine(80+i*step, 23+height, 80+i*step, 10+height);  	
-			str.sprintf("%d", start+scalestep * i);	
+			p2.drawLine(80+i*step, 23+height, 80+i*step, 10+height);
+			str.sprintf("%d", start+scalestep * i);
 			p2.drawText(70+i*step, 35+height, str);
 		}
 		for(int i=0;i<960;i+=20)
@@ -688,17 +688,17 @@ void mainWindow::drawXAxis(void)
 			p2.drawLine(80+i, 20+height, 80+i, 10+height);
 		}
 	}
-	else{  	
+	else{
 		for(int i=0;i<5;i++){
-			p2.drawLine(80+i*step, 23+height, 80+i*step, 10+height);  	
-			str.sprintf("%d", start+scalestep * i);	
+			p2.drawLine(80+i*step, 23+height, 80+i*step, 10+height);
+			str.sprintf("%d", start+scalestep * i);
 			p2.drawText(70+i*step, 35+height, str);
 		}
 		for(int i=0;i<960;i+=10)
 			p2.drawLine(80+i, 15+height, 80+i, 10+height);
 		for(int i=0;i<960;i+=50)
 			p2.drawLine(80+i, 20+height, 80+i, 10+height);
-	}  	
+	}
   	p2.end();
 }
 
@@ -710,7 +710,7 @@ void mainWindow::drawYAxis(void)
 	QPainter p2;
 	QString str;
 	QFont fo;
-	
+
 	p2.begin(this->mainFrame);
   	// draw y-axis
 	p2.setPen(QPen(black, 1, SolidLine));
@@ -719,7 +719,7 @@ void mainWindow::drawYAxis(void)
 	fo.setStyleStrategy(QFont::PreferAntialias);
 	fo.setPointSize(8);
 	p2.setFont(fo);
-	
+
 	unsigned int step = histHeight / 10;
   	unsigned int logrange = ceil(log10(dispRange));
   	float logstep = histHeight / logrange;
@@ -731,14 +731,14 @@ void mainWindow::drawYAxis(void)
 				float offset = c*logstep + log10(d)*logstep;
 				p2.drawLine(70, 10+yStart-offset, 80, 10+yStart-offset);
 			}
-			str.sprintf("10E%d", c);		
+			str.sprintf("10E%d", c);
 			p2.drawText(20, 15+yStart-c*logstep, str);
 		}
 	}
 	else{
 		for(int i=0;i<11;i++){
-			p2.drawLine(70, 10+yStart-i*step, 80, 10+yStart-i*step);  	
-			str.sprintf("%ld", (unsigned long int)(dispRange / 10) * i);	
+			p2.drawLine(70, 10+yStart-i*step, 80, 10+yStart-i*step);
+			str.sprintf("%ld", (unsigned long int)(dispRange / 10) * i);
 			p2.drawText(20, 15+yStart-i*step, str);
 		}
   	}
@@ -802,12 +802,12 @@ void mainWindow::replayListfileSlot()
 
 void mainWindow::setRunIdSlot()
 {
-	unsigned short runid = (unsigned short) devid->value();	
+	unsigned short runid = (unsigned short) devid->value();
 	cmdBuffer[0] = 0;
 	cmdBuffer[1] = SETRUNID;
 	cmdBuffer[2] = runid;
 	theApp->sendCommand(pBuffer);
-	pstring.sprintf("Set run ID to %d", runid);	
+	pstring.sprintf("Set run ID to %d", runid);
 	theApp->protocol(pstring, 2);
 }
 
@@ -821,9 +821,9 @@ void mainWindow::displayMcpdSlot(void)
     unsigned char val[4];
     // retrieve displayed ID
     unsigned char id = mcpdId->value();
-     
+
     // now get and display parameters:
-    
+
     // master / termination:
     if(theApp->myMcpd[id]->isMaster()){
     	master->setChecked(true);
@@ -837,26 +837,26 @@ void mainWindow::displayMcpdSlot(void)
     	terminate->setChecked(true);
     else
     	terminate->setChecked(false);
-    	
+
     // get cell parameters
     theApp->myMcpd[id]->getCounterCell(cellSource->currentItem(), values);
     cellTrigger->setCurrentItem(values[0]);
 	cellCompare->setValue(values[1]);
-    
+
     // get parameter settings
     paramSource->setCurrentItem(theApp->myMcpd[id]->getParamSource(param->value()));
 
 	// get timer settings
 	str.sprintf("%x", theApp->myMcpd[id]->getAuxTimer(timer->value()));
-	compareAux->setText(str); 
-	
+	compareAux->setText(str);
+
 	// get stream setting
 	statusStream->setChecked(theApp->myMcpd[id]->getStream());
-		
+
 	// get ip contact address and use it for mesydaq ip
 	str = theApp->netDev[0]->getAddress(id);
 	splitAddress(str, &val[0]);
-	
+
 	str.sprintf("%d", val[0]);
 	mIpAddress0->setText(str);
 	str.sprintf("%d", val[1]);
@@ -865,19 +865,19 @@ void mainWindow::displayMcpdSlot(void)
 	mIpAddress2->setText(str);
 	str.sprintf("%d", val[3]);
 	mIpAddress3->setText(str);
-	
+
 	// display online status:
 	if(theApp->myMcpd[id]->isOnline())
 		mcpdStatusText1->setText("Online");
 	else
 		mcpdStatusText1->setText("OFFLINE");
-		
+
 	// display configuration status:
 	if(theApp->myMcpd[id]->isConfigured())
 		mcpdConfigText1->setText("Configured");
 	else
 		mcpdConfigText1->setText("Not configured");
-}	
+}
 
 
 /*!
@@ -886,69 +886,69 @@ void mainWindow::displayMcpdSlot(void)
 void mainWindow::displayMpsdSlot(void)
 {
     QString dstr;
-    
+
     // retrieve displayed ID
     unsigned char id = devid_2->value();
     unsigned char mod = module->value();
-    
+
     // Status display:
 	if(theApp->myMpsd[8*id]->getMpsdId())
 		dstr.sprintf("%d", theApp->myMpsd[8*id]->getMpsdId());
 	else
 		dstr.sprintf("off");
-	status0->setText(dstr);		
+	status0->setText(dstr);
 	if(theApp->myMpsd[8*id+1]->getMpsdId())
 		dstr.sprintf("%d", theApp->myMpsd[8*id+1]->getMpsdId());
 	else
 		dstr.sprintf("off");
-	status1->setText(dstr);		
+	status1->setText(dstr);
 	if(theApp->myMpsd[8*id+2]->getMpsdId())
 		dstr.sprintf("%d", theApp->myMpsd[8*id+2]->getMpsdId());
 	else
 		dstr.sprintf("off");
-	status2->setText(dstr);		
+	status2->setText(dstr);
 	if(theApp->myMpsd[8*id+3]->getMpsdId())
 		dstr.sprintf("%d", theApp->myMpsd[8*id+3]->getMpsdId());
 	else
 		dstr.sprintf("off");
-	status3->setText(dstr);		
+	status3->setText(dstr);
 	if(theApp->myMpsd[8*id+4]->getMpsdId())
 		dstr.sprintf("%d", theApp->myMpsd[8*id+4]->getMpsdId());
 	else
 		dstr.sprintf("off");
-	status4->setText(dstr);		
+	status4->setText(dstr);
 	if(theApp->myMpsd[8*id+5]->getMpsdId())
 		dstr.sprintf("%d", theApp->myMpsd[8*id+5]->getMpsdId());
 	else
 		dstr.sprintf("off");
-	status5->setText(dstr);		
+	status5->setText(dstr);
 	if(theApp->myMpsd[8*id+6]->getMpsdId())
 		dstr.sprintf("%d", theApp->myMpsd[8*id+6]->getMpsdId());
 	else
 		dstr.sprintf("off");
-	status6->setText(dstr);		
+	status6->setText(dstr);
 	if(theApp->myMpsd[8*id+7]->getMpsdId())
 		dstr.sprintf("%d", theApp->myMpsd[8*id+7]->getMpsdId());
 	else
 		dstr.sprintf("off");
 	status7->setText(dstr);
-		
+
 	// gain:
 	unsigned char chan = channel->value();
 	dstr.sprintf("%1.2f", theApp->myMpsd[8*id+mod]->getGainval(chan, 0));
-	gain->setText(dstr);	
-	
+	gain->setText(dstr);
+
 	// threshold:
 	dstr.sprintf("%d", theApp->myMpsd[8*id+mod]->getThreshold(0));
 	threshold->setText(dstr);
-		
+
 	// pulser:
 	// on/off
    	dontSend = true;
 	if(theApp->myMpsd[8*id+mod]->isPulserOn()){
 		pulserButton->setOn(true);
 		pulserButton->setPaletteForegroundColor(QColor(238,0,0));
-	}		
+	}
 	else{
 		pulserButton->setOn(false);
 		pulserButton->setPaletteForegroundColor(QColor(0,0,0));
@@ -972,28 +972,28 @@ void mainWindow::displayMpsdSlot(void)
 			pulsMid->setChecked(true);
 		break;
 	}
-	
+
 	// mode
 	if(theApp->myMpsd[8*id+mod]->getMode())
 		amp->setChecked(true);
 	else
 		pos->setChecked(true);
-	dontSend = false;	
+	dontSend = false;
 }
 
 
 
 void mainWindow::scanPeriSlot()
 {
-	unsigned short id = (unsigned short) devid->value();	
+	unsigned short id = (unsigned short) devid->value();
 	theApp->scanPeriph(id);
 }
 
 void mainWindow::setModeSlot(int mode)
 {
-	unsigned short id = (unsigned short) devid->value();	
+	unsigned short id = (unsigned short) devid->value();
 	unsigned short addr = module->value();
-	
+
 	cmdBuffer[0] = id;
 	cmdBuffer[1] = SETMODE;
 	cmdBuffer[2] = addr;
@@ -1038,7 +1038,7 @@ void mainWindow::applyThreshSlot()
 		qDebug("lo: %ld, hi: %ld", dispLoThresh, dispHiThresh);
 	}
 	else
-		dispThresh = false;		
+		dispThresh = false;
 }
 
 void mainWindow::linlogSlot()
@@ -1060,7 +1060,7 @@ void mainWindow::linlogSlot()
 void mainWindow::drawOpData()
 {
 	float meansigma[2];
-	
+
 	QString str;
     // display mean and sigma:
     if(dispAll->isChecked()){
@@ -1080,14 +1080,14 @@ void mainWindow::drawOpData()
 		str.sprintf("%1.1f", meansigma[1]);
 		sigmaText->setText(str);
 	}
-	
+
 	// pulser warning
 	bool pulswarn = false;
 	for(unsigned char c=0; c<8;c++){
 		if(theApp->myMpsd[c]->isPulserOn())
 			pulswarn = true;
 	}
-	
+
 	if(pulswarn)
 		str.sprintf("PULSER ON!");
 	else
@@ -1099,7 +1099,7 @@ void mainWindow::drawOpData()
 void mainWindow::writeRegisterSlot()
 {
 	bool ok;
-	unsigned short id = (unsigned short) devid->value();	
+	unsigned short id = (unsigned short) devid->value();
 	unsigned short addr = module->value();
 	unsigned short reg = registerSelect->value();
 	unsigned short val = registerValue->text().toUInt(&ok, 0);
@@ -1114,7 +1114,7 @@ void mainWindow::writeRegisterSlot()
 void mainWindow::readRegisterSlot()
 {
 	bool ok;
-	unsigned short id = (unsigned short) devid->value();	
+	unsigned short id = (unsigned short) devid->value();
 	unsigned short addr = module->value();
 	unsigned short reg = registerSelect->value();
 	cmdBuffer[0] = id;
@@ -1166,7 +1166,7 @@ void mainWindow::dispFiledata(void)
     	histfilename->setText("-");
     else
     	histfilename->setText(theApp->getHistfilename());
-   
+
     configfilepath->setText(theApp->getConfigfilepath());
     histfilepath->setText(theApp->getHistfilepath());
     listfilepath->setText(theApp->getListfilepath());
@@ -1203,7 +1203,7 @@ void mainWindow::ePresetSlot(bool pr)
 	else{
 		evPreset->setEnabled(false);
 		theApp->meas->setPreset(EVCT, evPreset->value(), false);
-	}	
+	}
 }
 
 
@@ -1222,7 +1222,7 @@ void mainWindow::tPresetSlot(bool pr)
 	else{
 		tPreset->setEnabled(false);
 		theApp->meas->setPreset(TCT, tPreset->value(), false);
-	}	
+	}
 }
 
 
@@ -1241,7 +1241,7 @@ void mainWindow::m1PresetSlot(bool pr)
 	else{
 		m1Preset->setEnabled(false);
 		theApp->meas->setPreset(M1CT, m1Preset->value(), false);
-	}	
+	}
 }
 
 
@@ -1260,7 +1260,7 @@ void mainWindow::m2PresetSlot(bool pr)
 	else{
 		m2Preset->setEnabled(false);
 		theApp->meas->setPreset(M2CT, m2Preset->value(), false);
-	}	
+	}
 }
 
 
@@ -1274,29 +1274,29 @@ void mainWindow::updatePresets(void)
     tPreset->setValue(theApp->meas->getPreset(TCT));
     m1Preset->setValue(theApp->meas->getPreset(M1CT));
     m2Preset->setValue(theApp->meas->getPreset(M2CT));
-    
+
     // check for master preset counter
     if(theApp->meas->isMaster(EVCT))
     	ePresetButton->setOn(true);
     else
     	ePresetButton->setOn(false);
-    
+
     if(theApp->meas->isMaster(M1CT))
     	m1PresetButton->setOn(true);
     else
     	m1PresetButton->setOn(false);
-    
+
     if(theApp->meas->isMaster(M2CT))
     	m2PresetButton->setOn(true);
     else
     	m2PresetButton->setOn(false);
-    
+
     if(theApp->meas->isMaster(TCT))
     	tPresetButton->setOn(true);
     else
     	tPresetButton->setOn(false);
-    
-   
+
+
     // Caress values
     pstring.sprintf("%d", theApp->meas->getCarHeight());
     caressHeight->setText(pstring);
@@ -1351,7 +1351,7 @@ void mainWindow::applyMIpSlot()
 	bool ok;
 	QString stri, addr;
 	unsigned char ip0, ip1, ip2, ip3;
-	
+
 	// get text entries
 	stri = mIpAddress0->text();
 	addr = stri;
@@ -1365,31 +1365,31 @@ void mainWindow::applyMIpSlot()
 	stri = mIpAddress3->text();
 	addr.append("." + stri);
 	ip3 = (unsigned char) (stri.toInt(&ok));
-			
+
 	// set address in interface table
-	theApp->setMcpdAddress(mcpdId->value(), addr); 
+	theApp->setMcpdAddress(mcpdId->value(), addr);
 }
 
 
 /*!
-    \fn mainWindow::splitAddress(QString addrStr, unsigned char * addrByte) 
+    \fn mainWindow::splitAddress(QString addrStr, unsigned char * addrByte)
  */
-void mainWindow::splitAddress(QString addrStr, unsigned char * addrByte) 
+void mainWindow::splitAddress(QString addrStr, unsigned char * addrByte)
 {
     QString s;
-    
+
     // split into numerical address tuple
     s = addrStr.left(addrStr.find("."));
     addrByte[0] = s.toUShort();
-    
+
     addrStr = addrStr.mid(addrStr.find(".")+1);
     s = addrStr.left(addrStr.find("."));
     addrByte[1] = s.toUShort();
-    
+
     addrStr = addrStr.mid(addrStr.find(".")+1);
     s = addrStr.left(addrStr.find("."));
     addrByte[2] = s.toUShort();
-    
+
     addrStr = addrStr.mid(addrStr.find(".")+1);
     s = addrStr.left(addrStr.find("."));
     addrByte[3] = s.toUShort();
@@ -1413,7 +1413,7 @@ void mainWindow::pulsertestSlot(bool on)
 		theApp->startPulsertest();
 	}
 	else{
-		theApp->stopPulsertest();		
+		theApp->stopPulsertest();
 	}
 }
 

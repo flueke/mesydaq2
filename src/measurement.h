@@ -70,7 +70,7 @@ public:
     void getCounterAssign(unsigned char* ca);
     void serialize(QFile * fi);
     unsigned long events;
-    unsigned long mon1;    
+    unsigned long mon1;
     unsigned long mon2;
 protected:
     unsigned long starttime_msec;

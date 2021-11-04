@@ -107,7 +107,7 @@ bool mcpd8::setCounterCell(unsigned short * celldata)
 	counterCell[celldata[0]][1] = celldata[2];
 	str.sprintf("mcpd %d: set counter cell %d: trigger # is %d, compare value %d.", id, celldata[0], celldata[1], celldata[2]);
 	theApp->protocol(str, 2);
-	
+
 	return true;
 }
 
@@ -265,11 +265,11 @@ bool mcpd8::setParameter(unsigned short param, unsigned long val)
 {
     if(param > 3)
     	return false;
-    
+
     parameter[param] = val;
-    
+
     return true;
-    
+
 }
 
 
@@ -303,56 +303,56 @@ unsigned short mcpd8::getAuxTimer(unsigned short timer)
 void mcpd8::stdInit(void)
 {
     unsigned char c;
-    
+
     for(c=0;c<4;c++){
 		cmdIpAddress[c] = 0;
 		dataIpAddress[c] = 0;
 		ipAddress[c] = 0;
 	}
 	ipAddrStr.sprintf("192.168.168.121");
-		
+
 	bzero(&inetAddr, sizeof(inetAddr));
 	inetAddr.sin_family = AF_INET;
 	inetAddr.sin_port = htons(54321);
 	inetAddr.sin_addr.s_addr = inet_addr(ipAddrStr.latin1());
-	
+
 	cmdPort = 54321;
 	dataPort = 54321;
-	
+
 	master = false;
 	terminate = false;
-	
+
 	for(c=0;c<4;c++){
-		counterCell[c][0] = 7; 
-		counterCell[c][1] = 22; 
+		counterCell[c][0] = 7;
+		counterCell[c][1] = 22;
 	}
-	
+
 	for(c=4;c<7;c++){
-		counterCell[c][0] = 0; 
-		counterCell[c][1] = 0; 
+		counterCell[c][0] = 0;
+		counterCell[c][1] = 0;
 	}
 
 	for(c=0;c<4;c++){
 		auxTimer[c] = 0;
 		paramSource[c] = c;
 		parameter[c] = c;
-	} 
+	}
 	inString.sprintf(" ");
 	outString.sprintf(" ");
-	
+
 	runId = 0;
-	
+
 	stream = false;
-	
+
 	commActive = false;
 	commFailed = false;
-	
+
 	online = false;
-	
+
 	configured = false;
-	
+
 	timeoutCounter = 0;
-	
+
 	id = 0;
 }
 
@@ -365,7 +365,7 @@ bool mcpd8::setStream(unsigned short strm)
     	stream = true;
     else
     	stream = false;
-    
+
     return true;
 }
 
@@ -385,7 +385,7 @@ bool mcpd8::serialize(QFile * fi)
 {
 	unsigned char c;
 	QTextStream t( fi );        // use a text stream
-	
+
 	t << "[MCPD-8]";
 	t << '\r' << '\n';
 	t << "id = " << id;
@@ -477,32 +477,32 @@ sockaddr_in mcpd8::getInetAddr()
 void mcpd8::setIpAddress(QString addrStr)
 {
     QString s;
-    
+
     // set string address
     ipAddrStr = addrStr;
-    
+
     // split into numerical address tuple
     s = addrStr.left(addrStr.find("."));
     ipAddress[0] = s.toUShort();
-    
+
     addrStr = addrStr.mid(addrStr.find(".")+1);
     s = addrStr.left(addrStr.find("."));
     ipAddress[1] = s.toUShort();
-    
+
     addrStr = addrStr.mid(addrStr.find(".")+1);
     s = addrStr.left(addrStr.find("."));
     ipAddress[2] = s.toUShort();
-    
+
     addrStr = addrStr.mid(addrStr.find(".")+1);
     s = addrStr.left(addrStr.find("."));
     ipAddress[3] = s.toUShort();
-    
+
     // and finally set inetAddr
 	bzero(&inetAddr, sizeof(inetAddr));
 	inetAddr.sin_family = AF_INET;
 	inetAddr.sin_port = htons(54321);
 	inetAddr.sin_addr.s_addr = inet_addr(ipAddrStr.latin1());
-    
+
 //    qDebug("ip address set to"+ipAddrStr);
 }
 
@@ -600,9 +600,9 @@ void mcpd8::timeout()
 {
     commActive = false;
     commFailed = true;
-    
+
     timeoutCounter++;
-    
+
     if(timeoutCounter > 5){
     	online = false;
 		pstring.sprintf("timeout #%d in mcpd-8 id %d. Device set offline", timeoutCounter, id);
@@ -611,7 +611,7 @@ void mcpd8::timeout()
 	else{
 		pstring.sprintf("timeout #%d in mcpd-8 id %d.", timeoutCounter, id);
 		theApp->protocol(pstring, 2);
-	}	
+	}
 }
 
 

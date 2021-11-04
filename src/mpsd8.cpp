@@ -48,7 +48,7 @@ mpsd8::mpsd8(QObject *parent, const char *name)
 	pulspos[0] = 2;
 	pulser[0] = false;
 	ampmode[0] = false;
-	
+
 	// set calibration factors for gain, threshold and pulser calculation
 	g1 = 0.5;
 	g2 = 184.783;
@@ -80,7 +80,7 @@ void mpsd8::setMpsdId(unsigned char bus, unsigned char id)
    	mpsdId = id;
    	mcpdId = bus/8;
    	busNum = bus - 8*mcpdId;
-   	
+
    	if(theApp->listIds)
    	{
    		str.sprintf("MPSD id on MCPD %d, bus %d: %d", mcpdId, busNum, id);
@@ -98,10 +98,10 @@ void mpsd8::setGain(unsigned char channel, float gainv, unsigned char preset)
     	gainv = 1.88;
     if(gainv < 0.5)
     	gainv = 0.5;
-    
+
     unsigned char val = calcGainpoti(gainv);
-    
-    
+
+
     if(channel == 8){
     	for(unsigned char c=0; c<8; c++){
 		    gainpoti[c][preset] = val;
@@ -109,18 +109,18 @@ void mpsd8::setGain(unsigned char channel, float gainv, unsigned char preset)
     	}
     	comgain = true;
     }
-    else{	
+    else{
 		gainpoti[channel][preset] = val;
 		gainval[channel][preset] = gainv;
     	comgain = false;
     }
-   	
+
    	if(preset)
    		str.sprintf("gainval preset %d, %d, %d to %2.2f (%d)", mcpdId, busNum, channel, gainval[channel][preset], gainpoti[channel][preset]);
    	else
    		str.sprintf("gainval %d, %d,  %d to %2.2f (%d)", mcpdId, busNum, channel, gainval[channel][preset], gainpoti[channel][preset]);
    	theApp->protocol(str, 2);
-    
+
 }
 
 /*!
@@ -136,12 +136,12 @@ void mpsd8::setGain(unsigned char channel, unsigned char gain, unsigned char pre
     	}
 	    comgain = true;
     }
-    else{	
+    else{
 		gainpoti[channel][preset] = gain;
 		gainval[channel][preset] = gv;
 	    comgain = false;
     }
-    
+
     if(preset)
    		str.sprintf("gain preset %d, %d, %d to %d (%2.2f)", mcpdId, busNum, channel, gainpoti[channel][preset], gainval[channel][preset]);
    	else
@@ -157,10 +157,10 @@ void mpsd8::setThreshold(unsigned char threshold, unsigned char preset)
     // boundary check
     if(threshold > 100)
     	threshold = 100;
-    
+
     threshpoti[preset] = calcThreshpoti(threshold);
     threshval[preset] = threshold;
-    
+
     if(preset)
    		str.sprintf("threshold preset %d, %d to %d (%d)", mcpdId, busNum, threshval[preset], threshpoti[preset]);
    	else
@@ -175,7 +175,7 @@ void mpsd8::setThreshpoti(unsigned char thresh, unsigned char preset)
 {
     threshpoti[preset] = thresh;
     threshval[preset] = calcThreshval(thresh);
-    
+
     if(preset)
    		str.sprintf("threshpoti preset %d, %d to %d (%d)", mcpdId, busNum, threshpoti[preset], threshval[preset]);
    	else
@@ -192,17 +192,17 @@ void mpsd8::setPulserpoti(unsigned char chan, unsigned char val, unsigned char p
     	pulspos[preset] = 2;
     else
     	pulspos[preset] = pos;
-    
+
     if(chan > 7)
     	pulschan[preset] = 7;
     else
     	pulschan[preset] = chan;
-    
+
     pulspoti[preset] = val;
     pulsamp[preset] = calcPulsamp(val, gainval[chan][0]);
-    
+
     pulser[preset] = on;
-    
+
     if(preset)
    		str.sprintf("pulser preset %d, %d to pos %d, poti %d - ampl %2.0f", mcpdId, busNum, pulspos[preset], pulspoti[preset], pulsamp[preset]);
    	else
@@ -219,17 +219,17 @@ void mpsd8::setPulser(unsigned char chan, unsigned char amp, unsigned char pos, 
     	pulspos[preset] = 2;
     else
     	pulspos[preset] = pos;
-    
+
     if(chan > 7)
     	pulschan[preset] = 7;
     else
     	pulschan[preset] = chan;
-    	
+
     pulspoti[preset] = calcPulspoti(amp, gainval[chan][0]);
     pulsamp[preset] = amp;
-    
+
     pulser[preset] = on;
-    
+
     if(preset)
    		str.sprintf("pulser preset %d, bus %d to pos %d, ampl %2.0f - poti %d", mcpdId, busNum, pulspos[preset], pulsamp[preset], pulspoti[preset]);
    	else
@@ -298,12 +298,12 @@ unsigned char mpsd8::calcGainpoti(float fval)
 {
 	unsigned char ug;
 	float fg;
-	
+
 	fg = (fval-g1)*g2;
 	ug = (unsigned char) fg;
 	if((fg - ug) > 0.5)
 		ug++;
-//	qDebug("gainval: %1.2f, gainpoti: %d", fval, ug);		
+//	qDebug("gainval: %1.2f, gainpoti: %d", fval, ug);
 	return ug;
 }
 
@@ -315,13 +315,13 @@ unsigned char mpsd8::calcThreshpoti(unsigned char tval)
 {
 	unsigned char ut;
 	float ft;
-	
+
 	ft = (tval-t1)/t2;
 	ut = (unsigned char) ft;
 	if((ft - ut) > 0.5)
 		ut++;
-		
-//	qDebug("threshold: %d, threshpoti: %d", tval, ut);	
+
+//	qDebug("threshold: %d, threshpoti: %d", tval, ut);
 	return ut;
 }
 
@@ -338,9 +338,9 @@ float mpsd8::calcGainval(unsigned char ga)
 	float test = fg -g;
 	if(test >= 0.5)
 		g++;
-	 
-	fgain = (float)g /100.0; 
-//	qDebug("gainpoti: %d, gainval: %1.2f", ga, fgain);	
+
+	fgain = (float)g /100.0;
+//	qDebug("gainpoti: %d, gainval: %1.2f", ga, fgain);
 	return fgain;
 }
 
@@ -355,7 +355,7 @@ unsigned char mpsd8::calcThreshval(unsigned char thr)
 	float diff = ft - t;
 	if(diff > 0.5)
 		t++;
-//	qDebug("threshpoti: %d, threshval: %d", t, thr);	
+//	qDebug("threshpoti: %d, threshval: %d", t, thr);
 	return t;
 }
 
@@ -444,13 +444,13 @@ bool mpsd8::getMode(unsigned char preset)
  */
 unsigned char mpsd8::calcPulspoti(unsigned char val, float gv)
 {
-    
+
     float pamp = (val / gv - p1) / p2;
     unsigned char pa = (unsigned char) pamp;
-     
+
      if(pamp - pa > 0.5)
      	pa++;
-     
+
 //     qDebug("pulsval: %d, pulspoti: %d", val, pa);
      return pa;
 }
@@ -465,9 +465,9 @@ unsigned char mpsd8::calcPulsamp(unsigned char val, float gv)
     unsigned char pamp = (unsigned char) pa;
     if(pa - pamp > 0.5)
     	pamp++;
-    
+
 //    qDebug("pulspoti: %d, pulsval: %d", val, pamp);
-    
+
     return pa;
 }
 
@@ -478,7 +478,7 @@ unsigned char mpsd8::calcPulsamp(unsigned char val, float gv)
 void mpsd8::setInternalreg(unsigned char reg, unsigned short val, unsigned char preset)
 {
     internalReg[reg][preset] = val;
-    
+
     if(preset)
    		str.sprintf("register preset %d, %d, %d to %d", mcpdId, busNum, reg, internalReg[reg][preset]);
    	else
@@ -502,7 +502,7 @@ bool mpsd8::serialize(QFile * fi)
 {
 	unsigned char c;
 	QTextStream t( fi );        // use a text stream
-	
+
 	t << "[MPSD-8]";
 	t << '\r' << '\n';
 	t << "id = " << 8*mcpdId + busNum;

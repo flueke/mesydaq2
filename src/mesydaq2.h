@@ -157,7 +157,7 @@ public:
     unsigned long int dispBuf[1024];
     bool listIds;
 
-	
+
     mcpd8 * myMcpd[MCPDS];
 	mpsd8 * myMpsd[8*MCPDS];
     networkDevice * netDev[8];
@@ -182,7 +182,7 @@ protected:
     QTimer * testTimer;
     unsigned long statuscounter[0];
     unsigned short sep0;
-    unsigned short sep5;    
+    unsigned short sep5;
     unsigned short sepA;
     unsigned short sepF;
     QString progVersion;
@@ -190,7 +190,7 @@ protected:
     QString setupfile;
     unsigned char commId;
     unsigned short commandBuffer[20];
-    
+
     bool acquireListfile;
     QString listfilename;
     QString configfilename;
@@ -221,7 +221,7 @@ protected:
     bool testJustStarted;
     bool testStopping;
     bool testRunning;
-    
+
 public slots:
     void dispTime();
     void readBuf(void);

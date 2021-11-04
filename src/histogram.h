@@ -35,7 +35,7 @@ public:
     histogram(QObject *parent = 0, const char *name = 0);
 
     ~histogram();
-    
+
 	bool incVal(unsigned char chan, unsigned short linear, unsigned short energy, unsigned long time);
     void clearAllHist(void);
     void clearHist(unsigned int channel);

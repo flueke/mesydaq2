@@ -60,8 +60,8 @@ protected:
 	int rxSockfd;
 	int txSockfd;
 	PMDP_PACKET netBuf, recBuf;
-    mesydaq2 * theApp;    
-	struct sockaddr_in rxAddr;    	
+    mesydaq2 * theApp;
+	struct sockaddr_in rxAddr;
 
 public slots:
 	void readSocketData();

@@ -50,10 +50,10 @@ controlInterface::~controlInterface()
 void controlInterface::caressTask()
 {
 	unsigned char devMap[5] = {0, M1CT, TCT, M2CT, EVCT};
-	
+
 	QString pstring, str;
 	pstring.sprintf("caress: ");
-	
+
 	if(caressDevice == HISTO){
     	pstring.append("histogram ");
 	}
@@ -61,7 +61,7 @@ void controlInterface::caressTask()
    			str.sprintf("counter %d (mesydaq #%d) ", caressDevice, devMap[caressDevice]);
    			pstring.append(str);
     }
-	
+
 	switch(caressTaskNum){
    		case CAR_INIT:
     		pstring.append("init.");
@@ -74,11 +74,11 @@ void controlInterface::caressTask()
 					theApp->meas->clearCounter(devMap[caressDevice]);
     		theApp->update();
     	break;
-    	
+
     	case CAR_RELEASE:
     		pstring.append("release.");
     	break;
-    	
+
     	case CAR_START:
    			if(caressDevice == caressMaster){
    				// only start on master start!
@@ -94,7 +94,7 @@ void controlInterface::caressTask()
 				// just notice, don't start yet...
 				pstring.append("start.");
     	break;
-    	
+
     	case CAR_STOP:
    			if(caressDevice == caressMaster){
    				// only if daq not already stopped (e.g. by preset)
@@ -105,18 +105,18 @@ void controlInterface::caressTask()
    				}
    				else
    					caressTaskPending = false;
-   					
+
 				pstring.append("stop master.");
 			}
 			else
 				// just notice, don't stop yet...
 				pstring.append("stop.");
     	break;
-    	
+
     	case CAR_DRIVE:
     		pstring.append("drive ");
     	break;
-    	
+
     	case CAR_LOAD:
 			if(caressDevice == HISTO){
 				pstring.append("load.");
@@ -127,43 +127,43 @@ void controlInterface::caressTask()
 	    			pstring.append("load slave");
 	    		}
 	    		if(caressSubTaskNum == CAR_MASTER){
-					theApp->meas->setPreset(devMap[caressDevice], caressPreset, true); 
+					theApp->meas->setPreset(devMap[caressDevice], caressPreset, true);
 					pstring.append("load master preset: ");
 					str.sprintf("%d", caressPreset);
 					pstring.append(str);
 					theApp->updatePresets();
-					caressMaster = caressDevice; 
+					caressMaster = caressDevice;
 				}
 	    		if(caressSubTaskNum == CAR_RESET){
-					theApp->meas->clearCounter(devMap[caressDevice]); 
+					theApp->meas->clearCounter(devMap[caressDevice]);
 					pstring.append("(reset / load)");
 					theApp->updatePresets();
 				}
     		}
     	break;
-    	
+
     	case CAR_LOADBLOCK:
     		pstring.append("loadblock.");
     		qDebug("caress header: ");
     		qDebug(caressHeader);
-    		
+
 // for test purposes:
 //createTestheader();
-    		
+
     		// extract given information:
     		extractCaressHeader();
     		caressFilefragment = 1;
-    		    		
+
     	break;
-    	
+
     	case CAR_READ:
     		pstring.append("read.");
     	break;
-    	
+
     	case CAR_READBLOCKP:
     		pstring.append("readblock param.");
     	break;
-    	
+
     	case CAR_READBLOCKM:
     		unsigned long start, stop;
     	    if(caressDevice == HISTO){
@@ -181,7 +181,7 @@ void controlInterface::caressTask()
     			pstring.append(str);
     		}
     	break;
-    	
+
     	default:
     		pstring.sprintf("ERROR: invalid task number!");
     	break;
@@ -234,7 +234,7 @@ void controlInterface::extractCaressHeader()
 {
        		unsigned int strpos, strpos2;
        		QString helpstr, pstr;
-       		
+
        		// run number
     		strpos = caressHeader.find("Run_Number", 0, false);
     		strpos = caressHeader.find("=", strpos + 10, false);
@@ -265,15 +265,15 @@ void controlInterface::extractCaressHeader()
     		strpos2 = caressHeader.find("\n", strpos + 1, false);
 			helpstr = caressHeader.mid(strpos+1, strpos2-strpos-1);
 			helpstr.remove(" ");
-			
+
 			// now extract the numerical value:
-			unsigned int factor = 1; 
+			unsigned int factor = 1;
 			if(helpstr.find("k", 0, true) > 0)
-				factor = 1024; 
+				factor = 1024;
 			if(helpstr.find("M", 0, true) > 0)
-				factor = 1024 * 1024; 
+				factor = 1024 * 1024;
 			if(helpstr.find("G", 0, true) > 0)
-				factor = 1024 * 1024 * 1024; 
+				factor = 1024 * 1024 * 1024;
 			if(factor > 1){
 				helpstr.remove("k");
 				helpstr.remove("M");
@@ -300,17 +300,17 @@ void controlInterface::completeCaressFileheader(void)
 	caressFilename.append("_P");
 	caressFilename.append(str);
 	caressFilename.append(".mts");
-	
+
 	// add the starttime information into fileheader
 	carFileH = caressHeader;
-	carFileH.append("[MSY_] # mesydaq data\n");	
+	carFileH.append("[MSY_] # mesydaq data\n");
 	carFileH.append("File_Name = ");
-	carFileH.append(caressFilename);	
-	carFileH.append("\n");	
-	carFileH.append("Frequency = 1E+07\n");	
+	carFileH.append(caressFilename);
+	carFileH.append("\n");
+	carFileH.append("Frequency = 1E+07\n");
     str.sprintf("Start_Time = %d\n", caressStarttime);
-	carFileH.append(str);	
-	carFileH.append("# offset (bytes) where binary tof data begins\n");	
+	carFileH.append(str);
+	carFileH.append("# offset (bytes) where binary tof data begins\n");
 	carFileH.append("Data = ");
 	// text length plus trailing '\n'
 	caressHlen = carFileH.length() + 1;
@@ -325,7 +325,7 @@ void controlInterface::completeCaressFileheader(void)
 	if(caressHlen > 99993 && caressHlen < 999994)
 		caressHlen += 6;
 	// should be enough here...
-	// convert into string: 
+	// convert into string:
 	str.sprintf("%d",caressHlen);
 	carFileH.append(str);
 	carFileH.append('\n');

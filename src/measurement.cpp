@@ -28,30 +28,30 @@ measurement::measurement(QObject *parent, const char *name)
 {
 	online = false;
 	working = true;
-	
+
 	theApp = (mesydaq2*) parent;
 	meastime_msec = 0;
 	starttime_msec = 0;
 	stoptime_msec = 0;
 	ratetime_msec = 0;
-	
+
 	events = 0;
 	mon1 = 0;
 	mon2 = 0;
-		
+
 	running = false;
 	starting = false;
 	stopping = false;
 	rateflag = false;
 	listmode = false;
 	remote = false;
-	
+
 	runNumber = 0;
-	
+
 	carHistHeight = 128;
 	carHistWidth = 128;
 	carStep = 0;
-	
+
     for(unsigned char c = 0; c < 8; c++){
     	rate[10][c] = 0;
     	counter[0][c] = 0;
@@ -153,7 +153,7 @@ void measurement::stop(unsigned long time)
     stopping = false;
     stoptime_msec = time;
  	counterOffset[TCT] = counter[1][TCT];
-} 
+}
 
 
 /*!
@@ -162,12 +162,12 @@ void measurement::stop(unsigned long time)
 void measurement::setCounter(unsigned int cNum, unsigned long long val)
 {
     QString str;
-    
+
     // set counter
-    
+
     if(cNum < 8)
    		counter[1][cNum] = counterOffset[cNum] + val - counterStart[cNum];
-    	
+
 	// if counter is reset: clear rate buffers
 	if(val == 0){
 		for(unsigned char c = 0; c < 11; c++)
@@ -175,7 +175,7 @@ void measurement::setCounter(unsigned int cNum, unsigned long long val)
 		counterOffset[cNum] = 0;
 		counterStart[cNum] = 0;
 	}
-	
+
 	// is counter master and is limit reached?
 	if(master[cNum] && (preset[cNum] > 0)){
 		if(counter[1][cNum] >= preset[cNum] && !stopping){
@@ -195,7 +195,7 @@ void measurement::setCounter(unsigned int cNum, unsigned long long val)
 void measurement::calcRates()
 {
     unsigned long tval;
-    
+
     if(meastime_msec == 0)
     	return;
     if(ratetime_msec >= meastime_msec){
@@ -204,7 +204,7 @@ void measurement::calcRates()
     }
     if(rateflag = true){
 		unsigned long tval = (meastime_msec - ratetime_msec);
-		
+
 		for(unsigned char c = 0; c < 8; c++){
 			if(ratecount[c] < 10)
 				ratecount[c]++;
@@ -228,7 +228,7 @@ void measurement::calcRates()
 void measurement::calcMeanRates()
 {
 	unsigned long val2;
-	
+
 	for(unsigned char c = 0; c < 8; c++){
 		val2 = 0;
 		for(unsigned char d = 1; d < ratecount[c]; d++)
@@ -236,7 +236,7 @@ void measurement::calcMeanRates()
 		if(ratecount[c] > 1)
 			rate[10][c] = val2 / (ratecount[c] - 1);
 		else
-			rate[10][c] = 0;			
+			rate[10][c] = 0;
 	}
 }
 
@@ -294,13 +294,13 @@ unsigned char measurement::isOk(void)
 void measurement::setOnline(bool truth)
 {
 	QString str;
-	
+
 	online = truth;
 	if(online)
 		str.sprintf("MCPD online");
 	else
 		str.sprintf("MCPD offline");
-	theApp->protocol(str, 2);	
+	theApp->protocol(str, 2);
 }
 
 
@@ -320,12 +320,12 @@ void measurement::setPreset(unsigned char cNum, unsigned long prval, bool mast)
     	else
     		// just clear master
     		master[cNum] = false;
-    		
+
     	preset[cNum] = prval;
     	if(cNum == EVCT || cNum == M1CT || cNum == M2CT)
     		if(master[cNum])
     			theApp->setCountlimit(cNum, prval);
-			else	
+			else
     			theApp->setCountlimit(cNum, 0);
     }
 }
@@ -369,7 +369,7 @@ void measurement::setCarHistSize(unsigned int h, unsigned int w)
 {
     carHistWidth = w;
     carHistHeight = h;
-    
+
 }
 
 
@@ -443,7 +443,7 @@ void measurement::clearCounter(unsigned char cNum)
 {
     if(cNum > 7)
 		return;
-		
+
 	if(cNum == TCT){
 		if(running){
 			counterStart[cNum] += counter[1][cNum];
@@ -460,7 +460,7 @@ void measurement::clearCounter(unsigned char cNum)
     	mon2 = 0;
 
 	counter[1][cNum] = 0;
-	
+
 	for(unsigned char c = 0; c < 11; c++)
 		rate[c][cNum] = 0;
 	counterOffset[cNum] = 0;
@@ -499,10 +499,10 @@ bool measurement::limitReached(unsigned char cNum)
 {
     if(cNum >= 8)
     	return false;
-    
+
     if(master[cNum] && (counter[1][cNum] >= preset[cNum]))
     	return true;
-    else 
+    else
     	return false;
 }
 
@@ -556,7 +556,7 @@ void measurement::serialize(QFile * fi)
 {
 	unsigned char c;
 	QTextStream t( fi );        // use a text stream
-	
+
 	t << "monitor1 = " << monAssign[0][0] << " " << monAssign[0][1];
 	t << '\r' << '\n';
 	t << "monitor1 = " << monAssign[0][0] << " " << monAssign[0][1];

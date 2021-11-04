@@ -32,7 +32,7 @@ dataCruncher::dataCruncher(QObject *parent, const char *name)
 	theApp = (mesydaq2 *) parent;
 	for(unsigned char c = 0; c < 8; c++)
 		countLimit[c] = 0;
-	
+
 	mon1counter = 0;
 	mon2counter = 1;
 	mon1cpu = 0;
@@ -49,15 +49,15 @@ dataCruncher::~dataCruncher()
  */
 void dataCruncher::analyzeCmd(PMDP_PACKET pPacket, unsigned char daq, histogram * hist)
 {
-	unsigned short cmd, err; 
+	unsigned short cmd, err;
 	unsigned char devnum;
 	QString str;
-	
+
 	// extract cmd and error code
 	cmd = pPacket->cmd & 0x00FF;
 	err = (pPacket->cmd & 0xFF00) / 0x100;
-	
-	
+
+
 	str.sprintf("analyze cmd %d from %d (cmd: %d, error: %d)", pPacket->cmd, pPacket->deviceId, cmd, err);
 	theApp->protocol(str, 2);
 	switch(cmd){
@@ -66,13 +66,13 @@ void dataCruncher::analyzeCmd(PMDP_PACKET pPacket, unsigned char daq, histogram 
 					theApp->startedDaq();
 				theApp->update();
 			break;
-		
+
 			case STOP:
 				if(theApp->myMcpd[pPacket->deviceId]->isMaster())
-					theApp->stoppedDaq();			
+					theApp->stoppedDaq();
 				theApp->update();
 			break;
-			
+
 			case READID:
 			// extract the retrieved MPSD-8 IDs:
 			for(unsigned char c = 0; c < 8; c++){
@@ -84,7 +84,7 @@ void dataCruncher::analyzeCmd(PMDP_PACKET pPacket, unsigned char daq, histogram 
 				theApp->meas->setOnline(true);
 			theApp->dispMpsd();
 		break;
-		
+
 		case GETVER:
 			theApp->myMcpd[pPacket->deviceId]->setVersion(pPacket->data[0], pPacket->data[1]);
 			theApp->myMcpd[pPacket->deviceId]->setOnline();
@@ -113,9 +113,9 @@ void dataCruncher::analyzeCmd(PMDP_PACKET pPacket, unsigned char daq, histogram 
 				}
 				theApp->myMpsd[devnum]->setGain(pPacket->data[1], (unsigned char)pPacket->data[2], 0);
 			}
-			theApp->dispMpsd();	
+			theApp->dispMpsd();
 		break;
-		
+
 		case SETTHRESH:
 			// extract the set thresh value:
 			devnum = 8*pPacket->deviceId+pPacket->data[0];
@@ -124,9 +124,9 @@ void dataCruncher::analyzeCmd(PMDP_PACKET pPacket, unsigned char daq, histogram 
 				theApp->protocol(pstring, 0);
 			}
 			theApp->myMpsd[devnum]->setThreshpoti(pPacket->data[1], 0);
-			theApp->dispMpsd();	
+			theApp->dispMpsd();
 		break;
-		
+
 		case SETMODE:
 			// extract the set mode:
 			devnum = 8*pPacket->deviceId+pPacket->data[0];
@@ -135,7 +135,7 @@ void dataCruncher::analyzeCmd(PMDP_PACKET pPacket, unsigned char daq, histogram 
 			else
 				theApp->myMpsd[devnum]->setAmpmode(false, 0);
 		break;
-		
+
 		case SETPULSER:
 			devnum = 8*pPacket->deviceId+pPacket->data[0];
 			if(pPacket->data[3] != theApp->myMpsd[devnum]->getPulspoti(1)){
@@ -143,22 +143,22 @@ void dataCruncher::analyzeCmd(PMDP_PACKET pPacket, unsigned char daq, histogram 
 				theApp->protocol(pstring, 0);
 			}
 			theApp->myMpsd[devnum]->setPulserpoti(pPacket->data[1], pPacket->data[3], pPacket->data[2], pPacket->data[4], 0);
-			theApp->dispMpsd();	
+			theApp->dispMpsd();
 		break;
-		
+
 		case WRITEPERIREG:
 			devnum = 8*pPacket->deviceId+pPacket->data[0];
 			if(pPacket->data[2] != theApp->myMpsd[devnum]->getInternalreg(pPacket->data[1], 1)){
 				pstring.sprintf("Error setting internal mpsd-register, mod %d, is: %d, should be: %d", devnum, pPacket->data[3], theApp->myMpsd[devnum]->getPulspoti(1));
 				theApp->protocol(pstring, 0);
 			}
-			theApp->myMpsd[devnum]->setInternalreg(pPacket->data[1], pPacket->data[2], 0);			
+			theApp->myMpsd[devnum]->setInternalreg(pPacket->data[1], pPacket->data[2], 0);
 		break;
-		
+
 		case WRITEREGISTER:
 //			qDebug("writeregister");
 		break;
-		
+
 		case SETPROTOCOL:
 			qDebug("Answer to set protocol received:");
 			qDebug("mcpd-ip address: %d.%d.%d.%d", pPacket->data[0], pPacket->data[1], pPacket->data[2], pPacket->data[3]);
@@ -181,11 +181,11 @@ void dataCruncher::analyzeBuffer(PDATA_PACKET pd, unsigned char daq, histogram* 
 	unsigned long long var = 0;
 	unsigned short neutrons = 0;
 	unsigned short triggers = 0;
-	
+
 	htim = pd->time[0] + 0x10000ULL * pd->time[1] + 0x100000000ULL * pd->time[2];
-		
+
 	if(pd->bufferType == 0x0000 || pd->bufferType == 0x0001){
-		
+
 		id = pd->deviceId;
 		offs = 8*id;
 		// extract parameter values:
@@ -197,7 +197,7 @@ void dataCruncher::analyzeBuffer(PDATA_PACKET pd, unsigned char daq, histogram* 
 			}
 			theApp->myMcpd[pd->deviceId]->setParameter((unsigned char)i, var);
 //			theApp->meas->setCounter(i, var);
-		}		
+		}
 		// data length = (buffer length - header length) / (3 words per event) - 4 parameters.
  		unsigned int datalen = (pd->bufferLength - pd->headerLength) / 3;
 		if(datalen>0){
@@ -215,15 +215,15 @@ void dataCruncher::analyzeBuffer(PDATA_PACKET pd, unsigned char daq, histogram* 
 					time = (unsigned short) tim;
 //					qDebug("id: %d, trigId: %d, dataId: %d, data: %d, time %lu", pd->deviceId, trigId, dataId, data, tim);
 					// dispatch events:
-					if(dataId == mon1counter && id == mon1cpu){		
+					if(dataId == mon1counter && id == mon1cpu){
 							if((countLimit[MON1ID] == 0) || (theApp->meas->mon1 < countLimit[MON1ID]))
 								theApp->meas->mon1++;
 					}
-					if(dataId == mon2counter && id == mon2cpu){		
+					if(dataId == mon2counter && id == mon2cpu){
 							if((countLimit[MON2ID] == 0) || (theApp->meas->mon2 < countLimit[MON2ID]))
 								theApp->meas->mon2++;
 					}
-				} 
+				}
 				// neutron event:
 				else{
 					neutrons++;
@@ -238,7 +238,7 @@ void dataCruncher::analyzeBuffer(PDATA_PACKET pd, unsigned char daq, histogram* 
 						theApp->hist[MCPDS]->incVal(chan, data0, data1, tim);
 						theApp->meas->events++;
 					}
-				} 
+				}
 				counter += 3;
 			}
 		}
@@ -278,7 +278,7 @@ void dataCruncher::setCounterAssign(unsigned char cpu0, unsigned char counter0, 
     mon1cpu = cpu0;
     mon2cpu = cpu1;
     mon1counter = counter0;
-    mon2counter = counter1; 
+    mon2counter = counter1;
 }
 
 #include "datacruncher.moc"

@@ -27,7 +27,7 @@
 class mesydaq2;
 
 /**
-representation of mpsd-8 peripheral module 
+representation of mpsd-8 peripheral module
 
 	@author Gregor Montermann <g.montermann@mesytec.com>
 */
@@ -70,7 +70,7 @@ public:
     unsigned short getInternalreg(unsigned char reg, unsigned char preset = 0);
     void setInternalreg(unsigned char reg, unsigned short val, unsigned char preset = 0);
     bool serialize(QFile * fi);
-	
+
 protected:
     unsigned char mcpdId;
     unsigned char mpsdId;
@@ -84,7 +84,7 @@ protected:
     float pulsamp[2];
     unsigned char pulschan[2];
     unsigned char pulser[2];
-    bool ampmode[2]; 
+    bool ampmode[2];
     mesydaq2 * theApp;
     QString str;
     float g1;

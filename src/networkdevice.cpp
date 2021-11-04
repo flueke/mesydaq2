@@ -26,7 +26,7 @@ networkDevice::networkDevice(QObject *parent, const char *name)
 {
 	netBuf = new (MDP_PACKET);
 	recBuf = new (MDP_PACKET);
-	theApp = (mesydaq2 *) parent;	
+	theApp = (mesydaq2 *) parent;
 }
 
 
@@ -50,7 +50,7 @@ int networkDevice::initSockets(struct ifreq * pIfreq, unsigned char n)
 	// receive socket (server socket, udp type)
 	rxSockfd = socket(AF_INET, SOCK_DGRAM, 0);
 //	qDebug("rxSockfd %d", rxSockfd);
-	
+
 	// create receive socket address structure
 	memcpy(&rxAddr, (struct sockaddr_in*)&pIfreq->ifr_addr, sizeof(sockaddr_in));
 
@@ -58,19 +58,19 @@ int networkDevice::initSockets(struct ifreq * pIfreq, unsigned char n)
 	rxAddr.sin_family = AF_INET;
 	rxAddr.sin_port = htons(54321);
 //	rxAddr.sin_addr.s_addr = INADDR_ANY;
-	
+
 //	qDebug("binding to socket port: %d", ntohs(rxAddr.sin_port));
-	inet_ntop(AF_INET, &rxAddr.sin_addr.s_addr, str, sizeof(str)); 
-//	qDebug("binding to ip address %20s", str); 
+	inet_ntop(AF_INET, &rxAddr.sin_addr.s_addr, str, sizeof(str));
+//	qDebug("binding to ip address %20s", str);
 	const int on = 1;
-	
-//	qDebug("setsockopt %d", setsockopt(rxSockfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on))); 
-	setsockopt(rxSockfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)); 
-	
+
+//	qDebug("setsockopt %d", setsockopt(rxSockfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)));
+	setsockopt(rxSockfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
+
 	// bind receive socket
 //	qDebug("bind: %d", bind(rxSockfd,(const struct sockaddr*)&rxAddr, sizeof(rxAddr)));
 	bind(rxSockfd,(const struct sockaddr*)&rxAddr, sizeof(rxAddr));
-	 
+
 	// check socket
 	struct sockaddr_in checkAddr;
 	bzero(&checkAddr, sizeof(checkAddr));
@@ -79,9 +79,9 @@ int networkDevice::initSockets(struct ifreq * pIfreq, unsigned char n)
 	getsockname(rxSockfd, (sockaddr*)&checkAddr, &len);
 //	qDebug("bound to socket port: %d", ntohs(checkAddr.sin_port));
 //	qDebug("tried port: %d", ntohs(rxAddr.sin_port));
-	inet_ntop(AF_INET, &checkAddr.sin_addr.s_addr, str, sizeof(str)); 
-	qDebug("bound to ip address %s, port: %d", str, ntohs(checkAddr.sin_port)); 
-	
+	inet_ntop(AF_INET, &checkAddr.sin_addr.s_addr, str, sizeof(str));
+	qDebug("bound to ip address %s, port: %d", str, ntohs(checkAddr.sin_port));
+
 	// establish socket notifier
 	notifyNet = new QSocketNotifier(rxSockfd, QSocketNotifier::Read);
 	notifyNet->setEnabled(false);

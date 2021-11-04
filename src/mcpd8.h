@@ -94,15 +94,15 @@ protected:
     unsigned char ipAddress[4];
     QString ipAddrStr;
     sockaddr_in inetAddr;
-    
+
     unsigned char cmdIpAddress[4];
 	unsigned char dataIpAddress[4];
 	unsigned short cmdPort;
 	unsigned short dataPort;
-	
+
 	bool master;
 	bool terminate;
-	
+
 	// 8 counter cells, trig source in [0], compare reg in [1]
 	unsigned char counterCell[8][2];
 	// four auxiliary timers, capture values
@@ -113,7 +113,7 @@ protected:
 	unsigned short dac[2];
 	// two ADCs
 	unsigned short adc[2];
-	
+
 	// one output, one input string for RS-232
 	QString outString;
 	QString inString;
