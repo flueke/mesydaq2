@@ -1566,7 +1566,7 @@ Listfile</string>
         <bool>false</bool>
        </property>
       </widget>
-      <widget class="Q3TextEdit" name="caressEdit" native="true">
+      <widget class="QTextEdit" name="caressEdit">
        <property name="enabled">
         <bool>true</bool>
        </property>
@@ -1581,7 +1581,7 @@ Listfile</string>
        <property name="toolTip">
         <string>application and error messages</string>
        </property>
-       <property name="readOnly" stdset="0">
+       <property name="readOnly">
         <bool>true</bool>
        </property>
       </widget>
@@ -4455,7 +4455,7 @@ parameters</string>
       </property>
      </item>
     </widget>
-    <widget class="Q3TextEdit" name="protocolEdit" native="true">
+    <widget class="QTextEdit" name="protocolEdit">
      <property name="enabled">
       <bool>true</bool>
      </property>
@@ -4470,7 +4470,7 @@ parameters</string>
      <property name="toolTip">
       <string>application and error messages</string>
      </property>
-     <property name="readOnly" stdset="0">
+     <property name="readOnly">
       <bool>true</bool>
      </property>
     </widget>
@@ -4500,13 +4500,6 @@ parameters</string>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>Q3TextEdit</class>
-   <extends>QWidget</extends>
-   <header>q3textedit.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections>
   <connection>
