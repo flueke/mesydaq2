@@ -1,0 +1,22 @@
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+find_package(Qt5 COMPONENTS Widgets REQUIRED)
+
+add_executable(mesydaq2
+    controlinterface.cpp
+    datacruncher.cpp
+    histogram.cpp
+    main.cpp
+    mainwidget.ui
+    mainwindow.cpp
+    mcpd8.cpp
+    measurement.cpp
+    mesydaq2.cpp
+    mesydaq2mainwindow.cpp
+    mpsd8.cpp
+    networkdevice.cpp
+)
+
+target_link_libraries(mesydaq2 Qt5::Widgets)

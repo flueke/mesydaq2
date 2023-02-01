@@ -1,0 +1,10 @@
+**/*.pyc
+**/*.swp
+**/*.swo
+*.pro.user
+build*/
+CMakeLists.txt.user*
+compile_commands.json
+.cmake/
+.cache/
+
