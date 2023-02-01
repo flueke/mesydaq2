@@ -23,8 +23,8 @@
 #include "histogram.h"
 #include "datacruncher.h"
 
-measurement::measurement(QObject *parent, const char *name)
- : QObject(parent, name)
+measurement::measurement(QObject *parent)
+ : QObject(parent)
 {
 	online = false;
 	working = true;
@@ -285,6 +285,9 @@ unsigned char measurement::isOk(void)
 //    	qDebug("not online, not working");
     	return 2;
     }
+
+    // FIXME: return something here please! :-(
+    return 0; // idk ;-((
 }
 
 
@@ -323,10 +326,12 @@ void measurement::setPreset(unsigned char cNum, unsigned long prval, bool mast)
 
     	preset[cNum] = prval;
     	if(cNum == EVCT || cNum == M1CT || cNum == M2CT)
+        {
     		if(master[cNum])
     			theApp->setCountlimit(cNum, prval);
 			else
     			theApp->setCountlimit(cNum, 0);
+        }
     }
 }
 

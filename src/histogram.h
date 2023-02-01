@@ -32,7 +32,7 @@ class histogram : public QObject
 {
 Q_OBJECT
 public:
-    histogram(QObject *parent = 0, const char *name = 0);
+    explicit histogram(QObject *parent = 0);
 
     ~histogram();
 

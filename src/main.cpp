@@ -30,18 +30,17 @@ int main(int argc, char **argv)
     mesydaq2 *mainWin = 0;
 
     mainWin = new mesydaq2();
-    QString s;
-    unsigned char c;
-    for(c = 0; c < argc; c++){
-		s.sprintf("%s", argv[c]);
-		if(s.find("-f") >= 0){
-		    s.sprintf("%s",argv[c+1]);
-		    mainWin->setConfigfilename(s);
-			break;
-		}
-	}
+
+    auto args = app.arguments();
+
+    if (auto flagIndex = args.indexOf("-f");
+        flagIndex > 0 && flagIndex + 1 < args.size())
+    {
+        mainWin->setConfigfilename(args[flagIndex+1]);
+    }
+
     mainWin->initSystem();
-    app.setMainWidget( mainWin );
+    //app.setMainWidget( mainWin );
     mainWin->show();
     // mainWin has WDestructiveClose flag by default, so it will delete itself.
     return app.exec();

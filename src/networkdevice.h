@@ -44,7 +44,7 @@ class networkDevice : public QObject
 {
 Q_OBJECT
 public:
-    networkDevice(QObject *parent = 0, const char *name = 0);
+    explicit networkDevice(QObject *parent = 0);
 
     ~networkDevice();
     int initSockets(struct ifreq * pIfreq, unsigned char n);

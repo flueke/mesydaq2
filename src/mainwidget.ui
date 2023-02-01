@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWidget</class>
- <widget class="QWidget" name="mainWidget">
+ <widget class="QWidget" name="widget2">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -3794,7 +3794,7 @@ parameters</string>
          <height>60</height>
         </rect>
        </property>
-       <widget class="QRadioButton" name="pos">
+       <widget class="QRadioButton" name="modePos">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -3810,7 +3810,7 @@ parameters</string>
          <bool>true</bool>
         </property>
        </widget>
-       <widget class="QRadioButton" name="amp">
+       <widget class="QRadioButton" name="modeAmp">
         <property name="geometry">
          <rect>
           <x>10</x>

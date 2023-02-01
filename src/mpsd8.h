@@ -35,7 +35,7 @@ class mpsd8 : public QObject
 {
 Q_OBJECT
 public:
-    mpsd8(QObject *parent = 0, const char *name = 0);
+    explicit mpsd8(QObject *parent = 0);
 
     ~mpsd8();
     void setMcpdId(unsigned char id);

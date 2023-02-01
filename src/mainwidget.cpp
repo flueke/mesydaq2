@@ -17,7 +17,7 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#include "mainwindow.h"
+#include "mainwidget.h"
 #include "mdefines.h"
 #include "mcpd8.h"
 #include "mpsd8.h"
@@ -38,9 +38,10 @@
 #include <math.h>
 
 
-mainWindow::mainWindow(QWidget* parent, const char* name, WFlags fl)
- : mesydaq2mainwindow(parent, name, fl)
+MainWidget::MainWidget(QWidget* parent)
+    : QWidget(parent)
 {
+    setupUi(this);
 	theApp = (mesydaq2 *) parent;
 	pBuffer = (unsigned short *) &cmdBuffer;
     height = 480;
@@ -62,13 +63,13 @@ mainWindow::mainWindow(QWidget* parent, const char* name, WFlags fl)
 }
 
 
-mainWindow::~mainWindow()
+MainWidget::~MainWidget()
 {
 }
 
-void mainWindow::startStopSlot()
+void MainWidget::startStopSlot()
 {
-	if(startStopButton->isOn()){
+	if(startStopButton->isChecked()){
 		// get timing binwidth
 		theApp->setTimingwidth(timingBox->value());
 
@@ -93,28 +94,28 @@ void mainWindow::startStopSlot()
 	}
 }
 
-void mainWindow::sendCellSlot()
+void MainWidget::sendCellSlot()
 {
 	cmdBuffer[0] = mcpdId->value();
 	cmdBuffer[1] = SETCELL;
-	cmdBuffer[2] = (unsigned short) cellSource->currentItem();
-	cmdBuffer[3] = (unsigned short) cellTrigger->currentItem();
+	cmdBuffer[2] = (unsigned short) cellSource->currentData().toUInt();
+	cmdBuffer[3] = (unsigned short) cellTrigger->currentData().toUInt();
 	cmdBuffer[4] = (unsigned short) cellCompare->value();
 	theApp->protocol("set cell", 2);
 	theApp->sendCommand(pBuffer);
 }
 
-void mainWindow::sendParamSlot()
+void MainWidget::sendParamSlot()
 {
 	cmdBuffer[0] = mcpdId->value();
 	cmdBuffer[1] = SETPARAM;
 	cmdBuffer[2] = (unsigned short) param->value();
-	cmdBuffer[3] = (unsigned short) paramSource->currentItem();
+	cmdBuffer[3] = (unsigned short) paramSource->currentData().toUInt();
 	theApp->protocol("set parameter", 2);
 	theApp->sendCommand(pBuffer);
 }
 
-void mainWindow::sendAuxSlot()
+void MainWidget::sendAuxSlot()
 {
 	bool ok;
 	QString str;
@@ -130,7 +131,7 @@ void mainWindow::sendAuxSlot()
 	theApp->sendCommand(pBuffer);
 }
 
-void mainWindow::resetTimerSlot()
+void MainWidget::resetTimerSlot()
 {
 	cmdBuffer[0] = mcpdId->value();
 	cmdBuffer[1] = SETCLOCK;
@@ -141,7 +142,7 @@ void mainWindow::resetTimerSlot()
 	theApp->sendCommand(pBuffer);
 }
 
-void mainWindow::setTimingSlot()
+void MainWidget::setTimingSlot()
 {
 	cmdBuffer[0] = mcpdId->value();
 	cmdBuffer[1] = SETTIMING;
@@ -161,7 +162,7 @@ void mainWindow::setTimingSlot()
 	theApp->sendCommand(pBuffer);
 }
 
-void mainWindow::setMcpdIdSlot()
+void MainWidget::setMcpdIdSlot()
 {
 	unsigned short id = (unsigned short) deviceId->value();
 	cmdBuffer[0] = mcpdId->value();
@@ -170,7 +171,7 @@ void mainWindow::setMcpdIdSlot()
 	theApp->sendCommand(pBuffer);
 }
 
-void mainWindow::setStreamSlot()
+void MainWidget::setStreamSlot()
 {
 	unsigned short id = (unsigned short) deviceId->value();
 	cmdBuffer[0] = mcpdId->value();
@@ -184,7 +185,7 @@ void mainWindow::setStreamSlot()
 	theApp->sendCommand(pBuffer);
 }
 
-void mainWindow::setIpUdpSlot()
+void MainWidget::setIpUdpSlot()
 {
 	bool ok;
 	QString stri;
@@ -267,7 +268,7 @@ void mainWindow::setIpUdpSlot()
 	theApp->sendCommand(pBuffer);
 }
 
-void mainWindow::setPulserSlot()
+void MainWidget::setPulserSlot()
 {
 	qDebug("pulserSlot");
 
@@ -296,13 +297,13 @@ void mainWindow::setPulserSlot()
 		pos = 2;
 
 	unsigned short pulse;
-	if(pulserButton->isOn()){
+	if(pulserButton->isChecked()){
 		pulse = 1;
-		pulserButton->setPaletteForegroundColor(QColor(238,0,0));
+        pulserButton->setStyleSheet("QPushButton {color: red;}");
 	}
 	else{
 		pulse = 0;
-		pulserButton->setPaletteForegroundColor(QColor(0,0,0));
+        pulserButton->setStyleSheet({});
 	}
 
 	cmdBuffer[0] = id;
@@ -315,7 +316,7 @@ void mainWindow::setPulserSlot()
 	theApp->sendCommand(pBuffer);
 }
 
-void mainWindow::setGainSlot()
+void MainWidget::setGainSlot()
 {
 	bool ok;
 	unsigned short id = (unsigned short) devid->value();
@@ -341,7 +342,7 @@ void mainWindow::setGainSlot()
 	theApp->sendCommand(pBuffer);
 }
 
-void mainWindow::setThresholdSlot()
+void MainWidget::setThresholdSlot()
 {
 	bool ok;
 	unsigned short id = (unsigned short) devid->value();
@@ -354,18 +355,18 @@ void mainWindow::setThresholdSlot()
 	theApp->sendCommand(pBuffer);
 }
 
-void mainWindow::allPulserSlot()
+void MainWidget::allPulserSlot()
 {
 	theApp->allPulserOff();
 }
 
-void mainWindow::selectListfileSlot()
+void MainWidget::selectListfileSlot()
 {
   theApp->getListfilename();
   dispFiledata();
 }
 
-void mainWindow::acqListfileSlot()
+void MainWidget::acqListfileSlot()
 {
 	if(acqListfile->isChecked())
 		theApp->acqListfile(true);
@@ -374,9 +375,9 @@ void mainWindow::acqListfileSlot()
 }
 
 /*!
-    \fn mainWindow::update(void)
+    \fn MainWidget::update(void)
  */
-void mainWindow::update(void)
+void MainWidget::update(void)
 {
    	unsigned short id = (unsigned short) mcpdId->value();
     pstring.sprintf("%ld", theApp->dataRxd);
@@ -422,9 +423,9 @@ void mainWindow::update(void)
 }
 
 /*!
-    \fn mainWindow::buildTimestring(unsigned long nsec)
+    \fn MainWidget::buildTimestring(unsigned long nsec)
  */
-QString mainWindow::buildTimestring(unsigned long timeval, bool nano)
+QString MainWidget::buildTimestring(unsigned long timeval, bool nano)
 {
 	// nsec = time in 100 nsecs
 	//-> usec =
@@ -457,9 +458,9 @@ QString mainWindow::buildTimestring(unsigned long timeval, bool nano)
 
 
 /*!
-    \fn mainWindow::drawData(void)
+    \fn MainWidget::drawData(void)
  */
-void mainWindow::drawData(void)
+void MainWidget::drawData(void)
 {
 	float val2, val1;
 	unsigned int start = 0;
@@ -467,8 +468,8 @@ void mainWindow::drawData(void)
 	QFont fo;
 	QPainter p2;
 	p2.begin(this->dataFrame);
-	p2.setPen(QPen(black, 1, SolidLine));
-	p2.setBrush(QBrush(black));
+	p2.setPen(QPen(Qt::black, 1, Qt::SolidLine));
+	p2.setBrush(QBrush(Qt::black));
 	fo = p2.font();
 	fo.setStyleStrategy(QFont::PreferAntialias);
 	fo.setPointSize(8);
@@ -557,9 +558,9 @@ void mainWindow::drawData(void)
 
 
 /*!
-    \fn mainWindow::setData(unsigned long * data, unsigned int len)
+    \fn MainWidget::setData(unsigned long * data, unsigned int len)
  */
-void mainWindow::setData(unsigned long * data, unsigned int len, unsigned long int max)
+void MainWidget::setData(unsigned long * data, unsigned int len, unsigned long int max)
 {
 //    qDebug("setData, max: %ld", max);
     unsigned long int m = max * 1.1;
@@ -629,33 +630,33 @@ void mainWindow::setData(unsigned long * data, unsigned int len, unsigned long i
 
 
 /*!
-    \fn mainWindow::drawDataGrid(void)
+    \fn MainWidget::drawDataGrid(void)
  */
-void mainWindow::drawDataGrid(void)
+void MainWidget::drawDataGrid(void)
 {
 	QPainter p2;
 	QString str;
 
 	// clear old grid:
   	p2.begin(this->mainFrame);
-	p2.setPen(QPen(black, 1, NoPen));
-	p2.setBrush(QBrush(lightGray));
+	p2.setPen(QPen(Qt::black, 1, Qt::NoPen));
+	p2.setBrush(QBrush(Qt::lightGray));
 	p2.drawRect(mainFrame->contentsRect());
   	p2.end();
 
 	// clear old frame:
   	p2.begin(this->dataFrame);
-	p2.setPen(QPen(black, 1, NoPen));
-	p2.setBrush(QBrush(white));
+	p2.setPen(QPen(Qt::black, 1, Qt::NoPen));
+	p2.setBrush(QBrush(Qt::white));
 	p2.drawRect(mainFrame->contentsRect());
 	p2.end();
 
 }
 
 /*!
-    \fn mainWindow::drawXAxis(void)
+    \fn MainWidget::drawXAxis(void)
  */
-void mainWindow::drawXAxis(void)
+void MainWidget::drawXAxis(void)
 {
 	QPainter p2;
 	QString str;
@@ -668,8 +669,8 @@ void mainWindow::drawXAxis(void)
 		scalestep = step / 4;
 	}
  	p2.begin(this->mainFrame);
-	p2.setPen(QPen(black, 1, SolidLine));
-	p2.setBrush(QBrush(black));
+	p2.setPen(QPen(Qt::black, 1, Qt::SolidLine));
+	p2.setBrush(QBrush(Qt::black));
 
 	fo = p2.font();
 	fo.setStyleStrategy(QFont::PreferAntialias);
@@ -703,9 +704,9 @@ void mainWindow::drawXAxis(void)
 }
 
 /*!
-    \fn mainWindow::drawYAxis(void)
+    \fn MainWidget::drawYAxis(void)
  */
-void mainWindow::drawYAxis(void)
+void MainWidget::drawYAxis(void)
 {
 	QPainter p2;
 	QString str;
@@ -713,8 +714,8 @@ void mainWindow::drawYAxis(void)
 
 	p2.begin(this->mainFrame);
   	// draw y-axis
-	p2.setPen(QPen(black, 1, SolidLine));
-	p2.setBrush(QBrush(black));
+	p2.setPen(QPen(Qt::black, 1, Qt::SolidLine));
+	p2.setBrush(QBrush(Qt::black));
 	fo = p2.font();
 	fo.setStyleStrategy(QFont::PreferAntialias);
 	fo.setPointSize(8);
@@ -746,9 +747,9 @@ void mainWindow::drawYAxis(void)
 }
 
 /*!
-    \fn mainWindow::draw(void)
+    \fn MainWidget::draw(void)
  */
-void mainWindow::draw(void)
+void MainWidget::draw(void)
 {
 	dispId = dispMcpd->value();
 	if(!multi || (multi && dispNum == 0)){
@@ -761,12 +762,12 @@ void mainWindow::draw(void)
 //	displayMpsdSlot();
 }
 
-void mainWindow::clearAllSlot()
+void MainWidget::clearAllSlot()
 {
 	theApp->clearAllHist();
 }
 
-void mainWindow::clearMcpdSlot()
+void MainWidget::clearMcpdSlot()
 {
 	unsigned int start = dispMcpd->value() * 64;
 	for(unsigned int i = start; i < start+64; i++)
@@ -774,7 +775,7 @@ void mainWindow::clearMcpdSlot()
 	theApp->draw();
 }
 
-void mainWindow::clearMpsdSlot()
+void MainWidget::clearMpsdSlot()
 {
 	unsigned int start = dispMpsd->value() * 8 + dispMcpd->value() * 64;
 //	qDebug("clearMpsd: %d", start);
@@ -783,7 +784,7 @@ void mainWindow::clearMpsdSlot()
 	theApp->draw();
 }
 
-void mainWindow::clearChanSlot()
+void MainWidget::clearChanSlot()
 {
 	unsigned long chan = dispChan->value() + dispMpsd->value() * 8 + dispMcpd->value() * 64;
 //	qDebug("clearChan: %d",chan);
@@ -792,15 +793,15 @@ void mainWindow::clearChanSlot()
 }
 
 
-void mainWindow::replayListfileSlot()
+void MainWidget::replayListfileSlot()
 {
- QString name = QFileDialog::getOpenFileName(theApp->getListfilepath(), "mesydaq data files (*.mdat);;all files (*.*);;really all files (*)", this, "Load...");
+ QString name = QFileDialog::getOpenFileName(this, "Open listmode file", theApp->getListfilepath(), "mesydaq data files (*.mdat);;all files (*.*);;really all files (*)");
   if(!name.isEmpty()){
     theApp->readListfile(name);
   }
 }
 
-void mainWindow::setRunIdSlot()
+void MainWidget::setRunIdSlot()
 {
 	unsigned short runid = (unsigned short) devid->value();
 	cmdBuffer[0] = 0;
@@ -812,9 +813,9 @@ void mainWindow::setRunIdSlot()
 }
 
 /*!
-    \fn mainWindow::dispMcpdSlot(void)
+    \fn MainWidget::dispMcpdSlot(void)
  */
-void mainWindow::displayMcpdSlot(void)
+void MainWidget::displayMcpdSlot(void)
 {
     QString str;
     unsigned short values[4];
@@ -839,12 +840,12 @@ void mainWindow::displayMcpdSlot(void)
     	terminate->setChecked(false);
 
     // get cell parameters
-    theApp->myMcpd[id]->getCounterCell(cellSource->currentItem(), values);
-    cellTrigger->setCurrentItem(values[0]);
+    theApp->myMcpd[id]->getCounterCell(cellSource->currentData().toUInt(), values);
+    cellTrigger->setCurrentText(QString("%1").arg(values[0]));
 	cellCompare->setValue(values[1]);
 
     // get parameter settings
-    paramSource->setCurrentItem(theApp->myMcpd[id]->getParamSource(param->value()));
+    paramSource->setCurrentText(QString("%1").arg(theApp->myMcpd[id]->getParamSource(param->value())));
 
 	// get timer settings
 	str.sprintf("%x", theApp->myMcpd[id]->getAuxTimer(timer->value()));
@@ -881,9 +882,9 @@ void mainWindow::displayMcpdSlot(void)
 
 
 /*!
-    \fn mainWindow::dispMpsdSlot(void)
+    \fn MainWidget::dispMpsdSlot(void)
  */
-void mainWindow::displayMpsdSlot(void)
+void MainWidget::displayMpsdSlot(void)
 {
     QString dstr;
 
@@ -946,12 +947,12 @@ void mainWindow::displayMpsdSlot(void)
 	// on/off
    	dontSend = true;
 	if(theApp->myMpsd[8*id+mod]->isPulserOn()){
-		pulserButton->setOn(true);
-		pulserButton->setPaletteForegroundColor(QColor(238,0,0));
+		pulserButton->setChecked(true);
+        pulserButton->setStyleSheet("QPushButton {color: red;}");
 	}
 	else{
-		pulserButton->setOn(false);
-		pulserButton->setPaletteForegroundColor(QColor(0,0,0));
+		pulserButton->setChecked(false);
+        pulserButton->setStyleSheet({});
 	}
 	// channel
    	dontSend = true;
@@ -975,21 +976,21 @@ void mainWindow::displayMpsdSlot(void)
 
 	// mode
 	if(theApp->myMpsd[8*id+mod]->getMode())
-		amp->setChecked(true);
+		modeAmp->setChecked(true);
 	else
-		pos->setChecked(true);
+		modePos->setChecked(true);
 	dontSend = false;
 }
 
 
 
-void mainWindow::scanPeriSlot()
+void MainWidget::scanPeriSlot()
 {
 	unsigned short id = (unsigned short) devid->value();
 	theApp->scanPeriph(id);
 }
 
-void mainWindow::setModeSlot(int mode)
+void MainWidget::setModeSlot(int mode)
 {
 	unsigned short id = (unsigned short) devid->value();
 	unsigned short addr = module->value();
@@ -1002,33 +1003,33 @@ void mainWindow::setModeSlot(int mode)
 	theApp->sendCommand(pBuffer);
 }
 
-void mainWindow::saveSetupSlot()
+void MainWidget::saveSetupSlot()
 {
 	theApp->saveSetup();
 }
 
-void mainWindow::restoreSetupSlot()
+void MainWidget::restoreSetupSlot()
 {
 	theApp->loadSetup(true);
 	theApp->initHardware();
 }
 
 
-void mainWindow::redrawSlot()
+void MainWidget::redrawSlot()
 {
 	draw();
 }
 
 
 /*!
-    \fn mainWindow::processDispData()
+    \fn MainWidget::processDispData()
  */
-void mainWindow::processDispData()
+void MainWidget::processDispData()
 {
     /// @todo implement me
 }
 
-void mainWindow::applyThreshSlot()
+void MainWidget::applyThreshSlot()
 {
 	bool ok;
 	if(useThresh->isChecked()){
@@ -1041,7 +1042,7 @@ void mainWindow::applyThreshSlot()
 		dispThresh = false;
 }
 
-void mainWindow::linlogSlot()
+void MainWidget::linlogSlot()
 {
 	if(log->isChecked()){
 		dispLog = true;
@@ -1055,9 +1056,9 @@ void mainWindow::linlogSlot()
 
 
 /*!
-    \fn mainWindow::drawOpData()
+    \fn MainWidget::drawOpData()
  */
-void mainWindow::drawOpData()
+void MainWidget::drawOpData()
 {
 	float meansigma[2];
 
@@ -1096,7 +1097,7 @@ void mainWindow::drawOpData()
 }
 
 
-void mainWindow::writeRegisterSlot()
+void MainWidget::writeRegisterSlot()
 {
 	bool ok;
 	unsigned short id = (unsigned short) devid->value();
@@ -1111,7 +1112,7 @@ void mainWindow::writeRegisterSlot()
 	theApp->sendCommand(pBuffer);
 }
 
-void mainWindow::readRegisterSlot()
+void MainWidget::readRegisterSlot()
 {
 	bool ok;
 	unsigned short id = (unsigned short) devid->value();
@@ -1124,30 +1125,30 @@ void mainWindow::readRegisterSlot()
 	theApp->sendCommand(pBuffer);
 }
 
-void mainWindow::selectConfigpathSlot()
+void MainWidget::selectConfigpathSlot()
 {
     QString name;
-    name = QFileDialog::getExistingDirectory(theApp->getListfilepath(), this, 0,"Select Listfile Path...");
+    name = QFileDialog::getExistingDirectory(this, "Select Listfile Path...", theApp->getListfilepath());
     if(!name.isEmpty())
     	theApp->setConfigfilepath(name);
     dispFiledata();
 }
 
 
-void mainWindow::selectHistpathSlot()
+void MainWidget::selectHistpathSlot()
 {
     QString name;
-    name = QFileDialog::getExistingDirectory(theApp->getListfilepath(), this, 0,"Select Listfile Path...");
+    name = QFileDialog::getExistingDirectory(this, "Select Listfile Path...", theApp->getListfilepath());
     if(!name.isEmpty())
     	theApp->setHistfilepath(name);
     dispFiledata();
 }
 
 
-void mainWindow::selectListpathSlot()
+void MainWidget::selectListpathSlot()
 {
     QString name;
-    name = QFileDialog::getExistingDirectory(theApp->getListfilepath(), this, 0,"Select Listfile Path...");
+    name = QFileDialog::getExistingDirectory(this, "Select Listfile Path...", theApp->getListfilepath());
     if(!name.isEmpty())
     	theApp->setListfilepath(name);
     dispFiledata();
@@ -1157,9 +1158,9 @@ void mainWindow::selectListpathSlot()
 
 
 /*!
-    \fn mainWindow::dispFiledata(void)
+    \fn MainWidget::dispFiledata(void)
  */
-void mainWindow::dispFiledata(void)
+void MainWidget::dispFiledata(void)
 {
     configfilename->setText(theApp->getConfigfilename());
     if(theApp->getHistfilename().isEmpty())
@@ -1174,26 +1175,26 @@ void mainWindow::dispFiledata(void)
 
 
 /*!
-    \fn mainWindow::getDispId(void)
+    \fn MainWidget::getDispId(void)
  */
-unsigned char mainWindow::getDispId(void)
+unsigned char MainWidget::getDispId(void)
 {
    return dispMcpd->value();
 }
 
 
-void mainWindow::writeHistSlot()
+void MainWidget::writeHistSlot()
 {
 	theApp->writeHistograms();
 }
 
 
-void mainWindow::ePresetSlot(bool pr)
+void MainWidget::ePresetSlot(bool pr)
 {
 	if(pr){
-		m1PresetButton->setOn(false);
-		m2PresetButton->setOn(false);
-		tPresetButton->setOn(false);
+		m1PresetButton->setChecked(false);
+		m2PresetButton->setChecked(false);
+		tPresetButton->setChecked(false);
 		evPreset->setEnabled(true);
 		m1Preset->setEnabled(false);
 		m2Preset->setEnabled(false);
@@ -1207,12 +1208,12 @@ void mainWindow::ePresetSlot(bool pr)
 }
 
 
-void mainWindow::tPresetSlot(bool pr)
+void MainWidget::tPresetSlot(bool pr)
 {
 	if(pr){
-		m1PresetButton->setOn(false);
-		m2PresetButton->setOn(false);
-		ePresetButton->setOn(false);
+		m1PresetButton->setChecked(false);
+		m2PresetButton->setChecked(false);
+		ePresetButton->setChecked(false);
 		tPreset->setEnabled(true);
 		m1Preset->setEnabled(false);
 		m2Preset->setEnabled(false);
@@ -1226,12 +1227,12 @@ void mainWindow::tPresetSlot(bool pr)
 }
 
 
-void mainWindow::m1PresetSlot(bool pr)
+void MainWidget::m1PresetSlot(bool pr)
 {
 	if(pr){
-		ePresetButton->setOn(false);
-		m2PresetButton->setOn(false);
-		tPresetButton->setOn(false);
+		ePresetButton->setChecked(false);
+		m2PresetButton->setChecked(false);
+		tPresetButton->setChecked(false);
 		m1Preset->setEnabled(true);
 		m2Preset->setEnabled(false);
 		evPreset->setEnabled(false);
@@ -1245,12 +1246,12 @@ void mainWindow::m1PresetSlot(bool pr)
 }
 
 
-void mainWindow::m2PresetSlot(bool pr)
+void MainWidget::m2PresetSlot(bool pr)
 {
 	if(pr){
-		m1PresetButton->setOn(false);
-		ePresetButton->setOn(false);
-		tPresetButton->setOn(false);
+		m1PresetButton->setChecked(false);
+		ePresetButton->setChecked(false);
+		tPresetButton->setChecked(false);
 		m2Preset->setEnabled(true);
 		m1Preset->setEnabled(false);
 		evPreset->setEnabled(false);
@@ -1265,9 +1266,9 @@ void mainWindow::m2PresetSlot(bool pr)
 
 
 /*!
-    \fn mainWindow::updatePresets(void)
+    \fn MainWidget::updatePresets(void)
  */
-void mainWindow::updatePresets(void)
+void MainWidget::updatePresets(void)
 {
     // presets
     evPreset->setValue(theApp->meas->getPreset(EVCT));
@@ -1277,24 +1278,24 @@ void mainWindow::updatePresets(void)
 
     // check for master preset counter
     if(theApp->meas->isMaster(EVCT))
-    	ePresetButton->setOn(true);
+    	ePresetButton->setChecked(true);
     else
-    	ePresetButton->setOn(false);
+    	ePresetButton->setChecked(false);
 
     if(theApp->meas->isMaster(M1CT))
-    	m1PresetButton->setOn(true);
+    	m1PresetButton->setChecked(true);
     else
-    	m1PresetButton->setOn(false);
+    	m1PresetButton->setChecked(false);
 
     if(theApp->meas->isMaster(M2CT))
-    	m2PresetButton->setOn(true);
+    	m2PresetButton->setChecked(true);
     else
-    	m2PresetButton->setOn(false);
+    	m2PresetButton->setChecked(false);
 
     if(theApp->meas->isMaster(TCT))
-    	tPresetButton->setOn(true);
+    	tPresetButton->setChecked(true);
     else
-    	tPresetButton->setOn(false);
+    	tPresetButton->setChecked(false);
 
 
     // Caress values
@@ -1306,25 +1307,25 @@ void mainWindow::updatePresets(void)
     caressRun->setText(pstring);
 }
 
-void mainWindow::tResetSlot()
+void MainWidget::tResetSlot()
 {
 	theApp->meas->clearCounter(TCT);
 	update();
 }
 
-void mainWindow::eResetSlot()
+void MainWidget::eResetSlot()
 {
 	theApp->meas->clearCounter(EVCT);
 	update();
 }
 
-void mainWindow::m1ResetSlot()
+void MainWidget::m1ResetSlot()
 {
 	theApp->meas->clearCounter(M1CT);
 	update();
 }
 
-void mainWindow::m2ResetSlot()
+void MainWidget::m2ResetSlot()
 {
 	theApp->meas->clearCounter(M2CT);
 	update();
@@ -1333,9 +1334,9 @@ void mainWindow::m2ResetSlot()
 
 
 /*!
-    \fn mainWindow::updateCaress(void)
+    \fn MainWidget::updateCaress(void)
  */
-void mainWindow::updateCaress(void)
+void MainWidget::updateCaress(void)
 {
     QString str;
 	str.sprintf("%d", theApp->meas->getCarWidth());
@@ -1346,7 +1347,7 @@ void mainWindow::updateCaress(void)
 	caressRun->setText(str);
 }
 
-void mainWindow::applyMIpSlot()
+void MainWidget::applyMIpSlot()
 {
 	bool ok;
 	QString stri, addr;
@@ -1372,42 +1373,31 @@ void mainWindow::applyMIpSlot()
 
 
 /*!
-    \fn mainWindow::splitAddress(QString addrStr, unsigned char * addrByte)
+    \fn MainWidget::splitAddress(QString addrStr, unsigned char * addrByte)
  */
-void mainWindow::splitAddress(QString addrStr, unsigned char * addrByte)
+void MainWidget::splitAddress(QString addrStr, unsigned char * addrByte)
 {
-    QString s;
-
     // split into numerical address tuple
-    s = addrStr.left(addrStr.find("."));
-    addrByte[0] = s.toUShort();
 
-    addrStr = addrStr.mid(addrStr.find(".")+1);
-    s = addrStr.left(addrStr.find("."));
-    addrByte[1] = s.toUShort();
+    auto parts = addrStr.split(".");
 
-    addrStr = addrStr.mid(addrStr.find(".")+1);
-    s = addrStr.left(addrStr.find("."));
-    addrByte[2] = s.toUShort();
-
-    addrStr = addrStr.mid(addrStr.find(".")+1);
-    s = addrStr.left(addrStr.find("."));
-    addrByte[3] = s.toUShort();
+    for (int i=0; i<parts.size() && i<4; ++i)
+        addrByte[i] = parts[i].toUInt();
 }
 
-void mainWindow::debugLevelSlot(int level)
+void MainWidget::debugLevelSlot(int level)
 {
 	theApp->setDebugLevel((unsigned char)level);
 }
 
-void mainWindow::mcpdSearchSlot()
+void MainWidget::mcpdSearchSlot()
 {
 	qDebug("search %d", mcpdId->value());
 	theApp->searchMcpd(mcpdId->value());
 }
 
 
-void mainWindow::pulsertestSlot(bool on)
+void MainWidget::pulsertestSlot(bool on)
 {
 	if(on){
 		theApp->startPulsertest();
@@ -1419,9 +1409,9 @@ void mainWindow::pulsertestSlot(bool on)
 
 
 /*!
-    \fn mainWindow::setDispMode(bool mult, unsigned char num)
+    \fn MainWidget::setDispMode(bool mult, unsigned char num)
  */
-void mainWindow::setDispMode(bool mult, unsigned char num)
+void MainWidget::setDispMode(bool mult, unsigned char num)
 {
     multi = mult;
     dispNum = num;
@@ -1436,7 +1426,7 @@ void mainWindow::setDispMode(bool mult, unsigned char num)
     }
 }
 
-void mainWindow::assignCounterSlot()
+void MainWidget::assignCounterSlot()
 {
 	unsigned char cpu1, cpu2, counter1, counter2;
 	cpu1 = (unsigned char) cpuMon1box->value();
@@ -1448,9 +1438,9 @@ void mainWindow::assignCounterSlot()
 }
 
 /*!
-    \fn mainWindow::dispCounterAssign(void)
+    \fn MainWidget::dispCounterAssign(void)
  */
-void mainWindow::dispCounterAssign(void)
+void MainWidget::dispCounterAssign(void)
 {
     unsigned char ca[4];
     theApp->meas->getCounterAssign(ca);

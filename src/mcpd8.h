@@ -40,7 +40,7 @@ class mcpd8 : public QObject
 {
 Q_OBJECT
 public:
-    mcpd8(QObject *parent = 0, const char *name = 0);
+    explicit mcpd8(QObject *parent = nullptr);
 
     ~mcpd8();
     bool setId(unsigned short mcpdid);

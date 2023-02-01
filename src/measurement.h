@@ -33,7 +33,7 @@ class measurement : public QObject
 {
 Q_OBJECT
 public:
-    measurement(QObject *parent = 0, const char *name = 0);
+    explicit measurement(QObject *parent = nullptr);
 
     ~measurement();
     void getMeastime(unsigned short * time);

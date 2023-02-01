@@ -20,22 +20,31 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <mesydaq2mainwindow.h>
+#include <QWidget>
+
+#include "ui_mainwidget.h"
 #include "mesydaq2.h"
 #include "histogram.h"
-#include <qpainter.h>
-
 
 /**
 	@author Gregor Montermann <g.montermann@mesytec.com>
 */
-class mainWindow : public mesydaq2mainwindow
+
+/* Note (flueke): Have to use the multi inheritance approach for the UI because
+ * the implementation code directly uses the generated variables.
+ * Note2: switched from private to protected inheritance because the mesydaq2
+ * class accesses all the members of this widget...
+ */
+
+class MainWidget: public QWidget, protected Ui::MainWidget
 {
 Q_OBJECT
 public:
-    mainWindow(QWidget* parent = 0, const char* name = 0, WFlags fl = 0 );
+    friend class mesydaq2;
 
-    ~mainWindow();
+    explicit MainWidget(QWidget* parent = nullptr);
+    ~MainWidget() override;
+
     void update(void);
     QString buildTimestring(unsigned long timeval, bool nano);
     void drawDataGrid(void);

@@ -33,7 +33,7 @@ class controlInterface : public QObject
 {
 Q_OBJECT
 public:
-    controlInterface(QObject *parent = 0, const char *name = 0);
+    explicit controlInterface(QObject *parent = 0);
 
     ~controlInterface();
     void caressTask();

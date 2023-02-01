@@ -22,8 +22,8 @@
 
 #include <qtextstream.h>
 
-mpsd8::mpsd8(QObject *parent, const char *name)
- : QObject(parent, name)
+mpsd8::mpsd8(QObject *parent)
+ : QObject(parent)
 {
 	theApp = (mesydaq2 *) parent;
 	mcpdId = 0;
@@ -513,4 +513,6 @@ bool mpsd8::serialize(QFile * fi)
 	}
 	t << "threshold = " << threshpoti[0];
 	t << '\r' << '\n';
+
+    return true;
 }

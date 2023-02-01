@@ -18,21 +18,22 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "controlinterface.h"
+
+#include <time.h>
+#include <QDebug>
+
 #include "mesydaq2.h"
 #include "mdefines.h"
-#include "mainwindow.h"
 #include "measurement.h"
-#include <time.h>
 
-controlInterface::controlInterface(QObject *parent, const char *name)
- : QObject(parent, name)
+controlInterface::controlInterface(QObject *parent)
+ : QObject(parent)
 {
 	theApp = (mesydaq2*) parent;
 	transferBuffer = new(unsigned long[512*960]);
 	caressTaskPending = false;
 	caressTaskNum = 0;
 	asyncTaskPending = false;
-	caressHeader.sprintf("");
 	caressFilefragment = 0;
 	caressMaxfilesize = 0;
 	caressInitialized = false;
@@ -144,8 +145,7 @@ void controlInterface::caressTask()
 
     	case CAR_LOADBLOCK:
     		pstring.append("loadblock.");
-    		qDebug("caress header: ");
-    		qDebug(caressHeader);
+            qDebug() << "caress header:" << caressHeader;
 
 // for test purposes:
 //createTestheader();
@@ -232,6 +232,7 @@ void controlInterface::createTestheader(void)
  */
 void controlInterface::extractCaressHeader()
 {
+#if 0 // Disabled for now as caress won't be used in this version. (flueke)
        		unsigned int strpos, strpos2;
        		QString helpstr, pstr;
 
@@ -283,6 +284,7 @@ void controlInterface::extractCaressHeader()
 			bool ok;
 			caressMaxfilesize = helpstr.toUInt(&ok, 10) * factor;
 			qDebug("max size: %d", caressMaxfilesize);
+#endif
 }
 
 

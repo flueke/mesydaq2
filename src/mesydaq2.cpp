@@ -25,7 +25,7 @@
 #include "mesydaq2.h"
 
 #include "mesydaq2.h"
-#include "mainwindow.h"
+#include "mainwidget.h"
 #include "mdefines.h"
 #include "histogram.h"
 #include "datacruncher.h"
@@ -34,6 +34,7 @@
 #include "measurement.h"
 #include "controlinterface.h"
 
+#include <QDebug>
 #include <qmessagebox.h>
 #include <qlineedit.h>
 #include <qspinbox.h>
@@ -57,9 +58,9 @@
 
 
 mesydaq2::mesydaq2()
-    : QMainWindow( 0, "mesydaq2, by mesytec" )
+    : QMainWindow()
 {
-    mainWin = new mainWindow(this);
+    mainWin = new MainWidget(this);
     setCentralWidget(mainWin);
 	mainWin->resize(1280, 980);
 	dc = new dataCruncher(this);
@@ -593,10 +594,10 @@ bool mesydaq2::startDaq(void)
 			else
 				listfilename = mainWin->listFilename->text();
 			// o.k. - now try to use it:
-			datfile.setName(listfilename);
+			datfile.setFileName(listfilename);
 			// now check if existing:
 			// listfile already existing? Warning!
-			if(QFile::exists(datfile.name())){
+			if(QFile::exists(datfile.fileName())){
 				qDebug("datfile exists");
 				if(!ovwList){
 					qDebug("no overwrite");
@@ -614,7 +615,7 @@ bool mesydaq2::startDaq(void)
 			// reset overwrite o.k. flag
 			ovwList = false;
 			// o.k. - successfully retrieved a listfile
-			if(datfile.open(IO_WriteOnly)){
+			if(datfile.open(QIODevice::WriteOnly)){
 				listfileOpen = true;
 				textStream.setDevice(&datfile);
 				datStream.setDevice(&datfile);
@@ -653,7 +654,7 @@ void mesydaq2::protocol(QString str, unsigned char level)
     str.prepend(" - ");
     str.prepend(datestring);
     if(level <= debugLevel){
-    	qDebug(str);
+        qDebug() << str;
     	mainWin->protocolEdit->append(str);
     }
 }
@@ -668,7 +669,7 @@ void mesydaq2::protocolCaress(QString str, unsigned char level)
     str.prepend(" - ");
     str.prepend(datestring);
     if(level <= debugLevel){
-    	qDebug(str);
+    	qDebug() << str;
     	mainWin->caressEdit->append(str);
     }
 }
@@ -708,7 +709,7 @@ void mesydaq2::initTimers(void)
 	// central dispatch timer
     theTimer = new QTimer(this);
     connect(theTimer, SIGNAL(timeout()), this, SLOT(centralDispatch()));
-    theTimer->start(10, false);
+    theTimer->start(10);
     for(unsigned char c = 0; c < 10; c++)
     	dispatch[c] = 0;
 
@@ -813,8 +814,8 @@ void mesydaq2::readListfile(QString readfilename)
 	bool ok = false;
 	unsigned short sep1, sep2, sep3, sep4;
 
-	datfile.setName(readfilename);
-	datfile.open(IO_ReadOnly);
+	datfile.setFileName(readfilename);
+	datfile.open(QIODevice::ReadOnly);
 	datStream.setDevice(&datfile);
 	textStream.setDevice(&datfile);
 
@@ -824,9 +825,9 @@ void mesydaq2::readListfile(QString readfilename)
 
 	qDebug("readListfile");
 	str = textStream.readLine();
-	qDebug(str);
+    qDebug() << str;
 	str = textStream.readLine();
-	qDebug(str);
+    qDebug() << str;
 	datStream >> sep1 >> sep2 >> sep3 >> sep4;
 	if((sep1 == sep0) && (sep2 == sep5) && (sep3 == sepA) && (sep4 == sepF)){
 		ok = true;
@@ -1009,20 +1010,21 @@ bool mesydaq2::saveSetup(void)
 {
   QString name;
   unsigned char cnt[4];
-  name = QFileDialog::getSaveFileName(configPath, "mesydaq config files (*.mcfg);;all files (*.*)", this, "Load Config File...");
+  name = QFileDialog::getSaveFileName(this, "Load Config File...", configPath, "mesydaq config files (*.mcfg);;all files (*.*)");
   if(name.isEmpty())
   	return false;
 
   configfilename = name;
-  int i = configfilename.find(".mcfg");
-  if(i == -1)
-    configfilename.append(".mcfg");
+
+  // FIXME: this can overwrite existing files without asking
+  if (!configfilename.endsWith(".mcfg"))
+      configfilename += ".mcfg";
 
 	QDateTime dateTime;
 	dateTime=QDateTime::currentDateTime();
 
 	QFile f(configfilename);
-	if ( f.open(IO_WriteOnly) ) {    // file opened successfully
+	if ( f.open(QIODevice::WriteOnly) ) {    // file opened successfully
 		QTextStream t( &f );        // use a text stream
 		QString s;
 		// Title
@@ -1069,7 +1071,7 @@ bool mesydaq2::loadSetup(bool ask)
   QString name;
 //  qDebug("loading setup, current dir"+QDir::currentDirPath());
   if(ask)
-    name = QFileDialog::getOpenFileName(configPath, "mesydaq config files (*.mcfg);;all files (*.*)", this, "Load Config File...");
+    name = QFileDialog::getOpenFileName(this, "Load Config File...", configPath, "mesydaq config files (*.mcfg);;all files (*.*)");
   else{
     name = configfilename; //QDir::homeDirPath() + "/mesydaq2/mesycfg.mcfg";
   }
@@ -1090,16 +1092,17 @@ bool mesydaq2::loadSetup(bool ask)
   for(unsigned char c = 0; c < MCPDS; c++)
   	confMcpd[c] = false;
 
-  if ( f.open(IO_ReadOnly) ) {    // file opened successfully
+  if ( f.open(QIODevice::ReadOnly) ) {    // file opened successfully
     if(!ask)
-      pstring.sprintf("Reading standard configfile " + configfilename);
+      pstring = QString("Reading standard configfile ") + configfilename;
     else{
-      pstring.sprintf("Reading configfile " + configfilename);
+      pstring = QString("Reading configfile ") + configfilename;
     }
     protocol(pstring, 1);
 
     QTextStream t( &f );        // use a text stream
 
+#if 0 // FIXME: rewrite this and/or take it from qmesydaq (the TUM version)
     s = t.readLine();
     while(!s.isNull()){
 		// comment line
@@ -1276,6 +1279,7 @@ bool mesydaq2::loadSetup(bool ask)
 	    // read next line
 	    s = t.readLine();
 	}
+#endif
 
 	f.close();
 	mainWin->dispFiledata();
@@ -1497,6 +1501,7 @@ void mesydaq2::setTimingwidth(unsigned char width)
 }
 
 
+#if 0
 /*!
     \fn mesydaq2::readPeriReg(unsigned short id, unsigned short mod, unsigned short reg)
  */
@@ -1507,9 +1512,12 @@ unsigned short mesydaq2::readPeriReg(unsigned short id, unsigned short mod, unsi
 	commandBuffer[2] = mod;
 	commandBuffer[3] = reg;
 	sendCommand(commandBuffer);
+    return 0;
 }
+#endif
 
 
+#if 0
 /*!
     \fn mesydaq2::writePeriReg(unsigned short id, unsigned short mod, unsigned short reg, unsigned short val)
  */
@@ -1522,6 +1530,7 @@ void mesydaq2::writePeriReg(unsigned short id, unsigned short mod, unsigned shor
 	commandBuffer[4] = val;
 	sendCommand(commandBuffer);
 }
+#endif
 
 
 
@@ -1540,7 +1549,7 @@ bool mesydaq2::checkListfilename(void)
 
 		}
 	}
-	datfile.setName(listfilename);
+	datfile.setFileName(listfilename);
 	return true;
 }
 
@@ -1560,11 +1569,10 @@ QString mesydaq2::getListfilepath()
 bool mesydaq2::getListfilename()
 {
 	ovwList = false;
-	QString name = QFileDialog::getSaveFileName(listPath, "mesydaq data files (*.mdat);;all files (*.*);;really all files (*)", this, "Save as...");
+	QString name = QFileDialog::getSaveFileName(this, "Save as...", listPath, "mesydaq data files (*.mdat);;all files (*.*);;really all files (*)");
   	if(!name.isEmpty()){
-    	int i = name.find(".mdat");
-		if(i == -1)
-		name.append(".mdat");
+        if (!name.endsWith(".mdat"))
+            name += ".mdat";
 		if(QFile::exists(name) && ovwList == false){
 			int answer = QMessageBox::warning(
 						this, "Listfile Exists -- Overwrite File",
@@ -1683,13 +1691,12 @@ void mesydaq2::writeHistograms()
    QFile f;
    int k;
 
-   histfilename = QFileDialog::getSaveFileName(histPath, "mesydaq histogram files (*.mtxt);;all files (*.*)", this, "Write Histogram...");
+   histfilename = QFileDialog::getSaveFileName(this, "Write Histogram...", histPath, "mesydaq histogram files (*.mtxt);;all files (*.*)");
    if(histfilename.isEmpty())
       return;
 
-   k = histfilename.find(".mtxt");
-   if(k == -1)
-      histfilename.append(".mtxt");
+   if (!histfilename.endsWith(".mtxt"))
+       histfilename += ".mtxt";
 
    if(QFile::exists(histfilename)){
       int answer = QMessageBox::warning(
@@ -1704,8 +1711,8 @@ void mesydaq2::writeHistograms()
   QDateTime dateTime;
   dateTime = QDateTime::currentDateTime();
 
-  f.setName(histfilename);
-	if ( f.open(IO_WriteOnly) ) {    // file opened successfully
+  f.setFileName(histfilename);
+	if ( f.open(QIODevice::WriteOnly) ) {    // file opened successfully
 		QTextStream t( &f );        // use a text stream
 		QString s;
 		// Title
@@ -1818,11 +1825,11 @@ void mesydaq2::openCaressListfile(void)
 	QString listfiledir = listPath;
 	listfiledir.append('/');
 	listfiledir.append(cInt->caressDatadir);
-	qDebug(listfiledir);
+	qDebug() << listfiledir;
 	if(checkDirectory(listfiledir)){
 		// o.k. - now try to use it:
-		datfile.setName(listfilename);
-		if(datfile.open(IO_WriteOnly)){
+		datfile.setFileName(listfilename);
+		if(datfile.open(QIODevice::WriteOnly)){
 			listfileOpen = true;
 			textStream.setDevice(&datfile);
 			datStream.setDevice(&datfile);
@@ -1868,6 +1875,8 @@ void mesydaq2::changeCaressListfile()
  */
 bool mesydaq2::checkDirectory(QString dir)
 {
+    return false;
+#if 0 // FIXME: try to replace with QDir::mkpath()
     // takes a given directory, checks existance, tries to create
     // if not existing
     QString directory("");
@@ -1914,6 +1923,7 @@ bool mesydaq2::checkDirectory(QString dir)
 		pos1 = 1 + pos2;
 	}
 	return true;
+#endif
 }
 
 // command shortcuts for simple operations:
@@ -1928,7 +1938,7 @@ void mesydaq2::start(void)
 	commandBuffer[1] = START;
 	sendCommand(commandBuffer);
 	pstring.sprintf("Stop");
-	mainWin->startStopButton->setOn(true);
+	mainWin->startStopButton->setChecked(true);
 	mainWin->startStopButton->setText(pstring);
 	mainWin->updateCaress();
 }
@@ -2154,7 +2164,7 @@ void mesydaq2::findInterfaces(void)
     	ifr = (struct ifreq *) ptr;
     	sa = (struct sockaddr_in*)&ifr->ifr_addr;
     	str.sprintf("%d: %s, %s", i, ifr->ifr_name, inet_ntoa(sa->sin_addr));
-    	qDebug(str);
+        qDebug() << str;
 //    	qDebug("%s", inet_ntoa(sa->sin_addr));
     	ifrcopy = *ifr;
     	// get flags
@@ -2205,7 +2215,7 @@ void mesydaq2::initSystem(void)
 	mainWin->displayMcpdSlot();
 	mainWin->displayMpsdSlot();
 	mainWin->dispFiledata();
-	mainWin->debugLevelBox->setCurrentItem(debugLevel);
+	mainWin->debugLevelBox->setCurrentIndex(debugLevel);
 
 //	qDebug("running on qt %s", qVersion());
 

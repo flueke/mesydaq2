@@ -24,8 +24,8 @@
 
 #include <qtextstream.h>
 
-histogram::histogram(QObject *parent, const char *name)
- : QObject(parent, name)
+histogram::histogram(QObject *parent)
+ : QObject(parent)
 {
 	id = 0;
 	clearAllHist();

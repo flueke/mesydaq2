@@ -18,11 +18,14 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 #include "networkdevice.h"
+
+#include <unistd.h>
+
 #include "mesydaq2.h"
 #include "mcpd8.h"
 
-networkDevice::networkDevice(QObject *parent, const char *name)
- : QObject(parent, name)
+networkDevice::networkDevice(QObject *parent)
+ : QObject(parent)
 {
 	netBuf = new (MDP_PACKET);
 	recBuf = new (MDP_PACKET);
@@ -119,7 +122,7 @@ int networkDevice::sendBuffer(unsigned char id, PMDP_PACKET buf)
 	bzero(&addr, sizeof(addr));
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(54321);
-	addr.sin_addr.s_addr = inet_addr(ipAddress[id].latin1());
+	addr.sin_addr.s_addr = inet_addr(ipAddress[id].toLatin1().constData());
 	pstring.sprintf("send buffer to: ");
 	pstring.append(ipAddress[id]);
 //	str2.sprintf(", rxSockfd %d", rxSockfd);

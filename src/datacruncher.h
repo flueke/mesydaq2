@@ -37,7 +37,7 @@ class dataCruncher : public QObject
 {
 Q_OBJECT
 public:
-    dataCruncher(QObject *parent = 0, const char *name = 0);
+    explicit dataCruncher(QObject *parent = nullptr);
 
     ~dataCruncher();
     void analyzeBuffer(PDATA_PACKET pd, unsigned char daq, histogram* hist);

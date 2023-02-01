@@ -22,24 +22,17 @@
 #ifndef _MESYDAQ2_H_
 #define _MESYDAQ2_H_
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
-#include <qmainwindow.h>
-
-#include <networkdevice.h>
-#include <qfile.h>
-#include <qdatastream.h>
-#include <qtextstream.h>
-#include <qstring.h>
-#include <qtimer.h>
-#include <qlabel.h>
-
-#include <qapp.h>
-
-#include <mdefines.h>
 #include <net/if.h>
+#include <qdatastream.h>
+#include <qfile.h>
+#include <qlabel.h>
+#include <qmainwindow.h>
+#include <qstring.h>
+#include <qtextstream.h>
+#include <qtimer.h>
+
+#include "mdefines.h"
+#include "networkdevice.h"
 
 /**
  * @short Application Main Window
@@ -49,7 +42,7 @@
 
 
 class mesydaq2Widget;
-class mainWindow;
+class MainWidget;
 class histogram;
 class dataCruncher;
 class mcpd8;
@@ -103,8 +96,8 @@ public:
     void initMcpd(unsigned char id);
     void allPulserOff();
     void setTimingwidth(unsigned char width);
-    void writePeriReg(unsigned short id, unsigned short mod, unsigned short reg, unsigned short val);
-    unsigned short readPeriReg(unsigned short id, unsigned short mod, unsigned short reg);
+    //void writePeriReg(unsigned short id, unsigned short mod, unsigned short reg, unsigned short val);
+    //unsigned short readPeriReg(unsigned short id, unsigned short mod, unsigned short reg);
     bool checkListfilename(void);
     QString getListfilepath();
     bool getListfilename();
@@ -163,7 +156,7 @@ public:
     networkDevice * netDev[8];
     measurement* meas;
     controlInterface * cInt;
-    mainWindow * mainWin;
+    MainWidget * mainWin;
     dataCruncher * dc;
 
 protected:

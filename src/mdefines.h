@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 // general definitions for mesydaq
-// 
+//
 
 // official commands
 #define RESET 0

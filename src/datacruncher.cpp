@@ -26,8 +26,8 @@
 #include "measurement.h"
 //#include "mainwindow.h"
 
-dataCruncher::dataCruncher(QObject *parent, const char *name)
- : QObject(parent, name)
+dataCruncher::dataCruncher(QObject *parent)
+ : QObject(parent)
 {
 	theApp = (mesydaq2 *) parent;
 	for(unsigned char c = 0; c < 8; c++)

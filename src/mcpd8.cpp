@@ -23,8 +23,8 @@
 
 #include <qtextstream.h>
 
-mcpd8::mcpd8(QObject *parent, const char *name)
- : QObject(parent, name)
+mcpd8::mcpd8(QObject *parent)
+ : QObject(parent)
 {
 	theApp = (mesydaq2 *) parent;
 	stdInit();
@@ -75,6 +75,7 @@ bool mcpd8::setAuxTimer(unsigned short tim, unsigned short val)
 		auxTimer[tim] = val;
 	str.sprintf("mcpd %d: set auxiliary timer %d to %d.", id, tim, val);
 	theApp->protocol(str, 2);
+    return true;
 }
 
 
@@ -132,6 +133,7 @@ bool mcpd8::setParamSource(unsigned short param, unsigned short source)
     	paramSource[param] = source;
 	str.sprintf("mcpd %d: set parameter source %d to %d.", id, param, source);
 	theApp->protocol(str, 2);
+    return true;
 }
 
 /*!
@@ -314,7 +316,7 @@ void mcpd8::stdInit(void)
 	bzero(&inetAddr, sizeof(inetAddr));
 	inetAddr.sin_family = AF_INET;
 	inetAddr.sin_port = htons(54321);
-	inetAddr.sin_addr.s_addr = inet_addr(ipAddrStr.latin1());
+	inetAddr.sin_addr.s_addr = inet_addr(ipAddrStr.toLatin1().constData());
 
 	cmdPort = 54321;
 	dataPort = 54321;
@@ -417,6 +419,8 @@ bool mcpd8::serialize(QFile * fi)
 		t << '\r' << '\n';
 	}
 	t << '\r' << '\n';
+
+    return true;
 }
 
 
@@ -476,32 +480,18 @@ sockaddr_in mcpd8::getInetAddr()
  */
 void mcpd8::setIpAddress(QString addrStr)
 {
-    QString s;
-
-    // set string address
-    ipAddrStr = addrStr;
-
     // split into numerical address tuple
-    s = addrStr.left(addrStr.find("."));
-    ipAddress[0] = s.toUShort();
 
-    addrStr = addrStr.mid(addrStr.find(".")+1);
-    s = addrStr.left(addrStr.find("."));
-    ipAddress[1] = s.toUShort();
+    auto parts = addrStr.split(".");
 
-    addrStr = addrStr.mid(addrStr.find(".")+1);
-    s = addrStr.left(addrStr.find("."));
-    ipAddress[2] = s.toUShort();
-
-    addrStr = addrStr.mid(addrStr.find(".")+1);
-    s = addrStr.left(addrStr.find("."));
-    ipAddress[3] = s.toUShort();
+    for (int i=0; i<parts.size() && i<4; ++i)
+        ipAddress[i] = parts[i].toUInt();
 
     // and finally set inetAddr
 	bzero(&inetAddr, sizeof(inetAddr));
 	inetAddr.sin_family = AF_INET;
 	inetAddr.sin_port = htons(54321);
-	inetAddr.sin_addr.s_addr = inet_addr(ipAddrStr.latin1());
+	inetAddr.sin_addr.s_addr = inet_addr(ipAddrStr.toLatin1().constData());
 
 //    qDebug("ip address set to"+ipAddrStr);
 }
