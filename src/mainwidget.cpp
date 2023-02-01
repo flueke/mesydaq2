@@ -1459,8 +1459,3 @@ void mainWindow::dispCounterAssign(void)
     counterMon1box->setValue(ca[1]);
     counterMon2box->setValue(ca[3]);
 }
-
-
-
-#include "mainwindow.moc"
-

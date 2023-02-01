@@ -687,8 +687,3 @@ bool mcpd8::isResponding(void)
     else
     	return true;
 }
-
-
-#include "mcpd8.moc"
-
-

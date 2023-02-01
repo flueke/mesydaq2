@@ -514,8 +514,3 @@ bool mpsd8::serialize(QFile * fi)
 	t << "threshold = " << threshpoti[0];
 	t << '\r' << '\n';
 }
-
-
-
-#include "mpsd8.moc"
-

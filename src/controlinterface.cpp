@@ -331,8 +331,3 @@ void controlInterface::completeCaressFileheader(void)
 	carFileH.append('\n');
 //	qDebug(carFileH);
 }
-
-
-
-#include "controlinterface.moc"
-

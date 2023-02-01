@@ -562,5 +562,3 @@ void measurement::serialize(QFile * fi)
 	t << "monitor1 = " << monAssign[0][0] << " " << monAssign[0][1];
 	t << '\r' << '\n';
 }
-
-#include "measurement.moc"

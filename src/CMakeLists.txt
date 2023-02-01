@@ -9,12 +9,11 @@ add_executable(mesydaq2
     datacruncher.cpp
     histogram.cpp
     main.cpp
+    mainwidget.cpp
     mainwidget.ui
-    mainwindow.cpp
     mcpd8.cpp
     measurement.cpp
     mesydaq2.cpp
-    mesydaq2mainwindow.cpp
     mpsd8.cpp
     networkdevice.cpp
 )

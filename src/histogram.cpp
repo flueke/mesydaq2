@@ -210,9 +210,6 @@ unsigned short histogram::maxpos(unsigned int channel)
     return maximum[channel][1];
 }
 
-#include "histogram.moc"
-
-
 /*!
     \fn histogram::getMean(float* vals)
  */

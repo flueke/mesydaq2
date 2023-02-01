@@ -280,5 +280,3 @@ void dataCruncher::setCounterAssign(unsigned char cpu0, unsigned char counter0, 
     mon1counter = counter0;
     mon2counter = counter1;
 }
-
-#include "datacruncher.moc"

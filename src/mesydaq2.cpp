@@ -2360,5 +2360,3 @@ void mesydaq2::pulserTest()
 
 	}
 }
-
-#include "mesydaq2.moc"

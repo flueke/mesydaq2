@@ -162,9 +162,3 @@ QString networkDevice::getAddress(unsigned char id)
 {
     return(ipAddress[id]);
 }
-
-
-
-#include "networkdevice.moc"
-
-
