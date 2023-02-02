@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWidget</class>
- <widget class="QWidget" name="widget2">
+ <widget class="QWidget" name="MainWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -4505,7 +4505,7 @@ parameters</string>
   <connection>
    <sender>applyDispThreshButton</sender>
    <signal>clicked()</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>applyThreshSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4521,7 +4521,7 @@ parameters</string>
   <connection>
    <sender>clearAll</sender>
    <signal>clicked()</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>clearAllSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4537,7 +4537,7 @@ parameters</string>
   <connection>
    <sender>clearChan</sender>
    <signal>clicked()</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>clearChanSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4553,7 +4553,7 @@ parameters</string>
   <connection>
    <sender>clearMcpd</sender>
    <signal>clicked()</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>clearMcpdSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4569,7 +4569,7 @@ parameters</string>
   <connection>
    <sender>clearMpsd</sender>
    <signal>clicked()</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>clearMpsdSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4585,7 +4585,7 @@ parameters</string>
   <connection>
    <sender>debugLevelBox</sender>
    <signal>activated(int)</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>debugLevelSlot(int)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4601,7 +4601,7 @@ parameters</string>
   <connection>
    <sender>devid</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>displayMpsdSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4649,7 +4649,7 @@ parameters</string>
   <connection>
    <sender>devid_2</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>displayMpsdSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4761,7 +4761,7 @@ parameters</string>
   <connection>
    <sender>ePresetButton</sender>
    <signal>toggled(bool)</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>ePresetSlot(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4777,7 +4777,7 @@ parameters</string>
   <connection>
    <sender>eResetButton</sender>
    <signal>clicked()</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>eResetSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4793,7 +4793,7 @@ parameters</string>
   <connection>
    <sender>m1PresetButton</sender>
    <signal>toggled(bool)</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>m1PresetSlot(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4809,7 +4809,7 @@ parameters</string>
   <connection>
    <sender>m1ResetButton</sender>
    <signal>clicked()</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>m1ResetSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4825,7 +4825,7 @@ parameters</string>
   <connection>
    <sender>m2PresetButton</sender>
    <signal>toggled(bool)</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>m2PresetSlot(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4841,7 +4841,7 @@ parameters</string>
   <connection>
    <sender>m2RresetButton</sender>
    <signal>clicked()</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>m2ResetSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4857,7 +4857,7 @@ parameters</string>
   <connection>
    <sender>mcpdId</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>displayMcpdSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4873,7 +4873,7 @@ parameters</string>
   <connection>
    <sender>module</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>displayMpsdSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4888,8 +4888,8 @@ parameters</string>
   </connection>
   <connection>
    <sender>tabWidget2</sender>
-   <signal>selected(QString)</signal>
-   <receiver>widget2</receiver>
+   <signal>currentChanged(int)</signal>
+   <receiver>MainWidget</receiver>
    <slot>displayMcpdSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4904,8 +4904,8 @@ parameters</string>
   </connection>
   <connection>
    <sender>tabWidget5</sender>
-   <signal>selected(QString)</signal>
-   <receiver>widget2</receiver>
+   <signal>currentChanged(int)</signal>
+   <receiver>MainWidget</receiver>
    <slot>displayMcpdSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4921,7 +4921,7 @@ parameters</string>
   <connection>
    <sender>tPresetButton</sender>
    <signal>toggled(bool)</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>tPresetSlot(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4937,7 +4937,7 @@ parameters</string>
   <connection>
    <sender>tResetButton</sender>
    <signal>clicked()</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>tResetSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -4985,7 +4985,7 @@ parameters</string>
   <connection>
    <sender>useThresh</sender>
    <signal>clicked()</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>applyThreshSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -5017,7 +5017,7 @@ parameters</string>
   <connection>
    <sender>pulsertestButton</sender>
    <signal>toggled(bool)</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>pulsertestSlot(bool)</slot>
    <hints>
     <hint type="sourcelabel">
@@ -5081,7 +5081,7 @@ parameters</string>
   <connection>
    <sender>cpuMon1box</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>assignCounterSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -5097,7 +5097,7 @@ parameters</string>
   <connection>
    <sender>counterMon1box</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>assignCounterSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -5113,7 +5113,7 @@ parameters</string>
   <connection>
    <sender>cpuMon2box</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>assignCounterSlot()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -5129,7 +5129,7 @@ parameters</string>
   <connection>
    <sender>counterMon2box</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>widget2</receiver>
+   <receiver>MainWidget</receiver>
    <slot>assignCounterSlot()</slot>
    <hints>
     <hint type="sourcelabel">
