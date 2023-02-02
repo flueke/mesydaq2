@@ -1047,15 +1047,23 @@ bool mesydaq2::saveSetup(void)
 		t << "debugLevel =";
 		t << debugLevel;
 		t << '\r' << '\n';
+		t.flush();
 		meas->serialize(&f);
 		t << '\r' << '\n';
+		t.flush();
 
 		for(int i=0; i<MCPDS; i++){
 	    	myMcpd[i]->serialize(&f);
+			t.flush();
 	    }
 		for(int i=0; i<8*MCPDS; i++)
+		{
 			if(myMpsd[i]->getMpsdId())
+			{
 				myMpsd[i]->serialize(&f);
+				t.flush();
+			}
+		}
   }
   f.close();
   return true;
