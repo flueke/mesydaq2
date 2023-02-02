@@ -601,7 +601,7 @@ Listfile</string>
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="tab">
+   <widget class="QWidget" name="tab1">
     <attribute name="title">
      <string>Thresholds</string>
     </attribute>
@@ -709,7 +709,7 @@ Listfile</string>
    <property name="currentIndex">
     <number>0</number>
    </property>
-   <widget class="QWidget" name="tab">
+   <widget class="QWidget" name="tab2">
     <attribute name="title">
      <string>Meas.Status</string>
     </attribute>
@@ -728,7 +728,7 @@ Listfile</string>
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tab3">
       <attribute name="title">
        <string>meas. data</string>
       </attribute>
@@ -1340,7 +1340,7 @@ Listfile</string>
        </property>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tab4">
       <attribute name="title">
        <string>statistics</string>
       </attribute>
@@ -1588,7 +1588,7 @@ Listfile</string>
      </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="tab">
+   <widget class="QWidget" name="tab5">
     <attribute name="title">
      <string>MCPD-&amp;8</string>
     </attribute>
@@ -1703,7 +1703,7 @@ Listfile</string>
        <height>210</height>
       </rect>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tab6">
       <attribute name="title">
        <string>Counters, Timers, Parameters</string>
       </attribute>
@@ -2171,7 +2171,7 @@ Listfile</string>
        </widget>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tab7">
       <attribute name="title">
        <string>Address / Comm. Settings</string>
       </attribute>
@@ -2779,7 +2779,7 @@ parameters</string>
        </widget>
       </widget>
      </widget>
-     <widget class="QWidget" name="TabPage">
+     <widget class="QWidget" name="TabPage1">
       <attribute name="title">
        <string>Counter Status</string>
       </attribute>
@@ -2968,7 +2968,7 @@ parameters</string>
      </property>
     </widget>
    </widget>
-   <widget class="QWidget" name="TabPage">
+   <widget class="QWidget" name="TabPage2">
     <attribute name="title">
      <string>MPSD-&amp;8</string>
     </attribute>
@@ -2981,7 +2981,7 @@ parameters</string>
        <height>220</height>
       </rect>
      </property>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tab8">
       <attribute name="title">
        <string>Status</string>
       </attribute>
@@ -3391,7 +3391,7 @@ parameters</string>
        </property>
       </widget>
      </widget>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tab9">
       <attribute name="title">
        <string>Settings</string>
       </attribute>
@@ -3891,7 +3891,7 @@ parameters</string>
      </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="TabPage">
+   <widget class="QWidget" name="TabPage3">
     <attribute name="title">
      <string>Fi&amp;les</string>
     </attribute>
@@ -4274,7 +4274,7 @@ parameters</string>
      </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="TabPage">
+   <widget class="QWidget" name="TabPage4">
     <attribute name="title">
      <string>Special</string>
     </attribute>
@@ -4389,7 +4389,7 @@ parameters</string>
      </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="TabPage">
+   <widget class="QWidget" name="TabPage5">
     <attribute name="title">
      <string>Protocol</string>
     </attribute>
