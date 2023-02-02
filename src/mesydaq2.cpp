@@ -1010,7 +1010,7 @@ bool mesydaq2::saveSetup(void)
 {
   QString name;
   unsigned char cnt[4];
-  name = QFileDialog::getSaveFileName(this, "Load Config File...", configPath, "mesydaq config files (*.mcfg);;all files (*.*)");
+  name = QFileDialog::getSaveFileName(this, "Save Config File...", configPath, "mesydaq config files (*.mcfg);;all files (*.*)");
   if(name.isEmpty())
   	return false;
 
@@ -1079,6 +1079,8 @@ bool mesydaq2::loadSetup(bool ask)
   	return false;
 
   configfilename = name;
+
+  qDebug() << "trying to load config from" << configfilename;
 
   QFile f(configfilename);
 
