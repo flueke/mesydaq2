@@ -1112,46 +1112,45 @@ bool mesydaq2::loadSetup(bool ask)
 
     QTextStream t( &f );        // use a text stream
 
-#if 0 // FIXME: rewrite this and/or take it from qmesydaq (the TUM version)
     s = t.readLine();
     while(!s.isNull()){
 		// comment line
-		if((s.find("//") >= 0 && s.find("//") < 10) ||
-		   (s.find(";") >= 0 && s.find(";") < 10))
+		if((s.indexOf("//") >= 0 && s.indexOf("//") < 10) ||
+		   (s.indexOf(";") >= 0 && s.indexOf(";") < 10))
 		   	;
 		else{
 		// mesydaq
-		if(s.find("[MESYDAQ]") >= 0){
+		if(s.indexOf("[MESYDAQ]") >= 0){
 			section = 1;
 		}
 		// MCPD-8
-		if(s.find("[MCPD-8]") >= 0){
+		if(s.indexOf("[MCPD-8]") >= 0){
 			section = 2;
 		}
 		// MPSD-8
-		if(s.find("[MPSD-8]") >= 0){
+		if(s.indexOf("[MPSD-8]") >= 0){
 			section = 3;
 		}
 
 		// mesydaq properties
 		if(section == 1 && s.contains("configPath =")){
-			s = s.mid(s.find("=")+1);
-			s.stripWhiteSpace();
+			s = s.mid(s.indexOf("=")+1);
+			s = s.trimmed();
 			configPath = s;
 		}
 		if(section == 1 && s.contains("histogramPath =")){
-			s = s.mid(s.find("=")+1);
-			s.stripWhiteSpace();
+			s = s.mid(s.indexOf("=")+1);
+			s = s.trimmed();
 			histPath = s;
 		}
 		if(section == 1 && s.contains("listfilePath =")){
-			s = s.mid(s.find("=")+1);
-			s.stripWhiteSpace();
+			s = s.mid(s.indexOf("=")+1);
+			s = s.trimmed();
 			listPath = s;
 		}
 		if(section == 1 && s.contains("debugLevel =")){
-			s = s.mid(s.find("=")+1);
-			s.stripWhiteSpace();
+			s = s.mid(s.indexOf("=")+1);
+			s = s.trimmed();
 			if(s.contains("All") || s.contains("3"))
 				debugLevel = 3;
 			if(s.contains("Details") || s.contains("2"))
@@ -1160,30 +1159,30 @@ bool mesydaq2::loadSetup(bool ask)
 				debugLevel = 1;
 			if(s.contains("Error") || s.contains("0"))
 				debugLevel = 0;
-			mainWin->debugLevelBox->setCurrentItem(debugLevel);
+			mainWin->debugLevelBox->setCurrentIndex(debugLevel);
 		}
 		// counter assignment
 		if(section == 1 && s.contains("monitor1")){
-			s = s.mid(s.find("=")+1);
-			while(s.find(" ") == 0)
+			s = s.mid(s.indexOf("=")+1);
+			while(s.indexOf(" ") == 0)
 				s = s.mid(1);
-			s2 = s.left(s.find(" "));
+			s2 = s.left(s.indexOf(" "));
 			cells[0] = s2.toUShort();
-			s2 = s.mid(s.find(" "));
-			while(s2.find(" ") == 0)
+			s2 = s.mid(s.indexOf(" "));
+			while(s2.indexOf(" ") == 0)
 				s2 = s2.mid(1);
 			cells[1] = s2.toUShort();
 			meas->assignCounter(0, cells[0], cells[1]);
 		}
 
 		if(section == 1 && s.contains("monitor2")){
-			s = s.mid(s.find("=")+1);
-			while(s.find(" ") == 0)
+			s = s.mid(s.indexOf("=")+1);
+			while(s.indexOf(" ") == 0)
 				s = s.mid(1);
-			s2 = s.left(s.find(" "));
+			s2 = s.left(s.indexOf(" "));
 			cells[0] = s2.toUShort();
-			s2 = s.mid(s.find(" "));
-			while(s2.find(" ") == 0)
+			s2 = s.mid(s.indexOf(" "));
+			while(s2.indexOf(" ") == 0)
 				s2 = s2.mid(1);
 			cells[1] = s2.toUShort();
 			meas->assignCounter(1, cells[0], cells[1]);
@@ -1192,8 +1191,8 @@ bool mesydaq2::loadSetup(bool ask)
 
 		// MCPD-8 properties
 		if(section == 2 && s.contains("id =")){
-			s = s.mid(s.find("=")+1);
-			s.stripWhiteSpace();
+			s = s.mid(s.indexOf("=")+1);
+			s = s.trimmed();
 			modaddr = s.toUShort();
 			confMcpd[modaddr] = true;
 			myMcpd[modaddr]->setConfigured(true);
@@ -1201,8 +1200,8 @@ bool mesydaq2::loadSetup(bool ask)
 			protocol(pstring, 2);
 		}
 		if(section == 2 && s.contains("ipAddress =")){
-			s2 = s.mid(s.find("ipAddress =")+12);
-			s2.stripWhiteSpace();
+			s2 = s.mid(s.indexOf("ipAddress =")+12);
+			s2 = s2.trimmed();
 //			qDebug("ipAddress"+s2);
 //			qDebug("modaddr: %d", modaddr);
 			myMcpd[modaddr]->setIpAddress(s2);
@@ -1224,33 +1223,33 @@ bool mesydaq2::loadSetup(bool ask)
 		}
 
 		if(section == 2 && s.contains("counterCell")){
-			s2 = s.mid(s.find("counterCell")+11, 1);
+			s2 = s.mid(s.indexOf("counterCell")+11, 1);
 			cells[0] = s2.toUShort();
-			s = s.mid(s.find("=")+1);
-			while(s.find(" ") == 0)
+			s = s.mid(s.indexOf("=")+1);
+			while(s.indexOf(" ") == 0)
 				s = s.mid(1);
-			s2 = s.left(s.find(" "));
+			s2 = s.left(s.indexOf(" "));
 			cells[1] = s2.toUShort();
-			s2 = s.mid(s.find(" "));
-			while(s2.find(" ") == 0)
+			s2 = s.mid(s.indexOf(" "));
+			while(s2.indexOf(" ") == 0)
 				s2 = s2.mid(1);
 			cells[2] = s2.toUShort();
 			myMcpd[modaddr]->setCounterCell(cells);
 		}
 		if(section == 2 && s.contains("auxTimer")){
-			s2 = s.mid(s.find("auxTimer")+8, 1);
+			s2 = s.mid(s.indexOf("auxTimer")+8, 1);
 			chan = s2.toUShort();
-			s = s.mid(s.find("=")+1);
-			while(s.find(" ") == 0)
+			s = s.mid(s.indexOf("=")+1);
+			while(s.indexOf(" ") == 0)
 				s = s.mid(1);
 			gain = s.toUShort();
 			myMcpd[modaddr]->setAuxTimer((unsigned short)chan, (unsigned short)gain);
 		}
 		if(section == 2 && s.contains("paramSource")){
-			s2 = s.mid(s.find("paramSource")+11, 1);
+			s2 = s.mid(s.indexOf("paramSource")+11, 1);
 			chan = s2.toUShort();
-			s = s.mid(s.find("=")+1);
-			while(s.find(" ") == 0)
+			s = s.mid(s.indexOf("=")+1);
+			while(s.indexOf(" ") == 0)
 				s = s.mid(1);
 			gain = s.toUShort();
 			myMcpd[modaddr]->setParamSource((unsigned short)chan, (unsigned short)gain);
@@ -1258,8 +1257,8 @@ bool mesydaq2::loadSetup(bool ask)
 
 		// MPSD-8 properties
 		if(section == 3 && s.contains("id =")){
-			s = s.mid(s.find("=")+1);
-			s.stripWhiteSpace();
+			s = s.mid(s.indexOf("=")+1);
+			s = s.trimmed();
 			modaddr = s.toUShort();
 			mcpd = (unsigned char)(modaddr / 8);
 			id = (unsigned char)(modaddr - mcpd*8);
@@ -1267,10 +1266,10 @@ bool mesydaq2::loadSetup(bool ask)
 			protocol(pstring, 2);
 		}
 		if(section == 3 && s.contains("gain")){
-			s2 = s.mid(s.find("gain")+4, 1);
+			s2 = s.mid(s.indexOf("gain")+4, 1);
 			chan = s2.toUShort();
-			s = s.mid(s.find("=")+1);
-			s.stripWhiteSpace();
+			s = s.mid(s.indexOf("=")+1);
+			s = s.trimmed();
 			gain = s.toUShort();
 //			qDebug("modaddr: %d, chan: %d, gain: %d", modaddr, chan, gain);
 //			if(myMpsd[modaddr]->getMpsdId() > 0)
@@ -1278,8 +1277,8 @@ bool mesydaq2::loadSetup(bool ask)
 //			else
 		}
 		if(section == 3 && s.contains("threshold =")){
-			s2 = s.mid(s.find("threshold =")+11);
-			s2.stripWhiteSpace();
+			s2 = s.mid(s.indexOf("threshold =")+11);
+			s2 = s2.trimmed();
 			thresh = s2.toUShort();
 //			qDebug("modaddr: %d, thresh: %d", modaddr, thresh);
 //			if(myMpsd[modaddr]->getMpsdId() > 0)
@@ -1289,7 +1288,6 @@ bool mesydaq2::loadSetup(bool ask)
 	    // read next line
 	    s = t.readLine();
 	}
-#endif
 
 	f.close();
 	mainWin->dispFiledata();
