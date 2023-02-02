@@ -765,9 +765,16 @@ void MainWidget::draw(void)
 	// much.
 
 	if (drawPixmap.isNull())
+	{
 		drawPixmap = QPixmap(dataPixmapLabel->contentsRect().size());
+		qDebug() << "drawPixmap initial size" << drawPixmap.size();
+	}
+	else if (drawPixmap.size() != dataPixmapLabel->contentsRect().size())
+	{
+		drawPixmap = drawPixmap.scaled(dataPixmapLabel->contentsRect().size());
+		qDebug() << "drawPixmap new scaled size" << drawPixmap.size();
+	}
 
-	qDebug() << "drawPixmap.size()" << drawPixmap.size();
 
 	dispId = dispMcpd->value();
 	if(!multi || (multi && dispNum == 0)){
@@ -780,6 +787,7 @@ void MainWidget::draw(void)
 //	displayMpsdSlot();
 
 	dataPixmapLabel->setPixmap(drawPixmap);
+	update();
 }
 
 void MainWidget::clearAllSlot()
