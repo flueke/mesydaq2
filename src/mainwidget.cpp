@@ -23,6 +23,7 @@
 #include "mpsd8.h"
 #include "measurement.h"
 
+#include <QDebug>
 #include "qpushbutton.h"
 #include "qcombobox.h"
 #include "qspinbox.h"
@@ -467,7 +468,7 @@ void MainWidget::drawData(void)
 	QString str, str2;
 	QFont fo;
 	QPainter p2;
-	p2.begin(this->dataFrame);
+	p2.begin(&this->drawPixmap);
 	p2.setPen(QPen(Qt::black, 1, Qt::SolidLine));
 	p2.setBrush(QBrush(Qt::black));
 	fo = p2.font();
@@ -634,21 +635,21 @@ void MainWidget::setData(unsigned long * data, unsigned int len, unsigned long i
  */
 void MainWidget::drawDataGrid(void)
 {
-	QPainter p2;
 	QString str;
 
 	// clear old grid:
-  	p2.begin(this->mainFrame);
+	QPainter p2;
+	p2.begin(&this->drawPixmap);
 	p2.setPen(QPen(Qt::black, 1, Qt::NoPen));
 	p2.setBrush(QBrush(Qt::lightGray));
-	p2.drawRect(mainFrame->contentsRect());
+	p2.drawRect(drawPixmap.rect());
   	p2.end();
 
 	// clear old frame:
-  	p2.begin(this->dataFrame);
+	p2.begin(&this->drawPixmap);
 	p2.setPen(QPen(Qt::black, 1, Qt::NoPen));
 	p2.setBrush(QBrush(Qt::white));
-	p2.drawRect(mainFrame->contentsRect());
+	p2.drawRect(drawPixmap.rect());
 	p2.end();
 
 }
@@ -658,7 +659,6 @@ void MainWidget::drawDataGrid(void)
  */
 void MainWidget::drawXAxis(void)
 {
-	QPainter p2;
 	QString str;
 	QFont fo;
 	unsigned int start = 0;
@@ -668,7 +668,9 @@ void MainWidget::drawXAxis(void)
 		start = zoomStart->value();
 		scalestep = step / 4;
 	}
- 	p2.begin(this->mainFrame);
+
+	QPainter p2;
+	p2.begin(&this->drawPixmap);
 	p2.setPen(QPen(Qt::black, 1, Qt::SolidLine));
 	p2.setBrush(QBrush(Qt::black));
 
@@ -708,11 +710,11 @@ void MainWidget::drawXAxis(void)
  */
 void MainWidget::drawYAxis(void)
 {
-	QPainter p2;
 	QString str;
 	QFont fo;
 
-	p2.begin(this->mainFrame);
+	QPainter p2;
+	p2.begin(&this->drawPixmap);
   	// draw y-axis
 	p2.setPen(QPen(Qt::black, 1, Qt::SolidLine));
 	p2.setBrush(QBrush(Qt::black));
@@ -751,6 +753,22 @@ void MainWidget::drawYAxis(void)
  */
 void MainWidget::draw(void)
 {
+	// Note (flueke): The old code used QPainters directly on the dataFrame.
+	// This was done outside paintEvent() and does not work at all in modern Qt.
+	// Refactoring attempt: let the painters draw into a pixmap, then display
+	// the pixmap using a QLabel instance which is a child of dataFrame.
+	// For now the pixmap has to be a member of this class because draw() can be
+	// called multiple times with shared state having been mutated in-between.
+	// See mesydaq2::draw().
+	// At the end of draw() the pixmap is set on the dataPixmapLabel QLabel
+	// instance. This happens more often than it needs to but should not matter
+	// much.
+
+	if (drawPixmap.isNull())
+		drawPixmap = QPixmap(dataPixmapLabel->contentsRect().size());
+
+	qDebug() << "drawPixmap.size()" << drawPixmap.size();
+
 	dispId = dispMcpd->value();
 	if(!multi || (multi && dispNum == 0)){
 		drawDataGrid();
@@ -760,6 +778,8 @@ void MainWidget::draw(void)
 	drawData();
 	drawOpData();
 //	displayMpsdSlot();
+
+	dataPixmapLabel->setPixmap(drawPixmap);
 }
 
 void MainWidget::clearAllSlot()

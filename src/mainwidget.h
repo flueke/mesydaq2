@@ -20,6 +20,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QPixmap>
 #include <QWidget>
 
 #include "ui_mainwidget.h"
@@ -139,6 +140,8 @@ protected:
 	bool multi;
 	unsigned char dispNum;
     bool dontSend;
+
+    QPixmap drawPixmap;
 };
 
 #endif
