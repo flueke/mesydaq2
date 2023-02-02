@@ -19,5 +19,6 @@ add_executable(mesydaq2
 )
 
 target_link_libraries(mesydaq2 Qt5::Widgets)
+target_compile_features(mesydaq2 PRIVATE cxx_std_17)
 # Less noise while trying to get things to work.
 target_compile_options(mesydaq2 PRIVATE "-Wno-deprecated-declarations")
