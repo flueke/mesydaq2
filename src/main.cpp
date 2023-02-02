@@ -29,6 +29,10 @@ int main(int argc, char **argv)
     QApplication app(argc, argv);
     mesydaq2 *mainWin = 0;
 
+    // FIXME (flueke): Putting mesydaq2 on the stack or setting the
+    // Qt::WA_DeleteOnClose attribute actually leads to a segfault when closing
+    // the window. Possibly timers still running and invoking slots on an object
+    // that has already been destroyed.
     mainWin = new mesydaq2();
 
     auto args = app.arguments();
@@ -40,9 +44,8 @@ int main(int argc, char **argv)
     }
 
     mainWin->initSystem();
-    //app.setMainWidget( mainWin );
     mainWin->show();
     // mainWin has WDestructiveClose flag by default, so it will delete itself.
+
     return app.exec();
 }
-
