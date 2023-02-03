@@ -18,7 +18,13 @@ add_executable(mesydaq2
     networkdevice.cpp
 )
 
-target_link_libraries(mesydaq2 Qt5::Widgets)
 target_compile_features(mesydaq2 PRIVATE cxx_std_17)
 # Less noise while trying to get things to work.
 target_compile_options(mesydaq2 PRIVATE "-Wno-deprecated-declarations")
+
+target_link_libraries(mesydaq2 PRIVATE Qt5::Widgets)
+
+if (WIN32)
+    target_link_libraries(mesydaq2 PRIVATE ws2_32)
+    #target_link_libraries(mesydaq2 PRIVATE ws2_32 winmm)
+endif(WIN32)

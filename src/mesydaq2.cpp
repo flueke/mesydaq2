@@ -49,12 +49,14 @@
 #include <qcombobox.h>
 
 #include <time.h>
+#ifndef __WIN32
 #include <net/if.h>
 #include <sys/ioctl.h>
 #include <sys/socket.h>
 //#include <netinet/in.h>
 //#include <sys/types.h>
 #include <arpa/inet.h>
+#endif
 
 
 mesydaq2::mesydaq2()

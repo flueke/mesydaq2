@@ -24,10 +24,15 @@
 #include <qstring.h>
 #include <qfile.h>
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <sys/types.h>
+#ifndef __WIN32
 #include <arpa/inet.h>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#else
+#include <winsock2.h>
+#endif
+
+#include <sys/types.h>
 
 class mesydaq2;
 

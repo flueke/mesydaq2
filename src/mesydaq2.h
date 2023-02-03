@@ -22,7 +22,9 @@
 #ifndef _MESYDAQ2_H_
 #define _MESYDAQ2_H_
 
+#ifndef __WIN32
 #include <net/if.h>
+#endif
 #include <qdatastream.h>
 #include <qfile.h>
 #include <qlabel.h>

@@ -25,10 +25,14 @@
 #include <qobject.h>
 #include <qsocketnotifier.h>
 
+#ifndef __WIN32
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <sys/types.h>
 #include <arpa/inet.h>
+#else
+#include <winsock2.h>
+#endif
 
 #include "structures.h"
 

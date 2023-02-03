@@ -313,7 +313,7 @@ void mcpd8::stdInit(void)
 	}
 	ipAddrStr.sprintf("192.168.168.121");
 
-	bzero(&inetAddr, sizeof(inetAddr));
+	memset(&inetAddr, 0, sizeof(inetAddr));
 	inetAddr.sin_family = AF_INET;
 	inetAddr.sin_port = htons(54321);
 	inetAddr.sin_addr.s_addr = inet_addr(ipAddrStr.toLatin1().constData());
@@ -488,7 +488,7 @@ void mcpd8::setIpAddress(QString addrStr)
         ipAddress[i] = parts[i].toUInt();
 
     // and finally set inetAddr
-	bzero(&inetAddr, sizeof(inetAddr));
+	memset(&inetAddr, 0, sizeof(inetAddr));
 	inetAddr.sin_family = AF_INET;
 	inetAddr.sin_port = htons(54321);
 	inetAddr.sin_addr.s_addr = inet_addr(ipAddrStr.toLatin1().constData());
