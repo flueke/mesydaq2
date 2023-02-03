@@ -105,8 +105,6 @@ public slots:
     virtual void mcpdSearchSlot();
     virtual void pulsertestSlot(bool on);
     virtual void assignCounterSlot();
-protected:
-    unsigned short cmdBuffer[20];
     virtual void acqListfileSlot();
     virtual void selectListfileSlot();
     virtual void allPulserSlot();
@@ -115,6 +113,8 @@ protected:
     virtual void setPulserSlot();
     virtual void setIpUdpSlot();
     virtual void setMcpdIdSlot();
+protected:
+    unsigned short cmdBuffer[20];
     unsigned short * pBuffer;
     mesydaq2 * theApp;
     QString pstring;
