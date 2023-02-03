@@ -842,6 +842,8 @@ void MainWidget::drawYAxis(void)
 
 	unsigned int step = histHeight / 10;
   	unsigned int logrange = ceil(log10(dispRange));
+    if (logrange <= 0.0)
+        logrange = 1.0;
   	float logstep = histHeight / logrange;
   	// y-Axis
 	if(dispLog){
