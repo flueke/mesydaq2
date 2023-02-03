@@ -1451,14 +1451,19 @@ void mesydaq2::initMcpd(unsigned char id)
 	}
 
     // set tx capability to TAP
+    // Note (flueke): This sets a fixed capabilies value without considering
+    // which device is present on the bus. For a MPSD-8+ with default settings a
+    // value of 2 (==TP) works.
 	commandBuffer[0] = id;
    	commandBuffer[1] = WRITEREGISTER;
 	commandBuffer[2] = 1;
 	commandBuffer[3] = 103;
     // set tx capability to TAP
-	commandBuffer[4] = 4;
+	//commandBuffer[4] = 4;
     // set tx capability to P
 //	commandBuffer[4] = 1;
+    // set tx capability to TP
+    commandBuffer[4] = 2;
 	sendCommand(commandBuffer);
 	pstring.sprintf("initialized MCPD ID %d", id);
 	protocol(pstring, 1);
