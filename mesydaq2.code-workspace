@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.analysis": "json",
+			"*.mvmemodule": "json",
+			"condition_variable": "cpp",
+			"mutex": "cpp",
+			"streambuf": "cpp",
+			"system_error": "cpp"
+		}
+	}
+}
