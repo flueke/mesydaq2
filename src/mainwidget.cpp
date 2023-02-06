@@ -388,7 +388,18 @@ void MainWidget::setIpUdpSlot()
 
 void MainWidget::setPulserSlot()
 {
-	qDebug("pulserSlot");
+	// XXX: leftoff here, sequence is
+	// [17:22:51.904] [info] mesydaq2::startPulserTest(): starting with mod=0
+	// setPulserSlot
+	// setPulserSlot
+	// setPulserSlot
+	// send
+	// Then its dead and shen trying to quit the mcpd::isBusy() is true and the
+	// app gets stuck there.
+
+
+
+	qDebug("setPulserSlot");
 
 	if(dontSend){
 		dontSend = false;

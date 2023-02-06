@@ -55,6 +55,7 @@ static const unsigned DispatchIdx_PulserTest = 3;
 
 // Some magic numbers previously used in the code.
 static const unsigned Dispatch_TimeoutReachedValue = 51;
+static const unsigned Dispatch_RunPulserTestValue = 11; // Note (flueke): original value was 11, so quite fast
 
 mesydaq2::mesydaq2()
     : QMainWindow()
@@ -73,8 +74,8 @@ mesydaq2::mesydaq2()
 mesydaq2::~mesydaq2()
 {
 
-	dispTimer->stop();
-	delete dispTimer;
+	//dispTimer->stop();
+	//delete dispTimer;
 	theTimer->stop();
 	delete theTimer;
 	commTimer->stop();
@@ -434,7 +435,7 @@ void mesydaq2::onBufferReceived()
     status = recBuf->deviceStatus;
     if (recBuf->bufferType & 0x8000)
     {
-        protocol(QSL("onBufferReceived(): received command buffer for device%1").arg(deviceId), LOG_LEVEL_DEBUG);
+        protocol(QSL("mesydaq2::onBufferReceived(): received command buffer for device%1").arg(deviceId), LOG_LEVEL_TRACE);
         cmdActive = false;
         cmdRxd++;
         myMcpd[recBuf->deviceId]->answered();
@@ -479,7 +480,7 @@ void mesydaq2::onBufferReceived()
             }
             dataRxd++;
             protocol(QSL("onBufferReceived(): calling analyzeBuffer() for device %1").arg(deviceId),
-                     LOG_LEVEL_DEBUG);
+                     LOG_LEVEL_TRACE);
             dc->analyzeBuffer(pDataBuf, daq, hist[deviceId]);
         }
     }
@@ -686,8 +687,8 @@ void mesydaq2::initDevices(void)
 void mesydaq2::initTimers(void)
 {
     // display refresh timer
-    dispTimer = new QTimer(this);
-    connect(dispTimer, SIGNAL(timeout()), this, SLOT(dispTime()));
+    //dispTimer = new QTimer(this);
+    //connect(dispTimer, SIGNAL(timeout()), this, SLOT(dispTime()));
 //    dispTimer->start(1000, false);
 
 	// central dispatch timer
@@ -703,8 +704,8 @@ void mesydaq2::initTimers(void)
     commId = 99;
 
     // pulser test timer
-    testTimer = new QTimer(this);
-    connect(testTimer, SIGNAL(timeout()), this, SLOT(pulserTest()));
+    //testTimer = new QTimer(this);
+    //connect(testTimer, SIGNAL(timeout()), this, SLOT(pulserTest()));
 
 	testRunning = false;
 }
@@ -1336,9 +1337,9 @@ void mesydaq2::centralDispatch()
 
     // pulser test
     dispatch[3]++;
-    if (testRunning == true && dispatch[3] == 11)
+    if (testRunning == true && dispatch[3] == Dispatch_RunPulserTestValue)
     {
-        protocol("mesydaq2::centralDispatch: call pulserTest()!", LOG_LEVEL_TRACE);
+        protocol("mesydaq2::centralDispatch: call pulserTest()!", LOG_LEVEL_DEBUG);
         pulserTest();
         dispatch[3] = 0;
     }
@@ -2220,6 +2221,10 @@ void mesydaq2::startPulsertest(void)
 	}
 //	qDebug("starting with mod: %d", testMod);
 
+	protocol(QSL("mesydaq2::startPulserTest(): starting with mod=%1")
+		.arg(testMod),
+		LOG_LEVEL_INFO);
+
 	testChan = 0;
 	testPos = 0;
 	testAmpl = 0;
@@ -2237,9 +2242,8 @@ void mesydaq2::startPulsertest(void)
  */
 void mesydaq2::stopPulsertest(void)
 {
-//	qDebug("stopPulsertest");
+	protocol("mesydaq2::stopPulserTest() called", LOG_LEVEL_DEBUG);
 	testStopping = true;
-	qDebug("stopping = true");
 }
 
 
