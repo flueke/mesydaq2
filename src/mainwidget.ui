@@ -2064,9 +2064,6 @@
                 </item>
                 <item row="2" column="1">
                  <widget class="QCheckBox" name="dataThisPc">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
                   <property name="text">
                    <string>this pc</string>
                   </property>
@@ -2087,7 +2084,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>192</string>
+                   <string>0</string>
                   </property>
                  </widget>
                 </item>
@@ -2103,7 +2100,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>168</string>
+                   <string>0</string>
                   </property>
                  </widget>
                 </item>
@@ -2119,7 +2116,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>168</string>
+                   <string>0</string>
                   </property>
                  </widget>
                 </item>
@@ -2135,7 +2132,7 @@
                    </size>
                   </property>
                   <property name="text">
-                   <string>5</string>
+                   <string>0</string>
                   </property>
                  </widget>
                 </item>
@@ -2172,9 +2169,6 @@ parameters</string>
                 </item>
                 <item row="3" column="1">
                  <widget class="QCheckBox" name="cmdThisPc">
-                  <property name="enabled">
-                   <bool>false</bool>
-                  </property>
                   <property name="text">
                    <string>this pc</string>
                   </property>
@@ -2195,7 +2189,7 @@ parameters</string>
                    </size>
                   </property>
                   <property name="text">
-                   <string>192</string>
+                   <string>0</string>
                   </property>
                  </widget>
                 </item>
@@ -2211,7 +2205,7 @@ parameters</string>
                    </size>
                   </property>
                   <property name="text">
-                   <string>168</string>
+                   <string>0</string>
                   </property>
                  </widget>
                 </item>
@@ -2227,7 +2221,7 @@ parameters</string>
                    </size>
                   </property>
                   <property name="text">
-                   <string>168</string>
+                   <string>0</string>
                   </property>
                  </widget>
                 </item>
@@ -2243,7 +2237,7 @@ parameters</string>
                    </size>
                   </property>
                   <property name="text">
-                   <string>5</string>
+                   <string>0</string>
                   </property>
                  </widget>
                 </item>
@@ -2292,7 +2286,7 @@ parameters</string>
                    </size>
                   </property>
                   <property name="text">
-                   <string>192</string>
+                   <string>0</string>
                   </property>
                  </widget>
                 </item>
@@ -2308,7 +2302,7 @@ parameters</string>
                    </size>
                   </property>
                   <property name="text">
-                   <string>168</string>
+                   <string>0</string>
                   </property>
                  </widget>
                 </item>
@@ -2324,7 +2318,7 @@ parameters</string>
                    </size>
                   </property>
                   <property name="text">
-                   <string>168</string>
+                   <string>0</string>
                   </property>
                  </widget>
                 </item>
@@ -2340,7 +2334,7 @@ parameters</string>
                    </size>
                   </property>
                   <property name="text">
-                   <string>121</string>
+                   <string>0</string>
                   </property>
                  </widget>
                 </item>
