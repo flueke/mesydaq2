@@ -87,8 +87,11 @@
 #define STARTED 2
 #define STOPPED 3
 
-// debug level
-#define DEBUGLEVEL 2
+// log levels
+#define LOG_LEVEL_TRACE     3
+#define LOG_LEVEL_DEBUG     2
+#define LOG_LEVEL_INFO      1
+#define LOG_LEVEL_ERROR     0
 
 // number of MCPDs
 #define MCPDS 8
@@ -110,3 +113,5 @@
 #define ADC1ID	6
 #define ADC2ID	7
 #define EVID	8
+
+#define QSL QStringLiteral

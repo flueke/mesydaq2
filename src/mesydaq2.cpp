@@ -634,13 +634,16 @@ void mesydaq2::stopDaq(void)
  */
 void mesydaq2::protocol(QString str, unsigned char level)
 {
-    QDateTime datetime;
-    QString datestring = datetime.currentDateTime().toString("hh:mm:ss.zzz");
-    str.prepend(" - ");
-    str.prepend(datestring);
-    if(level <= debugLevel){
-        qDebug() << str;
-    	mainWin->protocolEdit->append(str);
+    auto msg = (QSL("[%1] [%2] %3")
+        .arg(QDateTime().currentDateTime().toString("hh:mm:ss.zzz"))
+        .arg(log_level_name(level))
+        .arg(str)
+        );
+
+    if (level <= debugLevel)
+    {
+        qDebug().noquote() << msg;
+        mainWin->protocolEdit->append(msg);
     }
 }
 
@@ -2315,4 +2318,17 @@ void mesydaq2::pulserTest()
 //		testTimer->start(500, false);
 
 	}
+}
+
+const char *const log_level_name(uchar level)
+{
+    switch (level)
+    {
+    case LOG_LEVEL_TRACE:   return "trace";
+    case LOG_LEVEL_DEBUG:   return "debug";
+    case LOG_LEVEL_INFO:    return "info";
+    case LOG_LEVEL_ERROR:   return "error";
+    }
+
+    return "unknown";
 }

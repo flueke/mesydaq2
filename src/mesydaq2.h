@@ -221,6 +221,7 @@ public slots:
     void commTimeout();
 };
 
+const char *const log_level_name(uchar level);
 
 
 #endif // _MESYDAQ2_H_
