@@ -20,6 +20,7 @@
 #ifndef NETWORKDEVICE_H
 #define NETWORKDEVICE_H
 
+#include <QMap>
 #include <qobject.h>
 #include <qsocketnotifier.h>
 #include <QUdpSocket>
@@ -47,7 +48,7 @@ public:
 
 private:
     QUdpSocket *socket_;
-    QString ipAddress[8];
+    QMap<unsigned char, QString> ipAddress;
 	PMDP_PACKET netBuf, recBuf;
     mesydaq2 * theApp;
 
