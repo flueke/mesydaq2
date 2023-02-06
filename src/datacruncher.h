@@ -20,6 +20,7 @@
 #ifndef DATACRUNCHER_H
 #define DATACRUNCHER_H
 
+#include <array>
 #include <qobject.h>
 
 #include "structures.h"
@@ -46,13 +47,13 @@ public:
     void setLimit(unsigned char cNum, unsigned long lim);
     void setCounterAssign(unsigned char cpu0, unsigned char counter0, unsigned char cpu1, unsigned char counter1);
 
-protected:
+private:
     mesydaq2 * theApp;
     unsigned long lastHt;
     unsigned long lastTime;
     unsigned long oldDelta;
     QString pstring;
-    unsigned long countLimit[9];
+    std::array<unsigned long , 9> countLimit;
     unsigned char mon1cpu;
     unsigned char mon2cpu;
     unsigned char mon1counter;
@@ -60,6 +61,3 @@ protected:
 };
 
 #endif
-
-
-

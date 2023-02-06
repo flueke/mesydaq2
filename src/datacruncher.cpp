@@ -30,8 +30,7 @@ dataCruncher::dataCruncher(QObject *parent)
  : QObject(parent)
 {
 	theApp = (mesydaq2 *) parent;
-	for(unsigned char c = 0; c < 8; c++)
-		countLimit[c] = 0;
+	countLimit.fill(0);
 
 	mon1counter = 0;
 	mon2counter = 1;
