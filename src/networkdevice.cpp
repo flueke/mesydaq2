@@ -63,24 +63,6 @@ PMDP_PACKET networkDevice::getRbufpointer()
  */
 qint64 networkDevice::sendBuffer(unsigned char id, PMDP_PACKET buf)
 {
-#if 0
-	QString pstring, str2;
-//	static char str[128];
-//	size_t length;
-	struct sockaddr_in addr;
-	bzero(&addr, sizeof(addr));
-	addr.sin_family = AF_INET;
-	addr.sin_port = htons(54321);
-	addr.sin_addr.s_addr = inet_addr(ipAddress[id].toLatin1().constData());
-	pstring.sprintf("send buffer to: ");
-	pstring.append(ipAddress[id]);
-//	str2.sprintf(", rxSockfd %d", rxSockfd);
-//	pstring.append(str2);
-	theApp->protocol(pstring, 3);
-	sendto(rxSockfd, buf, 200, 0, (const struct sockaddr*)&addr, sizeof(addr));
-	return 1;
-#else
-
 	if (socket_->state() != QAbstractSocket::BoundState)
 	{
 		if (!socket_->bind(QHostAddress::Any, 54321))
@@ -97,7 +79,6 @@ qint64 networkDevice::sendBuffer(unsigned char id, PMDP_PACKET buf)
 	QHostAddress destAddr(ipAddress[id]);
 	auto result = socket_->writeDatagram(reinterpret_cast<const char *>(buf), sizeof(*buf), destAddr, 54321);
 	return result;
-#endif
 }
 
 

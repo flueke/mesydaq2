@@ -184,71 +184,80 @@ void dataCruncher::analyzeBuffer(PDATA_PACKET pd, unsigned char daq, histogram* 
 
 	htim = pd->time[0] + 0x10000ULL * pd->time[1] + 0x100000000ULL * pd->time[2];
 
-	if(pd->bufferType == 0x0000 || pd->bufferType == 0x0001){
+	if (pd->bufferType == 0x0000 || pd->bufferType == 0x0001)
+	{
 
 		id = pd->deviceId;
-		offs = 8*id;
+		offs = 8 * id;
 		// extract parameter values:
-		for(i = 0; i < 4; i++){
-			var = 0;
-			for(j = 0; j < 3; j++){
-				var *= 0x10000ULL;
-				var += pd->param[i][2-j];
-			}
-			theApp->myMcpd[pd->deviceId]->setParameter((unsigned char)i, var);
-//			theApp->meas->setCounter(i, var);
+		for (i = 0; i < 4; i++)
+		{
+				var = 0;
+				for (j = 0; j < 3; j++)
+				{
+					var *= 0x10000ULL;
+					var += pd->param[i][2 - j];
+				}
+				theApp->myMcpd[pd->deviceId]->setParameter((unsigned char)i, var);
+				//			theApp->meas->setCounter(i, var);
 		}
 		// data length = (buffer length - header length) / (3 words per event) - 4 parameters.
- 		unsigned int datalen = (pd->bufferLength - pd->headerLength) / 3;
-		if(datalen>0){
-			for(i = 0; i <	datalen; i++){
-				tim = 0x10000 * (pd->data[counter+1] & 0x0007) + pd->data[counter];
-				tim += htim;
-				delta = tim - lastTime;
-				lastTime = tim;
-				// not neutron event (counter, chopper, ...)
-				if((pd->data[counter+2] & 0x8000) == 0x8000){
-					triggers++;
-					trigId = (pd->data[counter+2] & 0x7000) / 0x1000;
-					dataId = (pd->data[counter+2] & 0x0F00) / 0x100;
-					data = (pd->data[counter+2] & 0x00FF) * 0x10000 + (pd->data[counter+1] & 0xFFF8) / 8;
-					time = (unsigned short) tim;
-//					qDebug("id: %d, trigId: %d, dataId: %d, data: %d, time %lu", pd->deviceId, trigId, dataId, data, tim);
-					// dispatch events:
-					if(dataId == mon1counter && id == mon1cpu){
-							if((countLimit[MON1ID] == 0) || (theApp->meas->mon1 < countLimit[MON1ID]))
+		unsigned int datalen = (pd->bufferLength - pd->headerLength) / 3;
+		if (datalen > 0)
+		{
+				for (i = 0; i < datalen; i++)
+				{
+					tim = 0x10000 * (pd->data[counter + 1] & 0x0007) + pd->data[counter];
+					tim += htim;
+					delta = tim - lastTime;
+					lastTime = tim;
+					// not neutron event (counter, chopper, ...)
+					if ((pd->data[counter + 2] & 0x8000) == 0x8000)
+					{
+						triggers++;
+						trigId = (pd->data[counter + 2] & 0x7000) / 0x1000;
+						dataId = (pd->data[counter + 2] & 0x0F00) / 0x100;
+						data = (pd->data[counter + 2] & 0x00FF) * 0x10000 + (pd->data[counter + 1] & 0xFFF8) / 8;
+						time = (unsigned short)tim;
+						//					qDebug("id: %d, trigId: %d, dataId: %d, data: %d, time %lu", pd->deviceId, trigId, dataId, data, tim);
+						// dispatch events:
+						if (dataId == mon1counter && id == mon1cpu)
+						{
+							if ((countLimit[MON1ID] == 0) || (theApp->meas->mon1 < countLimit[MON1ID]))
 								theApp->meas->mon1++;
-					}
-					if(dataId == mon2counter && id == mon2cpu){
-							if((countLimit[MON2ID] == 0) || (theApp->meas->mon2 < countLimit[MON2ID]))
+						}
+						if (dataId == mon2counter && id == mon2cpu)
+						{
+							if ((countLimit[MON2ID] == 0) || (theApp->meas->mon2 < countLimit[MON2ID]))
 								theApp->meas->mon2++;
+						}
 					}
-				}
-				// neutron event:
-				else{
-					neutrons++;
-					mod = (pd->data[counter+2] & 0x7000) / 0x1000;
-					slot = (pd->data[counter+2] & 0x0780) / 0x80;
-					chan = 8 * 2 * mod + slot;
-					data1 = (pd->data[counter+2] & 0x007F) * 8 + (pd->data[counter+1] & 0xE000) / 8192;
-					data0 = (pd->data[counter+1] & 0x1FF8) / 8;
-//					qDebug("%d %d %lu", pd->deviceId, chan, tim);
-					if((countLimit[EVID] == 0) || (theApp->meas->events < countLimit[EVID])){
-						theApp->hist[id]->incVal(chan, data0, data1, tim);
-						theApp->hist[MCPDS]->incVal(chan, data0, data1, tim);
-						theApp->meas->events++;
+					// neutron event:
+					else
+					{
+						neutrons++;
+						mod = (pd->data[counter + 2] & 0x7000) / 0x1000;
+						slot = (pd->data[counter + 2] & 0x0780) / 0x80;
+						chan = 8 * 2 * mod + slot;
+						data1 = (pd->data[counter + 2] & 0x007F) * 8 + (pd->data[counter + 1] & 0xE000) / 8192;
+						data0 = (pd->data[counter + 1] & 0x1FF8) / 8;
+						//					qDebug("%d %d %lu", pd->deviceId, chan, tim);
+
+						if ((countLimit[EVID] == 0) || (theApp->meas->events < countLimit[EVID]))
+						{
+							theApp->hist[id]->incVal(chan, data0, data1, tim);
+							theApp->hist[MCPDS]->incVal(chan, data0, data1, tim);
+							theApp->meas->events++;
+						}
 					}
+					counter += 3;
 				}
-				counter += 3;
-			}
 		}
 	}
 	lastHt = htim;
 	// now copy auxiliary counter values into operational counters
 	theApp->meas->copyCounters();
 }
-
-
 
 /*!
     \fn dataCruncher::reset(void)

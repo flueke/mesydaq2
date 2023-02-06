@@ -76,8 +76,8 @@ public:
     void stopDaq(void);
     void startedDaq(void);
     void stoppedDaq(void);
-    void protocol(QString str, unsigned char level = 1);
-    void protocolCaress(QString str, unsigned char level = 1);
+    void protocol(QString str, unsigned char level = LOG_LEVEL_INFO);
+    void protocolCaress(QString str, unsigned char level = LOG_LEVEL_INFO);
     void initDevices(void);
     void initTimers(void);
     void clearChanHist(unsigned long chan);
@@ -215,7 +215,7 @@ protected:
 
 public slots:
     void dispTime();
-    void readBuf(void);
+    void onBufferReceived();
     void pulserTest();
     void centralDispatch();
     void commTimeout();

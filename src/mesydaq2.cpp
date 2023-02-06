@@ -19,12 +19,8 @@
  ***************************************************************************/
 
 
-#include <qmainwindow.h>
-//#include <klocale.h>
-
 #include "mesydaq2.h"
 
-#include "mesydaq2.h"
 #include "mainwidget.h"
 #include "mdefines.h"
 #include "histogram.h"
@@ -34,30 +30,31 @@
 #include "measurement.h"
 #include "controlinterface.h"
 
-#include <QDebug>
-#include <qmessagebox.h>
-#include <qlineedit.h>
-#include <qspinbox.h>
 #include <qcheckbox.h>
-#include <qfiledialog.h>
-#include <qdatetime.h>
-#include <qradiobutton.h>
-#include <qdatetime.h>
-#include <qpushbutton.h>
-#include <qdir.h>
-#include <qtextedit.h>
 #include <qcombobox.h>
+#include <qdatetime.h>
+#include <qdatetime.h>
+#include <QDebug>
+#include <qdir.h>
+#include <qfiledialog.h>
+#include <qlineedit.h>
+#include <qmainwindow.h>
+#include <qmessagebox.h>
+#include <qpushbutton.h>
+#include <qradiobutton.h>
+#include <qspinbox.h>
+#include <qtextedit.h>
 
 #include <time.h>
-#ifndef __WIN32
-#include <net/if.h>
-#include <sys/ioctl.h>
-#include <sys/socket.h>
-//#include <netinet/in.h>
-//#include <sys/types.h>
-#include <arpa/inet.h>
-#endif
 
+// Note (flueke): Documenting some of the dispatch indexes here.
+static const unsigned DispatchIdx_RateMeasurement = 0;
+static const unsigned DispatchIdx_GraphicsUpdate = 1;
+static const unsigned DispatchIdx_CommTimeout = 2;
+static const unsigned DispatchIdx_PulserTest = 3;
+
+// Some magic numbers previously used in the code.
+static const unsigned Dispatch_TimeoutReachedValue = 51;
 
 mesydaq2::mesydaq2()
     : QMainWindow()
@@ -108,7 +105,7 @@ void mesydaq2::initNetwork(void)
 	pDataBuf = (PDATA_PACKET) recBuf;
     // Note (flueke): has to be a direct connection because multiple packets can
     // be read in a loop and global state is mutated. Yay!
-    connect(netDev[0], &networkDevice::bufferReceived, this, &mesydaq2::readBuf, Qt::DirectConnection);
+    connect(netDev[0], &networkDevice::bufferReceived, this, &mesydaq2::onBufferReceived, Qt::DirectConnection);
 }
 
 
@@ -411,76 +408,82 @@ int mesydaq2::writeRegister(unsigned int id, unsigned int addr, unsigned int val
 /*!
     \fn mesydaq2::readBuf(void)
  */
-void mesydaq2::readBuf(void)
+void mesydaq2::onBufferReceived()
 {
-	// cancel pending timouts
-	unsigned char id = recBuf->deviceId;
-//	dispatch[1] = 0;
-//	qDebug("Slot read called!");
-//qDebug("Length: %d, Type: %x, HLen: %d, BufNum: %x, id: %d, status: %x", recBuf->bufferLength, recBuf->bufferType, recBuf->headerLength, recBuf->bufferNumber, recBuf->deviceId, recBuf->deviceStatus);
-	unsigned long tim;
-	tim = 0;
-	tim += recBuf->time[2];
-	tim *= 0x10000;
-	tim += recBuf->time[1];
-	tim *= 0x10000;
-	tim += recBuf->time[0];
-//	unsigned long delta = tim - headertime;
-	headertime = tim;
-	timeMsecs = headertime / 10000;
-	meas->setCurrentTime(timeMsecs);
+    // cancel pending timouts
+    unsigned deviceId = recBuf->deviceId;
+    //	dispatch[1] = 0;
+    //	qDebug("Slot read called!");
+    // qDebug("Length: %d, Type: %x, HLen: %d, BufNum: %x, deviceId: %d, status: %x", recBuf->bufferLength, recBuf->bufferType, recBuf->headerLength, recBuf->bufferNumber, recBuf->deviceId, recBuf->deviceStatus);
+    unsigned long tim;
+    tim = 0;
+    tim += recBuf->time[2];
+    tim *= 0x10000;
+    tim += recBuf->time[1];
+    tim *= 0x10000;
+    tim += recBuf->time[0];
+    //	unsigned long delta = tim - headertime;
+    headertime = tim;
+    timeMsecs = headertime / 10000;
+    meas->setCurrentTime(timeMsecs);
 
-	ht[0] = recBuf->time[0];
-	ht[1] = recBuf->time[1];
-	ht[2] = recBuf->time[2];
+    ht[0] = recBuf->time[0];
+    ht[1] = recBuf->time[1];
+    ht[2] = recBuf->time[2];
 
-	status = recBuf->deviceStatus;
-	if(recBuf->bufferType & 0x8000){
-		cmdActive = false;
-		cmdRxd++;
-		myMcpd[recBuf->deviceId]->answered();
-//		commTimer->stop();
-		dc->analyzeCmd((PMDP_PACKET)pDataBuf, daq, hist[id]);
-	}
-	else{
-		if(daq == RUNNING){
-			unsigned short diff = pDataBuf->bufferNumber - lastBufnum;
-			if(diff > 1){
-				if(pDataBuf->bufferNumber != 0){
-					lostBuffers++;
-//					qDebug("Lost %d Buffers: current: %d, last: %d. Total: %d of %d", diff-1, pDataBuf->bufferNumber, lastBufnum, //lostBuffers, dataRxd);
-				}
-			}
-			lastBufnum = pDataBuf->bufferNumber;
-			if(acquireListfile && listfileOpen){
-				if(meas->remoteStart()){
-					if(bytesWritten + pDataBuf->bufferLength > cInt->caressMaxfilesize){
-						changeCaressListfile();
-						bytesWritten = cInt->caressHlen;
-					}
-				}
-				unsigned short * pD;
-				pD = (unsigned short *) &pDataBuf->bufferLength;
-				unsigned int i;
-				for(i = 0; i < pDataBuf->bufferLength; i++){
-					datStream << pD[i];
-	//				qDebug("%x", pD[i]);
-				}
-				writeBlockSeparator();
-				bytesWritten = bytesWritten + 2 * pDataBuf->bufferLength + 8;
-	//			qDebug("------------------");
-			}
-			dataRxd++;
-			dc->analyzeBuffer(pDataBuf, daq, hist[id]);
-		}
-	}
+    status = recBuf->deviceStatus;
+    if (recBuf->bufferType & 0x8000)
+    {
+        protocol(QSL("onBufferReceived(): received command buffer for device%1").arg(deviceId), LOG_LEVEL_DEBUG);
+        cmdActive = false;
+        cmdRxd++;
+        myMcpd[recBuf->deviceId]->answered();
+        //		commTimer->stop();
+        dc->analyzeCmd((PMDP_PACKET)pDataBuf, daq, hist[deviceId]);
+    }
+    else
+    {
+        if (daq == RUNNING)
+        {
+            unsigned short diff = pDataBuf->bufferNumber - lastBufnum;
+            if (diff > 1)
+            {
+                if (pDataBuf->bufferNumber != 0)
+                {
+                    lostBuffers++;
+                    //					qDebug("Lost %d Buffers: current: %d, last: %d. Total: %d of %d", diff-1, pDataBuf->bufferNumber, lastBufnum, //lostBuffers, dataRxd);
+                }
+            }
+            lastBufnum = pDataBuf->bufferNumber;
+            if (acquireListfile && listfileOpen)
+            {
+                if (meas->remoteStart())
+                {
+                    if (bytesWritten + pDataBuf->bufferLength > cInt->caressMaxfilesize)
+                    {
+                        changeCaressListfile();
+                        bytesWritten = cInt->caressHlen;
+                    }
+                }
+                unsigned short *pD;
+                pD = (unsigned short *)&pDataBuf->bufferLength;
+                unsigned int i;
+                for (i = 0; i < pDataBuf->bufferLength; i++)
+                {
+                    datStream << pD[i];
+                    //				qDebug("%x", pD[i]);
+                }
+                writeBlockSeparator();
+                bytesWritten = bytesWritten + 2 * pDataBuf->bufferLength + 8;
+                //			qDebug("------------------");
+            }
+            dataRxd++;
+            protocol(QSL("onBufferReceived(): calling analyzeBuffer() for device %1").arg(deviceId),
+                     LOG_LEVEL_DEBUG);
+            dc->analyzeBuffer(pDataBuf, daq, hist[deviceId]);
+        }
+    }
 }
-
-
-
-
-
-
 
 /*!
     \fn mesydaq2::acqListfile(bool yesno)
@@ -1301,37 +1304,45 @@ void mesydaq2::commTimeout()
  */
 void mesydaq2::centralDispatch()
 {
-    if(cInt->caressTaskPending && (!cInt->asyncTaskPending))
-    	cInt->caressTask();
+    protocol("mesydaq2::centralDispatch: invoked!", LOG_LEVEL_TRACE);
 
-	dispatch[0]++;
-	if(dispatch[0] == 8){
-		dispatch[0] = 0;
-		meas->calcRates();
-	}
+    if (cInt->caressTaskPending && (!cInt->asyncTaskPending))
+        cInt->caressTask();
 
-	// graphics update
-	dispatch[1]++;
-	if(dispatch[1] == 100){
-		dispTime();
-		dispatch[1] = 0;
-	}
+    dispatch[0]++;
+    if (dispatch[0] == 8)
+    {
+        dispatch[0] = 0;
+        protocol("mesydaq2::centralDispatch: calc rates", LOG_LEVEL_TRACE);
+        meas->calcRates();
+    }
 
-	// commTimeout
-	dispatch[2]++;
-	if(cmdActive == true && dispatch[2] > 51){
-		commTimeout();
-	}
+    // graphics update
+    dispatch[1]++;
+    if (dispatch[1] == 100)
+    {
+        protocol("mesydaq2::centralDispatch: graphics update", LOG_LEVEL_TRACE);
+        dispTime();
+        dispatch[1] = 0;
+    }
 
-	// pulser test
-	dispatch[3]++;
-	if(testRunning == true && dispatch[3] == 11){
-		pulserTest();
-		dispatch[3] = 0;
-	}
+    // commTimeout
+    dispatch[2]++;
+    if (cmdActive == true && dispatch[2] > Dispatch_TimeoutReachedValue)
+    {
+        protocol("mesydaq2::centralDispatch: comm timeout!", LOG_LEVEL_TRACE);
+        commTimeout();
+    }
 
+    // pulser test
+    dispatch[3]++;
+    if (testRunning == true && dispatch[3] == 11)
+    {
+        protocol("mesydaq2::centralDispatch: call pulserTest()!", LOG_LEVEL_TRACE);
+        pulserTest();
+        dispatch[3] = 0;
+    }
 }
-
 
 /*!
     \fn mesydaq2::initMpsd(unsigned char id)
