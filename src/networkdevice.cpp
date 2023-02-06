@@ -94,13 +94,15 @@ qint64 networkDevice::sendBuffer(unsigned char id, PMDP_PACKET buf)
  */
 void networkDevice::readSocketData()
 {
-//	unsigned short * pData = (unsigned short *) recBuf;
-	// read socket data into receive buffer
-	auto res = socket_->readDatagram(reinterpret_cast<char *>(recBuf), sizeof(*recBuf));
-	if (res >= 0)
+	while (socket_->hasPendingDatagrams())
 	{
-		// notify
-		emit bufferReceived();
+		// read socket data into receive buffer
+		auto res = socket_->readDatagram(reinterpret_cast<char *>(recBuf), sizeof(*recBuf));
+		if (res >= 0)
+		{
+			// notify
+			emit bufferReceived();
+		}
 	}
 }
 
