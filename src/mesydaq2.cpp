@@ -106,7 +106,9 @@ void mesydaq2::initNetwork(void)
 	cmdBuf = netDev[0]->getSbufpointer();
 	recBuf = netDev[0]->getRbufpointer();
 	pDataBuf = (PDATA_PACKET) recBuf;
-	connect(netDev[0], SIGNAL(bufferReceived(void)), this, SLOT(readBuf(void)));
+    // Note (flueke): has to be a direct connection because multiple packets can
+    // be read in a loop and global state is mutated. Yay!
+    connect(netDev[0], &networkDevice::bufferReceived, this, &mesydaq2::readBuf, Qt::DirectConnection);
 }
 
 
