@@ -66,8 +66,6 @@ mesydaq2::mesydaq2()
 	dc = new dataCruncher(this);
 	meas = new measurement(this);
 	cInt = new controlInterface(this);
-	progVersion.sprintf("mesydaq 2.8.3    29.09.2009");
-	mainWin->versionLabel->setText(progVersion);
 	configfilename.sprintf("mesycfg.mcfg");
 }
 
@@ -383,7 +381,7 @@ void mesydaq2::initValues()
 	listPath.sprintf("/home");
 	histPath.sprintf("/home");
 	configPath.sprintf("/home");
-	debugLevel = 1;
+	logLevel = 0;
 	ovwList = false;
 	timingwidth = 1;
 }
