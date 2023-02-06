@@ -437,7 +437,6 @@ void mesydaq2::onBufferReceived()
         cmdActive = false;
         cmdRxd++;
         myMcpd[recBuf->deviceId]->answered();
-        //		commTimer->stop();
         dc->analyzeCmd((PMDP_PACKET)pDataBuf, daq, hist[deviceId]);
     }
     else
@@ -1297,7 +1296,7 @@ void mesydaq2::commTimeout()
  */
 void mesydaq2::centralDispatch()
 {
-    logMessage("mesydaq2::centralDispatch: invoked!", LOG_LEVEL_TRACE);
+    //logMessage("mesydaq2::centralDispatch: invoked!", LOG_LEVEL_TRACE);
 
     if (cInt->caressTaskPending && (!cInt->asyncTaskPending))
         cInt->caressTask();
@@ -1306,7 +1305,7 @@ void mesydaq2::centralDispatch()
     if (dispatch[0] == 8)
     {
         dispatch[0] = 0;
-        logMessage("mesydaq2::centralDispatch: calc rates", LOG_LEVEL_TRACE);
+        //logMessage("mesydaq2::centralDispatch: calc rates", LOG_LEVEL_TRACE);
         meas->calcRates();
     }
 
@@ -1314,7 +1313,7 @@ void mesydaq2::centralDispatch()
     dispatch[1]++;
     if (dispatch[1] == 100)
     {
-        logMessage("mesydaq2::centralDispatch: graphics update", LOG_LEVEL_TRACE);
+        //logMessage("mesydaq2::centralDispatch: graphics update", LOG_LEVEL_TRACE);
         dispTime();
         dispatch[1] = 0;
     }
@@ -1323,7 +1322,7 @@ void mesydaq2::centralDispatch()
     dispatch[2]++;
     if (cmdActive == true && dispatch[2] > Dispatch_TimeoutReachedValue)
     {
-        logMessage("mesydaq2::centralDispatch: comm timeout!", LOG_LEVEL_TRACE);
+        //logMessage("mesydaq2::centralDispatch: comm timeout!", LOG_LEVEL_TRACE);
         commTimeout();
     }
 
@@ -1331,7 +1330,7 @@ void mesydaq2::centralDispatch()
     dispatch[3]++;
     if (testRunning == true && dispatch[3] == Dispatch_RunPulserTestValue)
     {
-        logMessage("mesydaq2::centralDispatch: call pulserTest()!", LOG_LEVEL_DEBUG);
+        //logMessage("mesydaq2::centralDispatch: call pulserTest()!", LOG_LEVEL_DEBUG);
         pulserTest();
         dispatch[3] = 0;
     }
