@@ -19,10 +19,13 @@
  ***************************************************************************/
 
 
-#include "mesydaq2.h"
 #include <qapplication.h>
 #include <qdir.h>
 #include <qstring.h>
+#include <QDebug>
+
+#include "mesydaq2.h"
+#include "structures.h"
 
 int main(int argc, char **argv)
 {
@@ -46,6 +49,9 @@ int main(int argc, char **argv)
     mainWin->initSystem();
     mainWin->show();
     // mainWin has WDestructiveClose flag by default, so it will delete itself.
+
+    qDebug() << "sizeof(MDP_PACKET)" << sizeof(MDP_PACKET)
+        << "sizeof(DATA_PACKET)" << sizeof(DATA_PACKET);
 
     return app.exec();
 }

@@ -83,8 +83,6 @@ mesydaq2::~mesydaq2()
 	commTimer->stop();
 	delete commTimer;
 
-	for(unsigned char c = 0; c < numIf; c++)
-		delete netDev[c];
 	delete dc;
 	delete meas;
 	delete cInt;
@@ -104,27 +102,13 @@ mesydaq2::~mesydaq2()
  */
 void mesydaq2::initNetwork(void)
 {
-	// check for usable interfaces
-	findInterfaces();
-	qDebug("found %d usable interfaces", numIf);
-	for(unsigned char c =0; c < numIf; c++){
-		netDev[c] = new networkDevice(this);
-		netDev[c]->initSockets(&ifrs[c], c);
-	}
+	netDev[0] = new networkDevice(this);
 	cmdBuf = netDev[0]->getSbufpointer();
 	recBuf = netDev[0]->getRbufpointer();
 	pDataBuf = (PDATA_PACKET) recBuf;
 	connect(netDev[0], SIGNAL(bufferReceived(void)), this, SLOT(readBuf(void)));
 }
 
-
-/*!
-    \fn mesydaq2::setSocket(unsigned char netDevice)
- */
-int mesydaq2::setSocket(unsigned char netDevice)
-{
-	return netDevice;
-}
 
 /*!
     \fn mesydaq2::sendCommand(unsigned int cmd)
@@ -411,7 +395,6 @@ void mesydaq2::initValues()
 	debugLevel = 1;
 	ovwList = false;
 	timingwidth = 1;
-	numIf = 0;
 }
 
 
@@ -2146,58 +2129,6 @@ void mesydaq2::searchMcpd(unsigned char id)
 bool mesydaq2::openFallbackListfile(void)
 {
 	return true;
-}
-
-
-/*!
-    \fn mesydaq2::findInterfaces(void)
- */
-void mesydaq2::findInterfaces(void)
-{
-    QString str, str2;
-    struct ifconf ifc;
-    struct ifreq* ifr;
-    struct ifreq ifrcopy;
-    struct sockaddr_in* sa;
-    int sockfd, i;
-    char buf[1000];
-    char * ptr;
-
-    numIf = 0;
-
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-//    qDebug("sockfd for search: %d", sockfd);
-    ifc.ifc_len = 1000;
-    ifc.ifc_buf = buf;
-
-    if(ioctl(sockfd, SIOCGIFCONF, &ifc) < 0){
-    	qDebug("no info retrieved");
-    	return;
-    }
-
-    for(i=0, ptr = buf; ptr < buf+ifc.ifc_len;i++){
-    	ifr = (struct ifreq *) ptr;
-    	sa = (struct sockaddr_in*)&ifr->ifr_addr;
-    	str.sprintf("%d: %s, %s", i, ifr->ifr_name, inet_ntoa(sa->sin_addr));
-        qDebug() << str;
-//    	qDebug("%s", inet_ntoa(sa->sin_addr));
-    	ifrcopy = *ifr;
-    	// get flags
-    	if(ioctl(sockfd, SIOCGIFFLAGS, &ifrcopy) < 0)
-    		; //qDebug("no flags retrieved");
-    	else{
-    		if((ifrcopy.ifr_flags & IFF_UP) && !(ifrcopy.ifr_flags & IFF_LOOPBACK)){
-    			qDebug("Interface UP and no Loopback");
- 				ifrs[numIf] = ifrcopy;
- 				numIf++;
- 			}
-    		if((ifrcopy.ifr_flags & IFF_UP) && (ifrcopy.ifr_flags & IFF_LOOPBACK)){
-    			qDebug("Interface UP and LOOPBACK");
-    			// do not use for MCPD-8 communication!
-			}
-		}
-    	ptr = ptr + sizeof(struct ifreq);
-    }
 }
 
 

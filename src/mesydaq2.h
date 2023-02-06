@@ -66,7 +66,6 @@ public:
      */
     virtual ~mesydaq2();
     void initNetwork(void);
-    int setSocket(unsigned char netDevice);
 	int sendCommand(unsigned short * buffer);
     void initValues();
     int writeRegister(unsigned int id, unsigned int addr, unsigned int val);
@@ -131,7 +130,6 @@ public:
     void setDebugLevel(unsigned char level);
     void searchMcpd(unsigned char id);
     bool openFallbackListfile(void);
-    void findInterfaces(void);
     void initSystem(void);
     void update(void);
     void updatePresets(void);
@@ -155,7 +153,7 @@ public:
 
     mcpd8 * myMcpd[MCPDS];
 	mpsd8 * myMpsd[8*MCPDS];
-    networkDevice * netDev[8];
+    networkDevice * netDev[1]; // TODO: this does not need to be an array anymore
     measurement* meas;
     controlInterface * cInt;
     MainWidget * mainWin;
@@ -206,8 +204,6 @@ protected:
     bool confMcpd[MCPDS];
     QString listfileHeader;
     unsigned char debugLevel;
-    struct ifreq ifrs[MCPDS];
-    unsigned char numIf;
     unsigned char testCpu;
     unsigned char testMod;
     unsigned char testChan;

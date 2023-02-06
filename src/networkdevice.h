@@ -21,57 +21,38 @@
 #define NETWORKDEVICE_H
 
 #include <qobject.h>
-
-#include <qobject.h>
 #include <qsocketnotifier.h>
-
-#ifndef __WIN32
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <sys/types.h>
-#include <arpa/inet.h>
-#else
-#include <winsock2.h>
-#endif
+#include <QUdpSocket>
 
 #include "structures.h"
 
 class mesydaq2;
-class mcpd8;
 
-/**
-Base class for network devices like MCPD-2, MCPD-8
-
-	@author Gregor Montermann <g.montermann@mesytec.com>
-*/
 class networkDevice : public QObject
 {
 Q_OBJECT
+
+signals:
+    void bufferReceived(void);
+
 public:
     explicit networkDevice(QObject *parent = 0);
 
     ~networkDevice();
-    int initSockets(struct ifreq * pIfreq, unsigned char n);
     PMDP_PACKET getSbufpointer();
 	PMDP_PACKET getRbufpointer();
-	int sendBuffer(unsigned char id, PMDP_PACKET buf);
+	qint64 sendBuffer(unsigned char id, PMDP_PACKET buf);
     void setAddress(unsigned char id, QString addr);
     QString getAddress(unsigned char id);
-	QSocketNotifier * notifyNet;
 
-protected:
+private:
+    QUdpSocket *socket_;
     QString ipAddress[8];
-	int rxSockfd;
-	int txSockfd;
 	PMDP_PACKET netBuf, recBuf;
     mesydaq2 * theApp;
-	struct sockaddr_in rxAddr;
 
-public slots:
+private slots:
 	void readSocketData();
-
-signals:
-    void bufferReceived(void);
 };
 
 
