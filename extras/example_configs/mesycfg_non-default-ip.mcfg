@@ -4,7 +4,7 @@ mesydaq configuration file   24.04.09 15.53.02
 configPath =/home/gregor/measfiles
 histogramPath =/home/gregor/measfiles
 listfilePath =/home/gregor/measfiles
-debugLevel = All
+debugLevel = 1
 
 // Kommentarzeile
 
@@ -33,7 +33,7 @@ paramSource3 = 3
 [MPSD-8]
 id = 0
 gain0 = 100
-gain1 = 120	
+gain1 = 120
 gain2 = 92
 gain3 = 92
 gain4 = 92
