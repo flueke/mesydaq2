@@ -309,7 +309,7 @@ int mesydaq2::sendCommand(unsigned short * buffer)
 //	for(unsigned char d = 0; d < buflen; d++)
 //		qDebug("%d: %d", d, cmdBuf->data[d]);
 
-    const unsigned MaxAttempts = 10;
+    const unsigned MaxAttempts = 3;
 
     for (unsigned nAttempts = 0; nAttempts < MaxAttempts; ++nAttempts)
     {
