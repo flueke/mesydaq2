@@ -19,6 +19,7 @@
  ***************************************************************************/
 #include "networkdevice.h"
 
+#include <QHostInfo>
 #include <unistd.h>
 
 #include "mesydaq2.h"
@@ -76,7 +77,21 @@ qint64 networkDevice::sendBuffer(unsigned char id, PMDP_PACKET buf)
 		qDebug() << "bound to adress" << socket_->localAddress().toString() << ", port" << socket_->localPort();
 	}
 
-	QHostAddress destAddr(ipAddress[id]);
+	auto hostname = getAddress(id);
+	auto destHostInfo = QHostInfo::fromName(hostname);
+
+	if (destHostInfo.error())
+	{
+		theApp->logMessage(
+			QSL("Host lookup for '%1' failed: %2")
+			.arg(hostname)
+			.arg(destHostInfo.errorString()),
+			LOG_LEVEL_ERROR
+			);
+		return -1;
+	}
+
+	const auto destAddr = destHostInfo.addresses().first();
 	auto result = socket_->writeDatagram(reinterpret_cast<const char *>(buf), sizeof(*buf), destAddr, 54321);
 	return result;
 }

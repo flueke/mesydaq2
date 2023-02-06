@@ -129,10 +129,7 @@ MainWidget::MainWidget(QWidget* parent)
     connect( modifyIp, SIGNAL( toggled(bool) ), mcpdIpAddress2, SLOT( setEnabled(bool) ), Qt::UniqueConnection);
     connect( modifyIp, SIGNAL( toggled(bool) ), mcpdIpAddress3, SLOT( setEnabled(bool) ), Qt::UniqueConnection);
     connect( modifyMIp, SIGNAL( toggled(bool) ), applyMIp, SLOT( setEnabled(bool) ), Qt::UniqueConnection);
-    connect( modifyMIp, SIGNAL( toggled(bool) ), mIpAddress0, SLOT( setEnabled(bool) ), Qt::UniqueConnection);
-    connect( modifyMIp, SIGNAL( toggled(bool) ), mIpAddress1, SLOT( setEnabled(bool) ), Qt::UniqueConnection);
-    connect( modifyMIp, SIGNAL( toggled(bool) ), mIpAddress2, SLOT( setEnabled(bool) ), Qt::UniqueConnection);
-    connect( modifyMIp, SIGNAL( toggled(bool) ), mIpAddress3, SLOT( setEnabled(bool) ), Qt::UniqueConnection);
+    connect( modifyMIp, SIGNAL( toggled(bool) ), mcpdHostAddress, SLOT( setEnabled(bool) ), Qt::UniqueConnection);
     connect( module, SIGNAL( valueChanged(int) ), this, SLOT( displayMpsdSlot() ), Qt::UniqueConnection);
     connect( param, SIGNAL( valueChanged(int) ), this, SLOT( displayMcpdSlot() ), Qt::UniqueConnection);
     connect(pulsAmp1, &QLineEdit::textChanged, this, &MainWidget::setPulserSlot);
@@ -979,7 +976,6 @@ void MainWidget::displayMcpdSlot(void)
 {
     QString str;
     unsigned short values[4];
-    unsigned char val[4];
     // retrieve displayed ID
     unsigned char id = mcpdId->value();
 
@@ -1016,16 +1012,8 @@ void MainWidget::displayMcpdSlot(void)
 
 	// get ip contact address and use it for mesydaq ip
 	str = theApp->netDev[0]->getAddress(id);
-	splitAddress(str, &val[0]);
 
-	str.sprintf("%d", val[0]);
-	mIpAddress0->setText(str);
-	str.sprintf("%d", val[1]);
-	mIpAddress1->setText(str);
-	str.sprintf("%d", val[2]);
-	mIpAddress2->setText(str);
-	str.sprintf("%d", val[3]);
-	mIpAddress3->setText(str);
+	mcpdHostAddress->setText(str);
 
 	// display online status:
 	if(theApp->myMcpd[id]->isOnline())
@@ -1511,23 +1499,7 @@ void MainWidget::updateCaress(void)
 
 void MainWidget::applyMIpSlot()
 {
-	bool ok;
-	QString stri, addr;
-	unsigned char ip0, ip1, ip2, ip3;
-
-	// get text entries
-	stri = mIpAddress0->text();
-	addr = stri;
-	ip0 = (unsigned char) (stri.toInt(&ok));
-	stri = mIpAddress1->text();
-	addr.append("." + stri);
-	ip1 = (unsigned char) (stri.toInt(&ok));
-	stri = mIpAddress2->text();
-	addr.append("." + stri);
-	ip2 = (unsigned char) (stri.toInt(&ok));
-	stri = mIpAddress3->text();
-	addr.append("." + stri);
-	ip3 = (unsigned char) (stri.toInt(&ok));
+	auto addr = mcpdHostAddress->text();
 
 	// set address in interface table
 	theApp->setMcpdAddress(mcpdId->value(), addr);
