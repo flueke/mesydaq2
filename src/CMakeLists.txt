@@ -16,6 +16,7 @@ add_executable(mesydaq2
     mesydaq2.cpp
     mpsd8.cpp
     networkdevice.cpp
+    structures.cpp
 )
 
 target_compile_features(mesydaq2 PRIVATE cxx_std_17)
