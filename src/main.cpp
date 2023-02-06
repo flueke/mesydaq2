@@ -29,6 +29,7 @@
 
 int main(int argc, char **argv)
 {
+
     QApplication app(argc, argv);
     mesydaq2 *mainWin = 0;
 
@@ -48,10 +49,6 @@ int main(int argc, char **argv)
 
     mainWin->initSystem();
     mainWin->show();
-    // mainWin has WDestructiveClose flag by default, so it will delete itself.
-
-    qDebug() << "sizeof(MDP_PACKET)" << sizeof(MDP_PACKET)
-        << "sizeof(DATA_PACKET)" << sizeof(DATA_PACKET);
 
     return app.exec();
 }

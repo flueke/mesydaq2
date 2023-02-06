@@ -431,7 +431,9 @@ void MainWidget::setPulserSlot()
 	cmdBuffer[4] = pos;
 	cmdBuffer[5] = ampl;
 	cmdBuffer[6] = pulse;
-	theApp->sendCommand(pBuffer);
+
+    auto sendResult = theApp->sendCommand(pBuffer);
+    theApp->protocol(QSL("setPulserSlot: sendResult=%1").arg(sendResult), LOG_LEVEL_DEBUG);
 }
 
 void MainWidget::setGainSlot()
