@@ -31,7 +31,7 @@ typedef struct _MDP_PACKET
 	unsigned char deviceId;
 	unsigned short time[3];
 	unsigned short headerChksum;
-	unsigned short data[750];
+	unsigned short data[726];
 } MDP_PACKET, *PMDP_PACKET;
 
 typedef struct _DATA_PACKET
@@ -45,7 +45,7 @@ typedef struct _DATA_PACKET
 	unsigned char deviceId;
 	unsigned short time[3];
 	unsigned short param[4][3];
-	unsigned short data[750];
+	unsigned short data[715];
 } DATA_PACKET, *PDATA_PACKET;
 
 #define BUFTYPE		0x8000
