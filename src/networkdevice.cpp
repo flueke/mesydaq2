@@ -32,9 +32,7 @@ networkDevice::networkDevice(QObject *parent)
 	recBuf = new (MDP_PACKET);
 	theApp = qobject_cast<mesydaq2 *>(parent);
 
-	socket_->bind(QHostAddress::Any, 54321);
 	connect(socket_, &QUdpSocket::readyRead, this, &networkDevice::readSocketData);
-	qDebug() << "bound to adress" << socket_->localAddress().toString() << ", port" << socket_->localPort();
 }
 
 networkDevice::~networkDevice()
@@ -82,6 +80,20 @@ qint64 networkDevice::sendBuffer(unsigned char id, PMDP_PACKET buf)
 	sendto(rxSockfd, buf, 200, 0, (const struct sockaddr*)&addr, sizeof(addr));
 	return 1;
 #else
+
+	if (socket_->state() != QAbstractSocket::BoundState)
+	{
+		if (!socket_->bind(QHostAddress::Any, 54321))
+		{
+			theApp->protocol(
+				QSL("Could not bind udp socket to local port 54321!"
+					"Old MCPD communication will not work."),
+				LOG_LEVEL_ERROR);
+		}
+
+		qDebug() << "bound to adress" << socket_->localAddress().toString() << ", port" << socket_->localPort();
+	}
+
 	QHostAddress destAddr(ipAddress[id]);
 	auto result = socket_->writeDatagram(reinterpret_cast<const char *>(buf), sizeof(*buf), destAddr, 54321);
 	return result;
@@ -94,6 +106,7 @@ qint64 networkDevice::sendBuffer(unsigned char id, PMDP_PACKET buf)
  */
 void networkDevice::readSocketData()
 {
+	size_t nDatagrams = 0;
 	while (socket_->hasPendingDatagrams())
 	{
 		// read socket data into receive buffer
@@ -102,10 +115,13 @@ void networkDevice::readSocketData()
 		{
 			// notify
 			emit bufferReceived();
+			++nDatagrams;
 		}
 	}
-}
 
+	theApp->protocol(QSL("networkDevice::readSocketData() received %1 datagrams").arg(nDatagrams),
+					 LOG_LEVEL_TRACE);
+}
 
 /*!
     \fn networkDevice::setAddress(unsigned char id, QString addr)
