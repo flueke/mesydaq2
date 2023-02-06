@@ -6,15 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1292</width>
-    <height>950</height>
+    <width>1248</width>
+    <height>860</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>1280</width>
-    <height>950</height>
-   </size>
   </property>
   <property name="baseSize">
    <size>
@@ -43,12 +37,6 @@
    </property>
    <item row="0" column="0">
     <widget class="QFrame" name="mainFrame">
-     <property name="minimumSize">
-      <size>
-       <width>900</width>
-       <height>406</height>
-      </size>
-     </property>
      <layout class="QGridLayout" name="gridLayout_7" columnstretch="9,1">
       <property name="leftMargin">
        <number>4</number>
@@ -67,10 +55,16 @@
       </property>
       <item row="0" column="0">
        <widget class="QFrame" name="dataFrame">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
-          <width>961</width>
-          <height>480</height>
+          <width>1060</width>
+          <height>550</height>
          </size>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout">
@@ -88,6 +82,12 @@
          </property>
          <item>
           <widget class="QLabel" name="dataPixmapLabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -1305,7 +1305,7 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_6">
               <property name="spacing">
-               <number>4</number>
+               <number>9</number>
               </property>
               <property name="leftMargin">
                <number>4</number>
@@ -1367,6 +1367,19 @@
                  <string>search</string>
                 </property>
                </widget>
+              </item>
+              <item>
+               <spacer name="verticalSpacer_8">
+                <property name="orientation">
+                 <enum>Qt::Vertical</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>20</width>
+                  <height>40</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
              </layout>
             </widget>
@@ -2051,6 +2064,9 @@
                 </item>
                 <item row="2" column="1">
                  <widget class="QCheckBox" name="dataThisPc">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="text">
                    <string>this pc</string>
                   </property>
@@ -2129,7 +2145,7 @@
                    <number>65536</number>
                   </property>
                   <property name="value">
-                   <number>0</number>
+                   <number>54321</number>
                   </property>
                  </widget>
                 </item>
@@ -2156,6 +2172,9 @@ parameters</string>
                 </item>
                 <item row="3" column="1">
                  <widget class="QCheckBox" name="cmdThisPc">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="text">
                    <string>this pc</string>
                   </property>
@@ -2176,7 +2195,7 @@ parameters</string>
                    </size>
                   </property>
                   <property name="text">
-                   <string>0</string>
+                   <string>192</string>
                   </property>
                  </widget>
                 </item>
@@ -2234,7 +2253,7 @@ parameters</string>
                    <number>65536</number>
                   </property>
                   <property name="value">
-                   <number>0</number>
+                   <number>54321</number>
                   </property>
                  </widget>
                 </item>
@@ -3823,7 +3842,7 @@ Listfile</string>
        <item>
         <widget class="QLabel" name="versionLabel">
          <property name="text">
-          <string>mesydaq 2.1.0   16.10.2008</string>
+          <string>mesydaq 3.14159   2023</string>
          </property>
          <property name="wordWrap">
           <bool>false</bool>
