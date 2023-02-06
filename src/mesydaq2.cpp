@@ -315,18 +315,10 @@ int mesydaq2::sendCommand(unsigned short * buffer)
 //	for(unsigned char d = 0; d < buflen; d++)
 //		qDebug("%d: %d", d, cmdBuf->data[d]);
 
-	unsigned char retry;
-	unsigned int timeoutLength;
-	if(cmd == START || cmd == STOP){
-		retry = 10;
-		timeoutLength = 50;
-	}
-	else{
-		retry = 2;
-		timeoutLength = 1000;
-	}
+    const unsigned MaxAttempts = 10;
 
-	while(retry){
+    for (unsigned nAttempts = 0; nAttempts < MaxAttempts; ++nAttempts)
+    {
 		if(netDev[0]->sendBuffer(id, cmdBuf)){
 			pstring.sprintf("sent cmd: %d to id: %d", cmd, id);
 			protocol(pstring, 3);
@@ -336,20 +328,19 @@ int mesydaq2::sendCommand(unsigned short * buffer)
 			myMcpd[id]->communicate(true);
 			commId = id;
 			dispatch[2] = 0;
-//			commTimer->start(timeoutLength, true);
 			// wait for answer
 			while(myMcpd[commId]->isBusy())
 				qApp->processEvents();
 			// check if answer or timeout?
 			if(myMcpd[id]->isResponding()){
-				pstring.sprintf("received cmd answer: %d from id: %d, retry %d", cmd, id, retry);
+				pstring.sprintf("received cmd answer: %d from id: %d, attempt %d/%d",
+                    cmd, id, nAttempts+1, MaxAttempts);
 				protocol(pstring, 3);
 				break;
 			}
 			else{
 				pstring.sprintf("no cmd answer: %d from id: %d", cmd, id);
 				protocol(pstring, 2);
-				retry--;
 			}
 		}
 	}
@@ -1300,7 +1291,7 @@ bool mesydaq2::loadSetup(bool ask)
 void mesydaq2::commTimeout()
 {
 	pstring.sprintf("Timeout while waiting for cmd answer from MCPD-ID: %d", commId);
-	protocol(pstring, 0);
+	protocol(pstring, LOG_LEVEL_INFO);
 	myMcpd[commId]->timeout();
 }
 
