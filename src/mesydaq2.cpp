@@ -319,7 +319,7 @@ int mesydaq2::sendCommand(unsigned short * buffer)
     {
 		if(netDev[0]->sendBuffer(id, cmdBuf)){
 			pstring.sprintf("sent cmd: %d to id: %d", cmd, id);
-			protocol(pstring, 3);
+			logMessage(pstring, 3);
 			cmdTxd ++;
 			txCmdBufNum++;
 			cmdActive = true;
@@ -333,12 +333,12 @@ int mesydaq2::sendCommand(unsigned short * buffer)
 			if(myMcpd[id]->isResponding()){
 				pstring.sprintf("received cmd answer: %d from id: %d, attempt %d/%d",
                     cmd, id, nAttempts+1, MaxAttempts);
-				protocol(pstring, 3);
+				logMessage(pstring, 3);
 				break;
 			}
 			else{
 				pstring.sprintf("no cmd answer: %d from id: %d", cmd, id);
-				protocol(pstring, 2);
+				logMessage(pstring, 2);
 			}
 		}
 	}
@@ -435,7 +435,7 @@ void mesydaq2::onBufferReceived()
     status = recBuf->deviceStatus;
     if (recBuf->bufferType & 0x8000)
     {
-        protocol(QSL("mesydaq2::onBufferReceived(): received command buffer for device%1").arg(deviceId), LOG_LEVEL_TRACE);
+        logMessage(QSL("mesydaq2::onBufferReceived(): received command buffer for device%1").arg(deviceId), LOG_LEVEL_TRACE);
         cmdActive = false;
         cmdRxd++;
         myMcpd[recBuf->deviceId]->answered();
@@ -479,7 +479,7 @@ void mesydaq2::onBufferReceived()
                 //			qDebug("------------------");
             }
             dataRxd++;
-            protocol(QSL("onBufferReceived(): calling analyzeBuffer() for device %1").arg(deviceId),
+            logMessage(QSL("onBufferReceived(): calling analyzeBuffer() for device %1").arg(deviceId),
                      LOG_LEVEL_TRACE);
             dc->analyzeBuffer(pDataBuf, daq, hist[deviceId]);
         }
@@ -493,12 +493,12 @@ void mesydaq2::acqListfile(bool yesno)
 {
     acquireListfile = yesno;
     if(acquireListfile){
-    	protocol("Listfile recording on", 2);
+        logMessage("Listfile recording on", 2);
     	if(!mainWin->acqListfile->isChecked())
     		mainWin->acqListfile->setChecked(true);
     }
     else{
-    	protocol("Listfile recording off", 2);
+        logMessage("Listfile recording off", 2);
     	if(mainWin->acqListfile->isChecked())
     		mainWin->acqListfile->setChecked(false);
     }
@@ -524,7 +524,7 @@ void mesydaq2::startedDaq(void)
    	cInt->completeCar();
     daq = RUNNING;
     mainWin->daqStatusLine->setText("RUNNING");
-	protocol("daq started",1);
+	logMessage("daq started",1);
 }
 
 
@@ -546,7 +546,7 @@ void mesydaq2::stoppedDaq(void)
 	}
     daq = IDLE;
     mainWin->daqStatusLine->setText("IDLE");
-    protocol("daq stopped",1);
+    logMessage("daq stopped",1);
 }
 
 /*!
@@ -611,7 +611,7 @@ bool mesydaq2::startDaq(void)
   	}
   	daq = STARTED;
     mainWin->daqStatusLine->setText("STARTED");
-	protocol("daq start",1);
+	logMessage("daq start",1);
 	return true;
 }
 
@@ -623,13 +623,10 @@ void mesydaq2::stopDaq(void)
 {
     daq = STOPPED;
     mainWin->daqStatusLine->setText("STOPPED");
-	protocol("daq stop", 1);}
+	logMessage("daq stop", 1);}
 
 
-/*!
-    \fn mesydaq2::protocol(QString str, unsigned char level)
- */
-void mesydaq2::protocol(QString str, unsigned char level)
+void mesydaq2::logMessage(QString str, unsigned char level)
 {
     auto msg = (QSL("[%1] [%2] %3")
         .arg(QDateTime().currentDateTime().toString("hh:mm:ss.zzz"))
@@ -637,23 +634,20 @@ void mesydaq2::protocol(QString str, unsigned char level)
         .arg(str)
         );
 
-    if (level <= debugLevel)
+    if (level <= logLevel)
     {
         qDebug().noquote() << msg;
         mainWin->protocolEdit->append(msg);
     }
 }
 
-/*!
-    \fn mesydaq2::protocolCaress(QString str, unsigned char level)
- */
-void mesydaq2::protocolCaress(QString str, unsigned char level)
+void mesydaq2::logCaressMessage(QString str, unsigned char level)
 {
     QDateTime datetime;
     QString datestring = datetime.currentDateTime().toString("hh:mm:ss.zzz");
     str.prepend(" - ");
     str.prepend(datestring);
-    if(level <= debugLevel){
+    if(level <= logLevel){
     	qDebug() << str;
     	mainWin->caressEdit->append(str);
     }
@@ -945,13 +939,13 @@ void mesydaq2::initHardware(void)
 	//set init values:
 	unsigned char c = 0, d = 0, mpsdid;
 	pstring.sprintf("initializing hardware");
-	protocol(pstring, 1);
+	logMessage(pstring, 1);
 
 	// scan connected MCPDs
 	for(c = 0; c < MCPDS; c++){
 		if(confMcpd[c]){
 			pstring.sprintf("searching for mcpd %d", c);
-			protocol(pstring, 2);
+			logMessage(pstring, 2);
 			getMcpdVersion(c);
 			if(myMcpd[c]->isOnline()){
 				initMcpd(c);
@@ -967,12 +961,12 @@ void mesydaq2::initHardware(void)
 			p++;
 
 	pstring.sprintf("%d mpsd-8 found during setup", p);
-	protocol(pstring, 1);
+	logMessage(pstring, 1);
 
 	for(c=0; c<MCPDS; c++){
 		if(confMcpd[c] && myMcpd[c]->isOnline()){
 			pstring.sprintf("initialize MPSDs on mcpd #%d",c);
-			protocol(pstring, 2);
+			logMessage(pstring, 2);
 			for(d=0; d<8; d++){
 				mpsdid = myMpsd[c*8+d]->getMpsdId();
 				if(mpsdid > 0){
@@ -982,7 +976,7 @@ void mesydaq2::initHardware(void)
 		}
 		else{
 			pstring.sprintf("MCPD %d not configured - no setup", c);
-			protocol(pstring, 2);
+			logMessage(pstring, 2);
 		}
 	}
 }
@@ -1030,7 +1024,7 @@ bool mesydaq2::saveSetup(void)
 		t << listPath;
 		t << '\r' << '\n';
 		t << "debugLevel =";
-		t << debugLevel;
+		t << logLevel;
 		t << '\r' << '\n';
 		t.flush();
 		meas->serialize(&f);
@@ -1093,7 +1087,7 @@ bool mesydaq2::loadSetup(bool ask)
     else{
       pstring = QString("Reading configfile ") + configfilename;
     }
-    protocol(pstring, 1);
+    logMessage(pstring, 1);
 
     QTextStream t( &f );        // use a text stream
 
@@ -1137,14 +1131,14 @@ bool mesydaq2::loadSetup(bool ask)
 			s = s.mid(s.indexOf("=")+1);
 			s = s.trimmed();
 			if(s.contains("All") || s.contains("3"))
-				debugLevel = 3;
+				logLevel = 3;
 			if(s.contains("Details") || s.contains("2"))
-				debugLevel = 2;
+				logLevel = 2;
 			if(s.contains("Standard") || s.contains("1"))
-				debugLevel = 1;
+				logLevel = 1;
 			if(s.contains("Error") || s.contains("0"))
-				debugLevel = 0;
-			mainWin->debugLevelBox->setCurrentIndex(debugLevel);
+				logLevel = 0;
+			mainWin->debugLevelBox->setCurrentIndex(logLevel);
 		}
 		// counter assignment
 		if(section == 1 && s.contains("monitor1")){
@@ -1182,7 +1176,7 @@ bool mesydaq2::loadSetup(bool ask)
 			confMcpd[modaddr] = true;
 			myMcpd[modaddr]->setConfigured(true);
 			pstring.sprintf("found config data for mcpd #%d", modaddr);
-			protocol(pstring, 2);
+			logMessage(pstring, 2);
 		}
 		if(section == 2 && s.contains("ipAddress =")){
 			s2 = s.mid(s.indexOf("ipAddress =")+12);
@@ -1248,7 +1242,7 @@ bool mesydaq2::loadSetup(bool ask)
 			mcpd = (unsigned char)(modaddr / 8);
 			id = (unsigned char)(modaddr - mcpd*8);
 			pstring.sprintf("found config data for mpsd #%d", modaddr);
-			protocol(pstring, 2);
+			logMessage(pstring, 2);
 		}
 		if(section == 3 && s.contains("gain")){
 			s2 = s.mid(s.indexOf("gain")+4, 1);
@@ -1283,7 +1277,7 @@ bool mesydaq2::loadSetup(bool ask)
 		pstring.sprintf("ERROR: opening configfile '");
 		pstring.append(name);
 		pstring.append("' failed");
-		protocol(pstring, 0);
+		logMessage(pstring, 0);
 		return false;
   }
 }
@@ -1295,7 +1289,7 @@ bool mesydaq2::loadSetup(bool ask)
 void mesydaq2::commTimeout()
 {
 	pstring.sprintf("Timeout while waiting for cmd answer from MCPD-ID: %d", commId);
-	protocol(pstring, LOG_LEVEL_INFO);
+	logMessage(pstring, LOG_LEVEL_INFO);
 	myMcpd[commId]->timeout();
 }
 
@@ -1305,7 +1299,7 @@ void mesydaq2::commTimeout()
  */
 void mesydaq2::centralDispatch()
 {
-    protocol("mesydaq2::centralDispatch: invoked!", LOG_LEVEL_TRACE);
+    logMessage("mesydaq2::centralDispatch: invoked!", LOG_LEVEL_TRACE);
 
     if (cInt->caressTaskPending && (!cInt->asyncTaskPending))
         cInt->caressTask();
@@ -1314,7 +1308,7 @@ void mesydaq2::centralDispatch()
     if (dispatch[0] == 8)
     {
         dispatch[0] = 0;
-        protocol("mesydaq2::centralDispatch: calc rates", LOG_LEVEL_TRACE);
+        logMessage("mesydaq2::centralDispatch: calc rates", LOG_LEVEL_TRACE);
         meas->calcRates();
     }
 
@@ -1322,7 +1316,7 @@ void mesydaq2::centralDispatch()
     dispatch[1]++;
     if (dispatch[1] == 100)
     {
-        protocol("mesydaq2::centralDispatch: graphics update", LOG_LEVEL_TRACE);
+        logMessage("mesydaq2::centralDispatch: graphics update", LOG_LEVEL_TRACE);
         dispTime();
         dispatch[1] = 0;
     }
@@ -1331,7 +1325,7 @@ void mesydaq2::centralDispatch()
     dispatch[2]++;
     if (cmdActive == true && dispatch[2] > Dispatch_TimeoutReachedValue)
     {
-        protocol("mesydaq2::centralDispatch: comm timeout!", LOG_LEVEL_TRACE);
+        logMessage("mesydaq2::centralDispatch: comm timeout!", LOG_LEVEL_TRACE);
         commTimeout();
     }
 
@@ -1339,7 +1333,7 @@ void mesydaq2::centralDispatch()
     dispatch[3]++;
     if (testRunning == true && dispatch[3] == Dispatch_RunPulserTestValue)
     {
-        protocol("mesydaq2::centralDispatch: call pulserTest()!", LOG_LEVEL_DEBUG);
+        logMessage("mesydaq2::centralDispatch: call pulserTest()!", LOG_LEVEL_DEBUG);
         pulserTest();
         dispatch[3] = 0;
     }
@@ -1408,7 +1402,7 @@ void mesydaq2::initMpsd(unsigned char mcpd, unsigned char id)
 	}
 
 	pstring.sprintf("initialized mpsd-8 on bus %d of mcpd %d", id, myMpsd[id]->getMcpdId());
-	protocol(pstring, 1);
+	logMessage(pstring, 1);
 }
 
 
@@ -1459,7 +1453,7 @@ void mesydaq2::initMcpd(unsigned char id)
     commandBuffer[4] = 2;
 	sendCommand(commandBuffer);
 	pstring.sprintf("initialized MCPD ID %d", id);
-	protocol(pstring, 1);
+	logMessage(pstring, 1);
 }
 
 
@@ -1658,7 +1652,7 @@ void mesydaq2::setConfigfilename(QString name)
     	configfilename = "mesycfg.mcfg";
     pstring.sprintf("config set to: ");
     pstring.append(configfilename);
-    protocol(pstring, 2);
+    logMessage(pstring, 2);
 }
 
 
@@ -1842,12 +1836,12 @@ void mesydaq2::openCaressListfile(void)
 			textStream << cInt->carFileH;
 			pstring.sprintf("opened caress listmodefile: ");
 			pstring.append(listfilename);
-			protocol(pstring,2);
+			logMessage(pstring,2);
 		}
 		else{
 			pstring.sprintf("error opening listmode file: ");
 			pstring.append(listfilename);
-			protocol(pstring,1);
+			logMessage(pstring,1);
 /*			// now try to open fallback file:
 			if(openFallbackListfile()){
 				pstring.sprintf("successfully opened fallback listmode file: ");
@@ -1939,7 +1933,7 @@ bool mesydaq2::checkDirectory(QString dir)
 void mesydaq2::start(void)
 {
    	pstring.sprintf("remote start");
-   	protocol(pstring, 1);
+   	logMessage(pstring, 1);
    	commandBuffer[0] = 0;
 	commandBuffer[1] = START;
 	sendCommand(commandBuffer);
@@ -1979,7 +1973,7 @@ void mesydaq2::startAll(void)
    	for(c=0; c < 8; c++){
    		if(confMcpd[c] && myMcpd[c]->isOnline() && !myMcpd[c]->isMaster()){
    			pstring.sprintf("start slave %d", c);
-   			protocol(pstring, 2);
+   			logMessage(pstring, 2);
    			commandBuffer[0] = c;
 			commandBuffer[2] = 0; // don't open listmodefile here!
 			sendCommand(commandBuffer);
@@ -1989,7 +1983,7 @@ void mesydaq2::startAll(void)
 	}
 	// start master
 	pstring.sprintf("start master %d", m);
-	protocol(pstring, 2);
+	logMessage(pstring, 2);
 	commandBuffer[0] = m;
 	commandBuffer[2] = 1; // open listmodefile here!
 	sendCommand(commandBuffer);
@@ -2109,7 +2103,7 @@ void mesydaq2::getMcpdVersion(unsigned char id)
  */
 unsigned char mesydaq2::getDebugLevel(void)
 {
-    return debugLevel;
+    return logLevel;
 }
 
 /*!
@@ -2117,7 +2111,7 @@ unsigned char mesydaq2::getDebugLevel(void)
  */
 void mesydaq2::setDebugLevel(unsigned char level)
 {
-    debugLevel = level;
+    logLevel = level;
 }
 
 
@@ -2157,11 +2151,11 @@ void mesydaq2::initSystem(void)
 //	qDebug("configfilename: "+configfilename);
 	if(loadSetup(false)){
 		pstring.sprintf("loaded standard config file successfully");
-		protocol(pstring, 1);
+		logMessage(pstring, 1);
 	}
 	else{
 		pstring.sprintf("ERROR loading standard config file mesycfg.mcfg!");
-		protocol(pstring, 0);
+		logMessage(pstring, 0);
 	}
 	// initialize connected hardware modules according to config file
 	initHardware();
@@ -2169,7 +2163,7 @@ void mesydaq2::initSystem(void)
 	mainWin->displayMcpdSlot();
 	mainWin->displayMpsdSlot();
 	mainWin->dispFiledata();
-	mainWin->debugLevelBox->setCurrentIndex(debugLevel);
+	mainWin->debugLevelBox->setCurrentIndex(logLevel);
 
 //	qDebug("running on qt %s", qVersion());
 
@@ -2221,7 +2215,7 @@ void mesydaq2::startPulsertest(void)
 	}
 //	qDebug("starting with mod: %d", testMod);
 
-	protocol(QSL("mesydaq2::startPulserTest(): starting with mod=%1")
+	logMessage(QSL("mesydaq2::startPulserTest(): starting with mod=%1")
 		.arg(testMod),
 		LOG_LEVEL_INFO);
 
@@ -2242,7 +2236,7 @@ void mesydaq2::startPulsertest(void)
  */
 void mesydaq2::stopPulsertest(void)
 {
-	protocol("mesydaq2::stopPulserTest() called", LOG_LEVEL_DEBUG);
+	logMessage("mesydaq2::stopPulserTest() called", LOG_LEVEL_DEBUG);
 	testStopping = true;
 }
 

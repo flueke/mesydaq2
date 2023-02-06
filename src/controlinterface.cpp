@@ -187,8 +187,8 @@ void controlInterface::caressTask()
     	break;
     }
     if(caressTaskNum != CAR_READ){
-    	theApp->protocol(pstring, 2);
-    	theApp->protocolCaress(pstring, 1);
+		theApp->logMessage(pstring, 2);
+		theApp->logCaressMessage(pstring, 1);
     }
 //    if(caressTaskNum != CAR_START && caressTaskNum != CAR_STOP)
     caressTaskPending = false;

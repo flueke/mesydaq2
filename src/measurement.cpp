@@ -180,7 +180,7 @@ void measurement::setCounter(unsigned int cNum, unsigned long long val)
 	if(master[cNum] && (preset[cNum] > 0)){
 		if(counter[1][cNum] >= preset[cNum] && !stopping){
 			str.sprintf("stop on counter %d, value: %d, preset: %d", cNum, counter[1][cNum], preset[cNum]);
-			theApp->protocol(str, 1);
+			theApp->logMessage(str, 1);
 			stopped[cNum] = true;
 			stopping = true;
 			theApp->stopAll();
@@ -303,7 +303,7 @@ void measurement::setOnline(bool truth)
 		str.sprintf("MCPD online");
 	else
 		str.sprintf("MCPD offline");
-	theApp->protocol(str, 2);
+	theApp->logMessage(str, 2);
 }
 
 

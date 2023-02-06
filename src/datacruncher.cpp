@@ -58,7 +58,7 @@ void dataCruncher::analyzeCmd(PMDP_PACKET pPacket, unsigned char daq, histogram 
 
 
 	str.sprintf("analyze cmd %d from %d (cmd: %d, error: %d)", pPacket->cmd, pPacket->deviceId, cmd, err);
-	theApp->protocol(str, 2);
+	theApp->logMessage(str, 2);
 	switch(cmd){
 			case START:
 				if(theApp->myMcpd[pPacket->deviceId]->isMaster())
@@ -96,7 +96,7 @@ void dataCruncher::analyzeCmd(PMDP_PACKET pPacket, unsigned char daq, histogram 
 					devnum = 8*pPacket->deviceId+pPacket->data[0];
 					if(pPacket->data[2+c] != theApp->myMpsd[devnum]->getGainpoti(c, 1)){
 						pstring.sprintf("Error setting gain, mod %d, chan %d is: %d, should be: %d", devnum, c, pPacket->data[2+c], theApp->myMpsd[devnum]->getGainpoti(c, 1));
-						theApp->protocol(pstring, 0);
+						theApp->logMessage(pstring, 0);
 						// set back to received value
 					}
 					theApp->myMpsd[devnum]->setGain(c, (unsigned char)pPacket->data[2+c], 0);
@@ -107,7 +107,7 @@ void dataCruncher::analyzeCmd(PMDP_PACKET pPacket, unsigned char daq, histogram 
 				devnum = 8*pPacket->deviceId+pPacket->data[0];
 				if(pPacket->data[2] != theApp->myMpsd[devnum]->getGainpoti(pPacket->data[1], 1)){
 					pstring.sprintf("Error setting gain, mod %d, chan %d is: %d, should be: %d", devnum, pPacket->data[1], pPacket->data[2], theApp->myMpsd[devnum]->getGainpoti(pPacket->data[1], 1));
-					theApp->protocol(pstring, 0);
+					theApp->logMessage(pstring, 0);
 					// set back to received value
 				}
 				theApp->myMpsd[devnum]->setGain(pPacket->data[1], (unsigned char)pPacket->data[2], 0);
@@ -120,7 +120,7 @@ void dataCruncher::analyzeCmd(PMDP_PACKET pPacket, unsigned char daq, histogram 
 			devnum = 8*pPacket->deviceId+pPacket->data[0];
 			if(pPacket->data[1] != theApp->myMpsd[devnum]->getThreshpoti(1)){
 				pstring.sprintf("Error setting threshold, mod %d, is: %d, should be: %d", devnum, pPacket->data[1], theApp->myMpsd[devnum]->getThreshpoti(1));
-				theApp->protocol(pstring, 0);
+				theApp->logMessage(pstring, 0);
 			}
 			theApp->myMpsd[devnum]->setThreshpoti(pPacket->data[1], 0);
 			theApp->dispMpsd();
@@ -139,7 +139,7 @@ void dataCruncher::analyzeCmd(PMDP_PACKET pPacket, unsigned char daq, histogram 
 			devnum = 8*pPacket->deviceId+pPacket->data[0];
 			if(pPacket->data[3] != theApp->myMpsd[devnum]->getPulspoti(1)){
 				pstring.sprintf("Error setting pulspoti, mod %d, is: %d, should be: %d", devnum, pPacket->data[3], theApp->myMpsd[devnum]->getPulspoti(1));
-				theApp->protocol(pstring, 0);
+				theApp->logMessage(pstring, 0);
 			}
 			theApp->myMpsd[devnum]->setPulserpoti(pPacket->data[1], pPacket->data[3], pPacket->data[2], pPacket->data[4], 0);
 			theApp->dispMpsd();
@@ -149,7 +149,7 @@ void dataCruncher::analyzeCmd(PMDP_PACKET pPacket, unsigned char daq, histogram 
 			devnum = 8*pPacket->deviceId+pPacket->data[0];
 			if(pPacket->data[2] != theApp->myMpsd[devnum]->getInternalreg(pPacket->data[1], 1)){
 				pstring.sprintf("Error setting internal mpsd-register, mod %d, is: %d, should be: %d", devnum, pPacket->data[3], theApp->myMpsd[devnum]->getPulspoti(1));
-				theApp->protocol(pstring, 0);
+				theApp->logMessage(pstring, 0);
 			}
 			theApp->myMpsd[devnum]->setInternalreg(pPacket->data[1], pPacket->data[2], 0);
 		break;

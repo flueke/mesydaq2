@@ -76,8 +76,8 @@ public:
     void stopDaq(void);
     void startedDaq(void);
     void stoppedDaq(void);
-    void protocol(QString str, unsigned char level = LOG_LEVEL_INFO);
-    void protocolCaress(QString str, unsigned char level = LOG_LEVEL_INFO);
+    void logMessage(QString str, unsigned char level = LOG_LEVEL_INFO);
+    void logCaressMessage(QString str, unsigned char level = LOG_LEVEL_INFO);
     void initDevices(void);
     void initTimers(void);
     void clearChanHist(unsigned long chan);
@@ -178,7 +178,6 @@ protected:
     unsigned short sep5;
     unsigned short sepA;
     unsigned short sepF;
-    QString progVersion;
    	unsigned char cmdLen[50];
     QString setupfile;
     unsigned char commId;
@@ -203,7 +202,7 @@ protected:
     bool listfileOpen;
     bool confMcpd[MCPDS];
     QString listfileHeader;
-    unsigned char debugLevel;
+    unsigned char logLevel;
     unsigned char testCpu;
     unsigned char testMod;
     unsigned char testChan;

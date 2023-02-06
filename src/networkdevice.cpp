@@ -67,7 +67,7 @@ qint64 networkDevice::sendBuffer(unsigned char id, PMDP_PACKET buf)
 	{
 		if (!socket_->bind(QHostAddress::Any, 54321))
 		{
-			theApp->protocol(
+			theApp->logMessage(
 				QSL("Could not bind udp socket to local port 54321!"
 					"Old MCPD communication will not work."),
 				LOG_LEVEL_ERROR);
@@ -100,7 +100,7 @@ void networkDevice::readSocketData()
 		}
 	}
 
-	theApp->protocol(QSL("networkDevice::readSocketData() received %1 datagrams").arg(nDatagrams),
+	theApp->logMessage(QSL("networkDevice::readSocketData() received %1 datagrams").arg(nDatagrams),
 					 LOG_LEVEL_TRACE);
 }
 
@@ -113,7 +113,7 @@ void networkDevice::setAddress(unsigned char id, QString addr)
     ipAddress[id] = addr;
 	pstring.sprintf("Changed contact ip adress for MCPD-ID %d to ", id);
 	pstring.append(addr);
-	theApp->protocol(pstring, 2);
+	theApp->logMessage(pstring, 2);
 }
 
 /*!

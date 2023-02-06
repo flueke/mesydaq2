@@ -219,7 +219,7 @@ void MainWidget::sendCellSlot()
 	cmdBuffer[2] = (unsigned short) cellSource->currentData().toUInt();
 	cmdBuffer[3] = (unsigned short) cellTrigger->currentData().toUInt();
 	cmdBuffer[4] = (unsigned short) cellCompare->value();
-	theApp->protocol("set cell", 2);
+	theApp->logMessage("set cell", 2);
 	theApp->sendCommand(pBuffer);
 }
 
@@ -229,7 +229,7 @@ void MainWidget::sendParamSlot()
 	cmdBuffer[1] = SETPARAM;
 	cmdBuffer[2] = (unsigned short) param->value();
 	cmdBuffer[3] = (unsigned short) paramSource->currentData().toUInt();
-	theApp->protocol("set parameter", 2);
+	theApp->logMessage("set parameter", 2);
 	theApp->sendCommand(pBuffer);
 }
 
@@ -245,7 +245,7 @@ void MainWidget::sendAuxSlot()
 	cmdBuffer[1] = SETAUXTIMER;
 	cmdBuffer[2] = (unsigned short) timer->value();
 	cmdBuffer[3] = compare;
-	theApp->protocol("set aux timer", 2);
+	theApp->logMessage("set aux timer", 2);
 	theApp->sendCommand(pBuffer);
 }
 
@@ -256,7 +256,7 @@ void MainWidget::resetTimerSlot()
 	cmdBuffer[2] = 0;
 	cmdBuffer[3] = 0;
 	cmdBuffer[4] = 0;
-	theApp->protocol("reset timer", 2);
+	theApp->logMessage("reset timer", 2);
 	theApp->sendCommand(pBuffer);
 }
 
@@ -276,7 +276,7 @@ void MainWidget::setTimingSlot()
 		cmdBuffer[3] = 1;
 	else
 		cmdBuffer[3] = 0;
-	theApp->protocol("set timing", 2);
+	theApp->logMessage("set timing", 2);
 	theApp->sendCommand(pBuffer);
 }
 
@@ -299,7 +299,7 @@ void MainWidget::setStreamSlot()
 	else
 		cmdBuffer[2] = 0;
 	pstring.sprintf("Set stream %d", cmdBuffer[2]);
-	theApp->protocol(pstring, 2);
+	theApp->logMessage(pstring, 2);
 	theApp->sendCommand(pBuffer);
 }
 
@@ -444,7 +444,7 @@ void MainWidget::setPulserSlot()
 	cmdBuffer[6] = pulse;
 
     auto sendResult = theApp->sendCommand(pBuffer);
-    theApp->protocol(QSL("setPulserSlot: sendResult=%1").arg(sendResult), LOG_LEVEL_DEBUG);
+    theApp->logMessage(QSL("setPulserSlot: sendResult=%1").arg(sendResult), LOG_LEVEL_DEBUG);
 }
 
 void MainWidget::setGainSlot()
@@ -969,7 +969,7 @@ void MainWidget::setRunIdSlot()
 	cmdBuffer[2] = runid;
 	theApp->sendCommand(pBuffer);
 	pstring.sprintf("Set run ID to %d", runid);
-	theApp->protocol(pstring, 2);
+	theApp->logMessage(pstring, 2);
 }
 
 /*!
