@@ -76,8 +76,6 @@ mesydaq2::~mesydaq2()
 	//delete dispTimer;
 	theTimer->stop();
 	delete theTimer;
-	commTimer->stop();
-	delete commTimer;
 
 	delete dc;
 	delete meas;
@@ -689,10 +687,7 @@ void mesydaq2::initTimers(void)
     for(unsigned char c = 0; c < 10; c++)
     	dispatch[c] = 0;
 
-	// communication timeout timer
-    commTimer = new QTimer(this);
-    connect(commTimer, SIGNAL(timeout()), this, SLOT(commTimeout()));
-    commId = 99;
+    commId = 99; // Note (flueke): ???
 
     // pulser test timer
     //testTimer = new QTimer(this);

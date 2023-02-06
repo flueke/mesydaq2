@@ -170,7 +170,6 @@ protected:
     unsigned char daq;
     QString pstring;
     QTimer * dispTimer;
-    QTimer * commTimer;
     QTimer * theTimer;
     QTimer * testTimer;
     unsigned long statuscounter[0];
