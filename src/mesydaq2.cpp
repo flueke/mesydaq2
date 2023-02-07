@@ -113,6 +113,8 @@ void mesydaq2::initNetwork(void)
 // analyzes the command buffers, takes appropriate action
 int mesydaq2::sendCommand(unsigned short * buffer)
 {
+    qDebug() << "sendCommand entered";
+
     unsigned short cmd, buflen, id;
 
     // general buffer preparations:
@@ -133,8 +135,8 @@ int mesydaq2::sendCommand(unsigned short * buffer)
         return -1;
 
     // now do some command specific things:
-    switch(cmd){
-
+    switch(cmd)
+    {
         case RESET:
             buflen = 2;
         break;
@@ -313,26 +315,29 @@ int mesydaq2::sendCommand(unsigned short * buffer)
 
     for (unsigned nAttempts = 0; nAttempts < MaxAttempts; ++nAttempts)
     {
-        if(netDev[0]->sendBuffer(id, cmdBuf)){
-            pstring.sprintf("sent cmd: %d to id: %d", cmd, id);
+        if(netDev[0]->sendBuffer(id, cmdBuf))
+        {
+            pstring.sprintf("sent cmd: %d to id: %d, now waiting for answer...", cmd, id);
             logMessage(pstring, 3);
             cmdTxd ++;
             txCmdBufNum++;
             cmdActive = true;
             myMcpd[id]->communicate(true);
             commId = id;
-            dispatch[2] = 0;
+            dispatch[DispatchIdx_CommTimeout] = 0;
             // wait for answer
             while(myMcpd[commId]->isBusy())
                 qApp->processEvents();
             // check if answer or timeout?
-            if(myMcpd[id]->isResponding()){
+            if(myMcpd[id]->isResponding())
+            {
                 pstring.sprintf("received cmd answer: %d from id: %d, attempt %d/%d",
                     cmd, id, nAttempts+1, MaxAttempts);
                 logMessage(pstring, 3);
                 break;
             }
-            else{
+            else
+            {
                 pstring.sprintf("no cmd answer: %d from id: %d", cmd, id);
                 logMessage(pstring, 2);
             }
@@ -474,8 +479,8 @@ void mesydaq2::onBufferReceived()
                 //			qDebug("------------------");
             }
             dataRxd++;
-            logMessage(QSL("onBufferReceived(): calling analyzeBuffer() for device %1").arg(deviceId),
-                     LOG_LEVEL_TRACE);
+            //logMessage(QSL("onBufferReceived(): calling analyzeBuffer() for device %1").arg(deviceId),
+            //         LOG_LEVEL_TRACE);
             dc->analyzeBuffer(pDataBuf, daq, hist[deviceId]);
         }
     }
@@ -2242,12 +2247,14 @@ void mesydaq2::pulserTest()
     bool ok;
 
 //	testTimer->stop();
-	if(testJustStarted){
+	if(testJustStarted)
+    {
 		qDebug() << "pulserTest: testJustStarted case";
 		testJustStarted = false;
 	}
-	else{
-		qDebug("switching off: cpu%d, mod%d, chan%d, pos%d, ampl%d",
+	else
+    {
+		qDebug("pulserTest: switching off previous pulser: mcpdId%d, mod%d, chan%d, pos%d, ampl%d",
 			testCpu, testMod, testChan, testPos, testAmpl);
 		// switch off old pulser position
 
@@ -2260,60 +2267,70 @@ void mesydaq2::pulserTest()
 		commandBuffer[6] = 0;
 		sendCommand(commandBuffer);
 
-		if(!testStopping){
-			// now increment pulser position:
-			// switch to new mpsd-8 device?
-			if(testAmpl == 0)
-				testAmpl = 1;
-			else{
-				testAmpl = 0;
-				if(testPos < 2)
-					testPos++;
-				else{
-					testPos = 0;
-					if(testChan < 7)
-						testChan++;
-					else{
-						testChan = 0;
-					// check if current MPSD-8 is connected
-					testMod ++;
-					if(testMod == 8 * MCPDS)
-						testMod = 0;
-					// if not connected, look for next
-					while(!myMpsd[testMod]->getMpsdId()){
-						testMod ++;
-						if(testMod == 8 * MCPDS)
-							testMod = 0;
-					}
-					testCpu = (unsigned char) testMod / 8;
-					}
-				}
-			}
-//			qDebug("next position: cpu%d, mod%d, chan%d, pos%d, ampl%d", testCpu, testMod, testChan, testPos, testAmpl);
-		}
-	}
-	if(testStopping){
-		testRunning = false;
-		testStopping = false;
-	}
-	else{
-		// set pulser to current cpu/modchan/pos/ampl
-		if(testAmpl == 0)
-			ampval = (unsigned char)mainWin->pulsAmp1->text().toInt(&ok);
-		else
-			ampval = (unsigned char)mainWin->pulsAmp2->text().toInt(&ok);
-		// pulser
-		commandBuffer[0] = testCpu;
-		commandBuffer[1] = SETPULSER;
-		commandBuffer[2] = testMod;
-		commandBuffer[3] = testChan;
-		commandBuffer[4] = testPos;
-		commandBuffer[5] = ampval;
-		commandBuffer[6] = 1;
-		sendCommand(commandBuffer);
-//		testTimer->start(500, false);
+        if (!testStopping)
+        {
+            // now increment pulser position:
+            // switch to new mpsd-8 device?
+            if (testAmpl == 0)
+                testAmpl = 1;
+            else
+            {
+                testAmpl = 0;
+                if (testPos < 2)
+                    testPos++;
+                else
+                {
+                    testPos = 0;
+                    if (testChan < 7)
+                        testChan++;
+                    else
+                    {
+                        testChan = 0;
+                        // check if current MPSD-8 is connected
+                        testMod++;
+                        if (testMod == 8 * MCPDS)
+                            testMod = 0;
+                        // if not connected, look for next
+                        while (!myMpsd[testMod]->getMpsdId())
+                        {
+                            testMod++;
+                            if (testMod == 8 * MCPDS)
+                                testMod = 0;
+                        }
+                        testCpu = (unsigned char)testMod / 8;
+                    }
+                }
+            }
+            qDebug("pulserTest: next position: mcpdId%d, mod%d, chan%d, pos%d, ampl%d",
+                testCpu, testMod, testChan, testPos, testAmpl);
+        }
+    }
 
-	}
+    if (testStopping)
+    {
+        qDebug() << "pulserTest: testStopping case";
+        testRunning = false;
+        testStopping = false;
+    }
+    else
+    {
+        // set pulser to current cpu/modchan/pos/ampl
+        if (testAmpl == 0)
+            ampval = (unsigned char)mainWin->pulsAmp1->text().toInt(&ok);
+        else
+            ampval = (unsigned char)mainWin->pulsAmp2->text().toInt(&ok);
+        qDebug() << "pulserTest: new ampVal =" << ampval;
+        // pulser
+        commandBuffer[0] = testCpu;
+        commandBuffer[1] = SETPULSER;
+        commandBuffer[2] = testMod;
+        commandBuffer[3] = testChan;
+        commandBuffer[4] = testPos;
+        commandBuffer[5] = ampval;
+        commandBuffer[6] = 1;
+        sendCommand(commandBuffer);
+        qDebug() << "pulserTest: sent new pulser command";
+    }
 }
 
 const char *const log_level_name(uchar level)

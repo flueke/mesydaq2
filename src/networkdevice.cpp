@@ -115,8 +115,8 @@ void networkDevice::readSocketData()
 		}
 	}
 
-	theApp->logMessage(QSL("networkDevice::readSocketData() received %1 datagrams").arg(nDatagrams),
-					 LOG_LEVEL_TRACE);
+	//theApp->logMessage(QSL("networkDevice::readSocketData() received %1 datagrams").arg(nDatagrams),
+	//				 LOG_LEVEL_TRACE);
 }
 
 /*!
