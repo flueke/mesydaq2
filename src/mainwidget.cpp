@@ -380,7 +380,24 @@ void MainWidget::setIpUdpSlot()
     cmdBuffer[13] = cip1;
     cmdBuffer[14] = cip2;
     cmdBuffer[15] = cip3;
-    theApp->sendCommand(pBuffer);
+
+    // Note (flueke): For old MCPD-8 this permanently changes the settings on
+    // the CPU board. It does send the response from the old address before
+    // switching over. I think this is different from the new MCPD which
+    // switches over immediately. TODO: verify!
+    auto result = theApp->sendCommand(pBuffer);
+
+    // (flueke) If the MCPD was changed update the destination address both in
+    // the GUI and in the networkDevice instance.
+    // If a response to the SETPROTOCOL call is received the networkDevice
+    // update also happens in dataCruncher::analyzeCmd() but I'm going to leave
+    // it in here for the new MCPD.
+    if(modifyIp->isChecked() && result)
+    {
+        auto newMcpdAddress = QSL("%1.%2.%3.%4").arg(ip0).arg(ip1).arg(ip2).arg(ip3);
+        theApp->setMcpdAddress(mcpdId->value(), newMcpdAddress);
+        mcpdHostAddress->setText(newMcpdAddress);
+    }
 }
 
 void MainWidget::setPulserSlot()
@@ -1517,6 +1534,10 @@ void MainWidget::applyMIpSlot()
 
     // set address in interface table
     theApp->setMcpdAddress(mcpdId->value(), addr);
+    // (flueke): Force "reconnect"
+    mcpdSearchSlot();
+    // (flueke): Scan the busses for connected devices
+    scanPeriSlot();
 }
 
 

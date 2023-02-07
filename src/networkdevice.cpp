@@ -78,7 +78,7 @@ qint64 networkDevice::sendBuffer(unsigned char id, PMDP_PACKET buf)
 	}
 
 	auto hostname = getAddress(id);
-	auto destHostInfo = QHostInfo::fromName(hostname);
+	auto destHostInfo = QHostInfo::fromName(hostname); // result should be cached by qt i think
 
 	if (destHostInfo.error())
 	{
@@ -128,7 +128,7 @@ void networkDevice::setAddress(unsigned char id, QString addr)
     ipAddress[id] = addr;
 	pstring.sprintf("Changed contact ip adress for MCPD-ID %d to ", id);
 	pstring.append(addr);
-	theApp->logMessage(pstring, 2);
+	theApp->logMessage(pstring, LOG_LEVEL_INFO);
 }
 
 /*!
