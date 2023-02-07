@@ -139,7 +139,6 @@ protected:
     unsigned int dispChannelCounts;
 	bool multi;
 	unsigned char dispNum;
-    bool dontSend;
 
     QPixmap drawPixmap;
 };
