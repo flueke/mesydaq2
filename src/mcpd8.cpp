@@ -591,11 +591,13 @@ void mcpd8::timeout()
         pstring.sprintf("timeout #%d in mcpd-8 id %d. Device set offline", timeoutCounter, id);
         theApp->logMessage(pstring, 0);
     }
+    #if 0
     else
     {
         pstring.sprintf("timeout #%d in mcpd-8 id %d.", timeoutCounter, id);
         theApp->logMessage(pstring, 2);
     }
+    #endif
 }
 
 /*!
