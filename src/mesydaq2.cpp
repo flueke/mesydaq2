@@ -53,9 +53,10 @@ static const unsigned DispatchIdx_GraphicsUpdate = 1;
 static const unsigned DispatchIdx_CommTimeout = 2;
 static const unsigned DispatchIdx_PulserTest = 3;
 
-// Some magic numbers previously used in the code.
+// Some central dispatch timer magic numbers previously used in the code.
+static const unsigned CentralDispatchTimerInterval_ms = 10;
 static const unsigned Dispatch_TimeoutReachedValue = 51;
-static const unsigned Dispatch_RunPulserTestValue = 11; // Note (flueke): original value was 11, so quite fast
+static const unsigned Dispatch_RunPulserTestValue = 11; // Note (flueke): original value was 11, so quite fast (every 10 * 11 ms)
 
 mesydaq2::mesydaq2()
     : QMainWindow()
@@ -113,7 +114,7 @@ void mesydaq2::initNetwork(void)
 // analyzes the command buffers, takes appropriate action
 int mesydaq2::sendCommand(unsigned short * buffer)
 {
-    qDebug() << "sendCommand entered";
+    logMessage(QSL("sendCommand entered"), LOG_LEVEL_TRACE);
 
     unsigned short cmd, buflen, id;
 
@@ -318,31 +319,71 @@ int mesydaq2::sendCommand(unsigned short * buffer)
         if(netDev[0]->sendBuffer(id, cmdBuf))
         {
             pstring.sprintf("sent cmd: %d to id: %d, now waiting for answer...", cmd, id);
-            logMessage(pstring, 3);
+            logMessage(pstring, LOG_LEVEL_TRACE);
             cmdTxd ++;
             txCmdBufNum++;
             cmdActive = true;
             myMcpd[id]->communicate(true);
             commId = id;
-            dispatch[DispatchIdx_CommTimeout] = 0;
+            dispatch[DispatchIdx_CommTimeout] = 0; // Restarts the communication timeout.
+
             // wait for answer
-            while(myMcpd[commId]->isBusy())
-                qApp->processEvents();
+            // Note (flueke): This one was tricky: for some reason the old
+            // MCPD-8 does sometimes not send a response when the pulsertest
+            // logic is hammering it with commands. Even raising the interval at
+            // which new pulser commands are sent did not fix the problem.  This
+            // would not be an issue because centralDispatch() would detect that
+            // no response arrived after a certain period of time has elapsed
+            // which would then call mcpd8::timeout(), which in turn results in
+            // mcpd8::isBusy() becoming false, so the loop below would
+            // terminate. It seems this worked in Qt3 but it does not in Qt5!
+            // Both the timeout handling and the pulser test logic are called
+            // from centralDispatch() which is invoked by 'theTimer::timeout()'.
+            // Qt5 seems to detect that the centralDispatch() call is still
+            // active when the timer callback is invoked and suppresses further
+            // calls.
+            // Solution: start a local timer here, incrementing
+            // dispatch[DispatchIdx_CommTimeout] at the same rate 'theTimer'
+            // would and calling commTimeout() once the threshold elapsed.
+            {
+                QTimer localTimeoutTimer;
+                connect(&localTimeoutTimer, &QTimer::timeout, this, [this]
+                    {
+                        ++dispatch[DispatchIdx_CommTimeout];
+                        if (dispatch[DispatchIdx_CommTimeout] > Dispatch_TimeoutReachedValue)
+                        {
+                            logMessage(QSL("commTimeout() invoked by local timer in sendCommand()!"), LOG_LEVEL_TRACE);
+                            commTimeout();
+                        }
+                    });
+
+                localTimeoutTimer.start(CentralDispatchTimerInterval_ms);
+
+                while(myMcpd[commId]->isBusy())
+                {
+                    qApp->processEvents();
+                }
+
+                localTimeoutTimer.stop();
+            }
+
             // check if answer or timeout?
             if(myMcpd[id]->isResponding())
             {
                 pstring.sprintf("received cmd answer: %d from id: %d, attempt %d/%d",
                     cmd, id, nAttempts+1, MaxAttempts);
-                logMessage(pstring, 3);
+                logMessage(pstring, LOG_LEVEL_TRACE);
                 break;
             }
             else
             {
                 pstring.sprintf("no cmd answer: %d from id: %d", cmd, id);
-                logMessage(pstring, 2);
+                logMessage(pstring, LOG_LEVEL_DEBUG);
             }
         }
     }
+
+    logMessage(QSL("leaving sendCommand"), LOG_LEVEL_TRACE);
     return 1;
 }
 
@@ -637,7 +678,8 @@ void mesydaq2::logMessage(QString str, unsigned char level)
     if (level <= logLevel)
     {
         qDebug().noquote() << msg;
-        mainWin->protocolEdit->append(msg);
+        if (level > LOG_LEVEL_TRACE)
+            mainWin->protocolEdit->append(msg);
     }
 }
 
@@ -688,11 +730,11 @@ void mesydaq2::initTimers(void)
     // central dispatch timer
     theTimer = new QTimer(this);
     connect(theTimer, SIGNAL(timeout()), this, SLOT(centralDispatch()));
-    theTimer->start(10);
+    theTimer->start(CentralDispatchTimerInterval_ms);
     for(unsigned char c = 0; c < 10; c++)
         dispatch[c] = 0;
 
-    commId = 99; // Note (flueke): ???
+    commId = 99; // Note (flueke): ??? Probably means "no mcpd id" :(
 
     // pulser test timer
     //testTimer = new QTimer(this);
@@ -1322,7 +1364,7 @@ void mesydaq2::centralDispatch()
     dispatch[2]++;
     if (cmdActive == true && dispatch[2] > Dispatch_TimeoutReachedValue)
     {
-        //logMessage("mesydaq2::centralDispatch: comm timeout!", LOG_LEVEL_TRACE);
+        logMessage("mesydaq2::centralDispatch: comm timeout!", LOG_LEVEL_TRACE);
         commTimeout();
     }
 
@@ -1330,7 +1372,7 @@ void mesydaq2::centralDispatch()
     dispatch[3]++;
     if (testRunning == true && dispatch[3] == Dispatch_RunPulserTestValue)
     {
-        //logMessage("mesydaq2::centralDispatch: call pulserTest()!", LOG_LEVEL_DEBUG);
+        logMessage("mesydaq2::centralDispatch: call pulserTest()!", LOG_LEVEL_DEBUG);
         pulserTest();
         dispatch[3] = 0;
     }
