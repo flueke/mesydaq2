@@ -1435,8 +1435,17 @@ void mesydaq2::initMpsd(unsigned char mcpd, unsigned char id)
     commandBuffer[3] = 0;
     sendCommand(commandBuffer);
 
-    // now set tx capabilities, if id == 105
+    // now set tx capabilities, if id == 105 (TODO: figure out which device this is)
     if(myMpsd[num]->getMpsdId() == 105){
+        myMpsd[num]->setInternalreg(1, 4, 1);
+        commandBuffer[1] = WRITEPERIREG;
+        commandBuffer[2] = id;
+        commandBuffer[3] = 1;	// write register 1
+        commandBuffer[4] = 4;
+        sendCommand(commandBuffer);
+    }
+    // MPSD-8+
+    else if(myMpsd[num]->getMpsdId() == 1){
         myMpsd[num]->setInternalreg(1, 4, 1);
         commandBuffer[1] = WRITEPERIREG;
         commandBuffer[2] = id;
@@ -1483,20 +1492,24 @@ void mesydaq2::initMcpd(unsigned char id)
 
     // set tx capability to TAP
     // Note (flueke): This sets a fixed capabilies value without considering
-    // which device is present on the bus. For a MPSD-8+ with default settings a
-    // value of 2 (==TP) works.
+    // which device is present on the bus. For an old MPSD-8+ with default
+    // settings a value of 2 (==TP) works for an attached MPSD-8+.
     commandBuffer[0] = id;
-       commandBuffer[1] = WRITEREGISTER;
+    commandBuffer[1] = WRITEREGISTER;
     commandBuffer[2] = 1;
     commandBuffer[3] = 103;
-    // set tx capability to TAP
-    //commandBuffer[4] = 4;
+
     // set tx capability to P
-//	commandBuffer[4] = 1;
-    // set tx capability to TP
-    commandBuffer[4] = 2;
+    //commandBuffer[4] = 1;
+
+    // set tx capability to TP (works for old MCPD-8 and MPSD-8+)
+    //commandBuffer[4] = 2;
+
+    // set tx capability to TPA
+    commandBuffer[4] = 4;
+
     sendCommand(commandBuffer);
-    pstring.sprintf("initialized MCPD ID %d", id);
+    pstring.sprintf("initialized MCPD ID %d, bus_capa=0x%02x", id, commandBuffer[4]);
     logMessage(pstring, 1);
 }
 
@@ -2296,13 +2309,13 @@ void mesydaq2::pulserTest()
 //	testTimer->stop();
 	if(testJustStarted)
     {
-		qDebug() << "pulserTest: testJustStarted case";
+		//qDebug() << "pulserTest: testJustStarted case";
 		testJustStarted = false;
 	}
 	else
     {
-		qDebug("pulserTest: switching off previous pulser: mcpdId%d, mod%d, chan%d, pos%d, ampl%d",
-			testCpu, testMod, testChan, testPos, testAmpl);
+		//qDebug("pulserTest: switching off previous pulser: mcpdId%d, mod%d, chan%d, pos%d, ampl%d",
+		//	testCpu, testMod, testChan, testPos, testAmpl);
 		// switch off old pulser position
 
 		commandBuffer[0] = testCpu;
@@ -2319,7 +2332,9 @@ void mesydaq2::pulserTest()
             // now increment pulser position:
             // switch to new mpsd-8 device?
             if (testAmpl == 0)
+            {
                 testAmpl = 1;
+            }
             else
             {
                 testAmpl = 0;
@@ -2348,14 +2363,14 @@ void mesydaq2::pulserTest()
                     }
                 }
             }
-            qDebug("pulserTest: next position: mcpdId%d, mod%d, chan%d, pos%d, ampl%d",
-                testCpu, testMod, testChan, testPos, testAmpl);
+            //qDebug("pulserTest: next position: mcpdId%d, mod%d, chan%d, pos%d, ampl%d",
+            //    testCpu, testMod, testChan, testPos, testAmpl);
         }
     }
 
     if (testStopping)
     {
-        qDebug() << "pulserTest: testStopping case";
+        //qDebug() << "pulserTest: testStopping case";
         testRunning = false;
         testStopping = false;
     }
@@ -2366,7 +2381,7 @@ void mesydaq2::pulserTest()
             ampval = (unsigned char)mainWin->pulsAmp1->text().toInt(&ok);
         else
             ampval = (unsigned char)mainWin->pulsAmp2->text().toInt(&ok);
-        qDebug() << "pulserTest: new ampVal =" << ampval;
+        //qDebug() << "pulserTest: new ampVal =" << ampval;
         // pulser
         commandBuffer[0] = testCpu;
         commandBuffer[1] = SETPULSER;
@@ -2376,7 +2391,7 @@ void mesydaq2::pulserTest()
         commandBuffer[5] = ampval;
         commandBuffer[6] = 1;
         sendCommand(commandBuffer);
-        qDebug() << "pulserTest: sent new pulser command";
+        //qDebug() << "pulserTest: sent new pulser command";
     }
 }
 
