@@ -55,6 +55,8 @@ static const unsigned DispatchIdx_PulserTest = 3;
 
 // Some central dispatch timer magic numbers previously used in the code.
 static const unsigned CentralDispatchTimerInterval_ms = 10;
+static const unsigned Dispatch_RateMeasurementValue = 8;
+static const unsigned Dispatch_GraphicsUpdateValue = 100;
 static const unsigned Dispatch_TimeoutReachedValue = 51;
 static const unsigned Dispatch_RunPulserTestValue = 11; // Note (flueke): original value was 11, so quite fast (every 10 * 11 ms)
 
@@ -1343,38 +1345,41 @@ void mesydaq2::centralDispatch()
     if (cInt->caressTaskPending && (!cInt->asyncTaskPending))
         cInt->caressTask();
 
-    dispatch[0]++;
-    if (dispatch[0] == 8)
+    // rate measurement
+    if (++dispatch[DispatchIdx_RateMeasurement] == Dispatch_RateMeasurementValue)
     {
-        dispatch[0] = 0;
+        dispatch[DispatchIdx_RateMeasurement] = 0;
         //logMessage("mesydaq2::centralDispatch: calc rates", LOG_LEVEL_TRACE);
         meas->calcRates();
     }
 
     // graphics update
-    dispatch[1]++;
-    if (dispatch[1] == 100)
+    if (++dispatch[DispatchIdx_GraphicsUpdate] == Dispatch_GraphicsUpdateValue)
     {
         //logMessage("mesydaq2::centralDispatch: graphics update", LOG_LEVEL_TRACE);
         dispTime();
-        dispatch[1] = 0;
+        dispatch[DispatchIdx_GraphicsUpdate] = 0;
     }
 
     // commTimeout
-    dispatch[2]++;
-    if (cmdActive == true && dispatch[2] > Dispatch_TimeoutReachedValue)
+    ++dispatch[DispatchIdx_CommTimeout];
+
+    if (cmdActive == true && dispatch[DispatchIdx_CommTimeout] > Dispatch_TimeoutReachedValue)
     {
         logMessage("mesydaq2::centralDispatch: comm timeout!", LOG_LEVEL_TRACE);
         commTimeout();
+        // Note (flueke): the timeout dispatch counter is set to 0 in
+        // sendCommand() but for consistency I'm also going to reset it here.
+        dispatch[DispatchIdx_CommTimeout] = 0;
     }
 
     // pulser test
-    dispatch[3]++;
-    if (testRunning == true && dispatch[3] == Dispatch_RunPulserTestValue)
+    ++dispatch[DispatchIdx_PulserTest];
+    if (testRunning == true && dispatch[DispatchIdx_PulserTest] == Dispatch_RunPulserTestValue)
     {
         logMessage("mesydaq2::centralDispatch: call pulserTest()!", LOG_LEVEL_DEBUG);
         pulserTest();
-        dispatch[3] = 0;
+        dispatch[DispatchIdx_PulserTest] = 0;
     }
 }
 
