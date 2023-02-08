@@ -25,6 +25,8 @@
 
 #include <QDebug>
 #include <QSignalBlocker>
+#include <cstring>
+#include <cassert>
 #include "qpushbutton.h"
 #include "qcombobox.h"
 #include "qspinbox.h"
@@ -596,10 +598,31 @@ QString MainWidget::buildTimestring(unsigned long timeval, bool nano)
     return str;
 }
 
-
-/*!
-    \fn MainWidget::drawData(void)
+/* Note (flueke): About the drawing code.
+ * ======================================
+ * The original layout was
+ * mainFrame min/maxSize 1150x520
+ *   dataFrame @ x=80, y=10, 961x480
+ *   right side text column, width set to 76.
+ *
+ * No layout so both frames stayed at exactly the same size and position.
+ * Some painting was done on the mainFrame while also drawing over the dataFrame
+ * (TODO: verify).
+ * Other QPainters were used on the dataFrame only.
+ *
+ * Now the dataFrame occupies all the space left in the mainFrame layout (right
+ * side text takes up a column in the mainFrame layout). I set it to min/maxSize
+ * 1150x520.
+ *
+ * => mainFrame drawing should be confined to (1150-76 = 1074, 520).
+ * => dataFrame drawing should be confined to (961, 480) with an offset of (80, 10).
+ *
  */
+
+// Note (flueke): Size and offset of the "dataFrame" in the old code.
+static const QRect plotRect = {  0,  0, 1074, 520 };
+static const QRect dataRect = { 80, 10,  961, 480 };
+
 void MainWidget::drawData(void)
 {
     float val2, val1;
@@ -607,7 +630,11 @@ void MainWidget::drawData(void)
     QString str, str2;
     QFont fo;
     QPainter p2;
-    p2.begin(&this->drawPixmap);
+
+    QPixmap dataPixmap(dataRect.size());
+    dataPixmap.fill(Qt::white);
+
+    p2.begin(&dataPixmap);
     p2.setPen(QPen(Qt::black, 1, Qt::SolidLine));
     p2.setBrush(QBrush(Qt::black));
     fo = p2.font();
@@ -629,8 +656,6 @@ void MainWidget::drawData(void)
         ystep = histHeight / dispRange;
     else
         ystep = 1;
-
-//	qDebug("dispRange: %f, height: %d, ystep: %f", dispRange, height, ystep);
 
     dispChannelCounts = 0;
     for(unsigned int i=start; i<start+dispLen; i++){
@@ -694,6 +719,11 @@ void MainWidget::drawData(void)
 
     p2.end();
 
+    // Copy the dataPixmap into the drawPixmap.
+    {
+        QPainter painter(&this->drawPixmap);
+        painter.drawPixmap(dataRect, dataPixmap);
+    }
 }
 
 
@@ -702,6 +732,32 @@ void MainWidget::drawData(void)
  */
 void MainWidget::setData(unsigned long * data, unsigned int len, unsigned long int max)
 {
+
+//	qDebug("dispRange: %f, height: %d, ystep: %f", dispRange, height, ystep);
+
+    for (size_t i=0; i<len; ++i)
+    {
+        if (data[i] != 0)
+            qDebug("data[%lu] = %lu", i, data[i]);
+        assert(data[i] == 0);
+    }
+
+    std::memset(data, 0, len);
+    QVector<QPair<size_t, size_t>> testData;
+
+    // HACK: write some test data
+    size_t value = 10;
+    for (size_t i=0; i<len; i+=100, value+=10)
+    {
+        data[i] = value;
+        testData.push_back({ i, value });
+    }
+
+    max = *std::max_element(data, data+len);
+
+    qDebug() << "testData:" << testData << ", max:" << max;
+
+
 //    qDebug("setData, max: %ld", max);
     unsigned long int m = max * 1.1;
     unsigned int start = 0;
@@ -768,28 +824,31 @@ void MainWidget::setData(unsigned long * data, unsigned int len, unsigned long i
     }
 }
 
-
-/*!
-    \fn MainWidget::drawDataGrid(void)
- */
 void MainWidget::drawDataGrid(void)
 {
     QString str;
 
+#if 0
     // clear old grid:
     QPainter p2;
     p2.begin(&this->drawPixmap);
     p2.setPen(QPen(Qt::black, 1, Qt::NoPen));
     p2.setBrush(QBrush(Qt::lightGray));
     p2.drawRect(drawPixmap.rect());
-      p2.end();
+    p2.end();
+#endif
 
+    this->drawPixmap.fill(Qt::lightGray);
+
+#if 0
+    // Note (flueke): moved into drawData because of the extra pixmap being drawn onto the main pixmap
     // clear old frame:
     p2.begin(&this->drawPixmap);
     p2.setPen(QPen(Qt::black, 1, Qt::NoPen));
     p2.setBrush(QBrush(Qt::white));
-    p2.drawRect(drawPixmap.rect());
+    p2.drawRect(dataRect);
     p2.end();
+#endif
 
 }
 
