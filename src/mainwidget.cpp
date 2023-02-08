@@ -735,6 +735,8 @@ void MainWidget::setData(unsigned long * data, unsigned int len, unsigned long i
 
 //	qDebug("dispRange: %f, height: %d, ystep: %f", dispRange, height, ystep);
 
+    // debug code: check memory is zero (with no device connected), then write some test data.
+    #if 0
     for (size_t i=0; i<len; ++i)
     {
         if (data[i] != 0)
@@ -745,7 +747,6 @@ void MainWidget::setData(unsigned long * data, unsigned int len, unsigned long i
     std::memset(data, 0, len);
     QVector<QPair<size_t, size_t>> testData;
 
-    // HACK: write some test data
     size_t value = 10;
     for (size_t i=0; i<len; i+=100, value+=10)
     {
@@ -756,6 +757,7 @@ void MainWidget::setData(unsigned long * data, unsigned int len, unsigned long i
     max = *std::max_element(data, data+len);
 
     qDebug() << "testData:" << testData << ", max:" << max;
+    #endif
 
 
 //    qDebug("setData, max: %ld", max);
@@ -826,30 +828,7 @@ void MainWidget::setData(unsigned long * data, unsigned int len, unsigned long i
 
 void MainWidget::drawDataGrid(void)
 {
-    QString str;
-
-#if 0
-    // clear old grid:
-    QPainter p2;
-    p2.begin(&this->drawPixmap);
-    p2.setPen(QPen(Qt::black, 1, Qt::NoPen));
-    p2.setBrush(QBrush(Qt::lightGray));
-    p2.drawRect(drawPixmap.rect());
-    p2.end();
-#endif
-
     this->drawPixmap.fill(Qt::lightGray);
-
-#if 0
-    // Note (flueke): moved into drawData because of the extra pixmap being drawn onto the main pixmap
-    // clear old frame:
-    p2.begin(&this->drawPixmap);
-    p2.setPen(QPen(Qt::black, 1, Qt::NoPen));
-    p2.setBrush(QBrush(Qt::white));
-    p2.drawRect(dataRect);
-    p2.end();
-#endif
-
 }
 
 /*!
@@ -961,20 +940,11 @@ void MainWidget::draw(void)
     // called multiple times with shared state having been mutated in-between.
     // See mesydaq2::draw().
     // At the end of draw() the pixmap is set on the dataPixmapLabel QLabel
-    // instance. This happens more often than it needs to but should not matter
-    // much.
-
+    // instance.
     if (drawPixmap.isNull())
     {
-        drawPixmap = QPixmap(dataPixmapLabel->contentsRect().size());
-        qDebug() << "drawPixmap initial size" << drawPixmap.size();
+        drawPixmap = QPixmap(plotRect.size());
     }
-    else if (drawPixmap.size() != dataPixmapLabel->contentsRect().size())
-    {
-        drawPixmap = drawPixmap.scaled(dataPixmapLabel->contentsRect().size());
-        qDebug() << "drawPixmap new scaled size" << drawPixmap.size();
-    }
-
 
     dispId = dispMcpd->value();
     if(!multi || (multi && dispNum == 0)){
@@ -986,8 +956,9 @@ void MainWidget::draw(void)
     drawOpData();
 //	displayMpsdSlot();
 
-    dataPixmapLabel->setPixmap(drawPixmap);
+    dataPixmapLabel->setPixmap(drawPixmap.scaled(dataPixmapLabel->contentsRect().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     update();
+    qDebug() << "MainWidget::draw() done";
 }
 
 void MainWidget::clearAllSlot()
