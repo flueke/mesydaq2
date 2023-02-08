@@ -1036,7 +1036,7 @@ bool mesydaq2::saveSetup(void)
 
   configfilename = name;
 
-  // FIXME: this can overwrite existing files without asking
+  // FIXME: this can overwrite existing files without asking (don't care for now as no one is going to use it)
   if (!configfilename.endsWith(".mcfg"))
       configfilename += ".mcfg";
 
@@ -1329,8 +1329,8 @@ bool mesydaq2::loadSetup(bool ask)
  */
 void mesydaq2::commTimeout()
 {
-    pstring.sprintf("Timeout while waiting for cmd answer from MCPD-ID: %d", commId);
-    logMessage(pstring, LOG_LEVEL_INFO);
+    //pstring.sprintf("Timeout while waiting for cmd answer from MCPD-ID: %d", commId);
+    //logMessage(pstring, LOG_LEVEL_INFO);
     myMcpd[commId]->timeout();
 }
 
@@ -1377,7 +1377,7 @@ void mesydaq2::centralDispatch()
     ++dispatch[DispatchIdx_PulserTest];
     if (testRunning == true && dispatch[DispatchIdx_PulserTest] == Dispatch_RunPulserTestValue)
     {
-        logMessage("mesydaq2::centralDispatch: call pulserTest()!", LOG_LEVEL_DEBUG);
+        logMessage("mesydaq2::centralDispatch: call pulserTest()!", LOG_LEVEL_TRACE);
         pulserTest();
         dispatch[DispatchIdx_PulserTest] = 0;
     }
@@ -2293,7 +2293,7 @@ void mesydaq2::startPulsertest(void)
  */
 void mesydaq2::stopPulsertest(void)
 {
-	logMessage("mesydaq2::stopPulserTest() called", LOG_LEVEL_DEBUG);
+	logMessage("mesydaq2::stopPulserTest() called", LOG_LEVEL_TRACE);
 	testStopping = true;
 }
 

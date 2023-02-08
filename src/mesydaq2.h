@@ -153,7 +153,7 @@ public:
 
     mcpd8 * myMcpd[MCPDS];
 	mpsd8 * myMpsd[8*MCPDS];
-    networkDevice * netDev[1]; // TODO: this does not need to be an array anymore
+    networkDevice * netDev[1]; // Note (flueke): this does not need to be an array anymore but not need to fix it now.
     measurement* meas;
     controlInterface * cInt;
     MainWidget * mainWin;

@@ -386,7 +386,8 @@ void MainWidget::setIpUdpSlot()
     // Note (flueke): For old MCPD-8 this permanently changes the settings on
     // the CPU board. It does send the response from the old address before
     // switching over. I think this is different from the new MCPD which
-    // switches over immediately. TODO: verify!
+    // switches over immediately. Should not be needed when using the new MCPD
+    // with DHCP so leaving untested for now :)
     auto result = theApp->sendCommand(pBuffer);
 
     // (flueke) If the MCPD was changed update the destination address both in
@@ -404,18 +405,7 @@ void MainWidget::setIpUdpSlot()
 
 void MainWidget::setPulserSlot()
 {
-    // XXX: leftoff here, sequence is
-    // [17:22:51.904] [info] mesydaq2::startPulserTest(): starting with mod=0
-    // setPulserSlot
-    // setPulserSlot
-    // setPulserSlot
-    // send
-    // Then its dead and when trying to quit the mcpd::isBusy() is true and the
-    // app gets stuck there.
-
-
-
-    qDebug() << "setPulserSlot: sender QObject =" << sender();
+    //qDebug() << "setPulserSlot: sender QObject =" << sender();
 
     bool ok;
     unsigned short id = (unsigned short) devid->value();
@@ -606,8 +596,7 @@ QString MainWidget::buildTimestring(unsigned long timeval, bool nano)
  *   right side text column, width set to 76.
  *
  * No layout so both frames stayed at exactly the same size and position.
- * Some painting was done on the mainFrame while also drawing over the dataFrame
- * (TODO: verify).
+ * Some painting was done on the mainFrame while also drawing over the dataFrame.
  * Other QPainters were used on the dataFrame only.
  *
  * Now the dataFrame occupies all the space left in the mainFrame layout (right
@@ -958,7 +947,7 @@ void MainWidget::draw(void)
 
     dataPixmapLabel->setPixmap(drawPixmap.scaled(dataPixmapLabel->contentsRect().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     update();
-    qDebug() << "MainWidget::draw() done";
+    //qDebug() << "MainWidget::draw() done";
 }
 
 void MainWidget::clearAllSlot()

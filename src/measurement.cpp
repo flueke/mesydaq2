@@ -286,7 +286,7 @@ unsigned char measurement::isOk(void)
     	return 2;
     }
 
-    // FIXME: return something here please! :-(
+    // Note (flueke): there was no return statement here...
     return 0; // idk ;-((
 }
 
