@@ -48,19 +48,16 @@ public:
 
     void update(void);
     QString buildTimestring(unsigned long timeval, bool nano);
-    void drawDataGrid(void);
     void setData(unsigned long * data, unsigned int len, unsigned long int max);
-    void drawData(void);
+    void beginDrawing();
     void draw(void);
+    void endDrawing();
     void processDispData();
-    void drawOpData();
     void dispFiledata(void);
     unsigned char getDispId(void);
     void updatePresets(void);
     void updateCaress(void);
     void splitAddress(QString addrStr, unsigned char * addrByte) ;
-    void drawXAxis(void);
-    void drawYAxis(void);
     void setDispMode(bool mult, unsigned char num);
     void dispCounterAssign(void);
 public slots:
@@ -142,7 +139,21 @@ protected:
 	bool multi;
 	unsigned char dispNum;
 
+    // The outer, larger pixmap. Includes the gray border area.
     QPixmap drawPixmap;
+
+    // The inner smaller pixmap containing the plots. Is copied into drawPixmap
+    // in draw().
+    QPixmap dataPixmap;
+
+    bool isDrawing_ = false;
+
+private:
+    void drawData(void);
+    void drawDataGrid(void);
+    void drawXAxis(void);
+    void drawYAxis(void);
+    void drawOpData();
 };
 
 #endif

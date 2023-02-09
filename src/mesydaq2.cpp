@@ -917,9 +917,11 @@ void mesydaq2::draw(void)
 {
     unsigned char id = mainWin->getDispId();
     unsigned int chan = 0;
+
+    mainWin->beginDrawing();
+
     // eight-fold display?
     if(mainWin->eightFoldBox->isChecked()){
-        // FIXME: make this work with the new pixmap drawing somehow!
         // call draw functions eight times
         for(unsigned char c = 0; c < 8; c++){
             // amplitude or position?
@@ -927,8 +929,23 @@ void mesydaq2::draw(void)
                 chan = mainWin->dispMpsd->value() * 16 + c;
             else
                 chan = mainWin->dispMpsd->value() * 16 + c + 8;
+
             hist[id]->copyLine(chan, dispBuf);
+            // debug code: overwrite dispBuf with some data
+            #if 0
+            const size_t len = 960;
+            const size_t max = 100;
+            {
+                size_t value = 10;
+                for (size_t i=0; i<len; i+=100, value+=10)
+                {
+                    dispBuf[i] = value;
+                }
+            }
+            mainWin->setData(dispBuf, 960, 100);
+            #else
             mainWin->setData(dispBuf, 960, hist[id]->max(chan));
+            #endif
             mainWin->setDispMode(true, c);
             mainWin->draw();
         }
@@ -955,6 +972,8 @@ void mesydaq2::draw(void)
         mainWin->setDispMode(false, chan);
         mainWin->draw();
     }
+
+    mainWin->endDrawing();
 }
 
 

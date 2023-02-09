@@ -633,9 +633,6 @@ void MainWidget::drawData(void)
     QFont fo;
     QPainter p2;
 
-    QPixmap dataPixmap(dataRect.size());
-    dataPixmap.fill(Qt::white);
-
     p2.begin(&dataPixmap);
     p2.setPen(QPen(Qt::black, 1, Qt::SolidLine));
     p2.setBrush(QBrush(Qt::black));
@@ -944,8 +941,12 @@ void MainWidget::draw(void)
     // At the end of draw() the pixmap is set on the dataPixmapLabel QLabel
     // instance.
     if (drawPixmap.isNull())
-    {
         drawPixmap = QPixmap(plotRect.size());
+
+    if (dataPixmap.isNull())
+    {
+        dataPixmap = QPixmap(dataRect.size());
+        dataPixmap.fill(Qt::white);
     }
 
     dispId = dispMcpd->value();
@@ -961,6 +962,22 @@ void MainWidget::draw(void)
     dataPixmapLabel->setPixmap(drawPixmap.scaled(dataPixmapLabel->contentsRect().size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     update();
     //qDebug() << "MainWidget::draw() done";
+}
+
+void MainWidget::beginDrawing()
+{
+    //qDebug() << "MainWidget::beginDrawing()";
+    assert(!isDrawing_);
+    isDrawing_ = true;
+}
+
+void MainWidget::endDrawing()
+{
+    //qDebug() << "MainWidget::endDrawing()";
+    assert(isDrawing_);
+    isDrawing_ = false;
+    if (!dataPixmap.isNull())
+        dataPixmap.fill(Qt::white);
 }
 
 void MainWidget::clearAllSlot()
@@ -1242,7 +1259,9 @@ void MainWidget::restoreSetupSlot()
 
 void MainWidget::redrawSlot()
 {
+    beginDrawing();
     draw();
+    endDrawing();
 }
 
 
