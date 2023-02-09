@@ -113,6 +113,8 @@ public slots:
     virtual void setPulserSlot();
     virtual void setIpUdpSlot();
     virtual void setMcpdIdSlot();
+    void setMcpdBusCapabilitiesSlot();
+
 protected:
     unsigned short cmdBuffer[20];
     unsigned short * pBuffer;

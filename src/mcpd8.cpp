@@ -147,6 +147,29 @@ unsigned short mcpd8::getParamSource(unsigned short param)
         return (paramSource[param]);
 }
 
+void mcpd8::setBusCapabilities(unsigned activeCapabilities, unsigned availableCapabilities)
+{
+    qDebug() << __PRETTY_FUNCTION__ << "active:" << activeCapabilities << ", available:" << availableCapabilities;
+    activeBusCapabilities_ = activeCapabilities;
+    availableBusCapabilities_ = availableCapabilities;
+}
+
+void mcpd8::setBusCapabilities(unsigned activeCapabilities)
+{
+    qDebug() << __PRETTY_FUNCTION__ << "active:" << activeCapabilities;
+    activeBusCapabilities_ = activeCapabilities;
+}
+
+unsigned mcpd8::getActiveBusCapabilities() const
+{
+    return activeBusCapabilities_;
+}
+
+unsigned mcpd8::getAvailableBusCapabilities() const
+{
+    return availableBusCapabilities_;
+}
+
 /*!
     \fn mcpd8::setProtocol(unsigned char type, unsigned char* addr)
  */

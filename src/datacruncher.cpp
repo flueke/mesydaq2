@@ -135,6 +135,21 @@ void dataCruncher::analyzeCmd(PMDP_PACKET pPacket, unsigned char daq, histogram 
 				theApp->myMpsd[devnum]->setAmpmode(false, 0);
 		break;
 
+        case GET_BUS_CAPABILITIES:
+		{
+			unsigned capsAvailable = pPacket->data[0];
+			unsigned capsSelected = pPacket->data[1];
+			theApp->myMcpd[pPacket->deviceId]->setBusCapabilities(capsSelected, capsAvailable);
+			theApp->dispMcpd();
+		} break;
+
+        case SET_BUS_CAPABILITIES:
+		{
+			unsigned capsSelected = pPacket->data[0];
+			theApp->myMcpd[pPacket->deviceId]->setBusCapabilities(capsSelected);
+			theApp->dispMcpd();
+		} break;
+
 		case SETPULSER:
 			devnum = 8*pPacket->deviceId+pPacket->data[0];
 			if(pPacket->data[3] != theApp->myMpsd[devnum]->getPulspoti(1)){
@@ -142,7 +157,7 @@ void dataCruncher::analyzeCmd(PMDP_PACKET pPacket, unsigned char daq, histogram 
 				theApp->logMessage(pstring, 0);
 			}
 			theApp->myMpsd[devnum]->setPulserpoti(pPacket->data[1], pPacket->data[3], pPacket->data[2], pPacket->data[4], 0);
-			theApp->dispMpsd();
+			theApp->dispMcpd();
 		break;
 
 		case WRITEPERIREG:

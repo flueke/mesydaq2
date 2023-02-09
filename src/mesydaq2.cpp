@@ -265,6 +265,17 @@ int mesydaq2::sendCommand(unsigned short * buffer)
                 myMpsd[8*id+buffer[2]]->setMode(false);
             break;
 
+        case GET_BUS_CAPABILITIES:
+            buflen = 3;
+            cmdBuf->data[0] = buffer[2]; // mcpd bus id
+            break;
+
+        case SET_BUS_CAPABILITIES:
+            buflen = 4;
+            cmdBuf->data[0] = buffer[2]; // mcpd bus id
+            cmdBuf->data[1] = buffer[3]; // bus capability value
+            break;
+
         case QUIET:
             buflen = 3;
             cmdBuf->data[0] = buffer[2];
@@ -680,7 +691,7 @@ void mesydaq2::logMessage(QString str, unsigned char level)
     if (level <= logLevel)
     {
         qDebug().noquote() << msg;
-        if (level > LOG_LEVEL_TRACE)
+        if (level < LOG_LEVEL_TRACE)
             mainWin->protocolEdit->append(msg);
     }
 }
@@ -957,6 +968,10 @@ void mesydaq2::scanPeriph(unsigned short id)
     sendCommand(commandBuffer);
 }
 
+void mesydaq2::dispMcpd(void)
+{
+    mainWin->displayMcpdSlot();
+}
 
 /*!
     \fn mesydaq2::dispMpsd(void)
@@ -1490,10 +1505,30 @@ void mesydaq2::initMcpd(unsigned char id)
         sendCommand(commandBuffer);
     }
 
-    // set tx capability to TAP
+    // get bus capabilities
+#if 1
+    // as always: response handling is done in dataCruncher::analyzeCmd()
+
+    commandBuffer[0] = id;
+    commandBuffer[1] = GET_BUS_CAPABILITIES;
+    sendCommand(commandBuffer);
+
+    commandBuffer[0] = id;
+    commandBuffer[1] = SET_BUS_CAPABILITIES;
+    commandBuffer[2] = 0x4; // the capability value to set
+    sendCommand(commandBuffer);
+
+    logMessage(QSL("initialized MCPD ID %d, active bus capabilities=0x%02x")
+        .arg(id)
+        .arg(myMcpd[id]->getActiveBusCapabilities()),
+        LOG_LEVEL_INFO
+        );
+#else
+    // set tx capability
     // Note (flueke): This sets a fixed capabilies value without considering
     // which device is present on the bus. For an old MPSD-8+ with default
     // settings a value of 2 (==TP) works for an attached MPSD-8+.
+
     commandBuffer[0] = id;
     commandBuffer[1] = WRITEREGISTER;
     commandBuffer[2] = 1;
@@ -1502,7 +1537,7 @@ void mesydaq2::initMcpd(unsigned char id)
     // set tx capability to P
     //commandBuffer[4] = 1;
 
-    // set tx capability to TP (works for old MCPD-8 and MPSD-8+)
+    // set tx capability to TP
     //commandBuffer[4] = 2;
 
     // set tx capability to TPA
@@ -1510,7 +1545,8 @@ void mesydaq2::initMcpd(unsigned char id)
 
     sendCommand(commandBuffer);
     pstring.sprintf("initialized MCPD ID %d, bus_capa=0x%02x", id, commandBuffer[4]);
-    logMessage(pstring, 1);
+    logMessage(pstring, LOG_LEVEL_INFO);
+    #endif
 }
 
 

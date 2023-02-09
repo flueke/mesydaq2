@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1248</width>
+    <width>1247</width>
     <height>832</height>
    </rect>
   </property>
@@ -2461,8 +2461,8 @@ parameters</string>
           <rect>
            <x>9</x>
            <y>4</y>
-           <width>741</width>
-           <height>209</height>
+           <width>771</width>
+           <height>221</height>
           </rect>
          </property>
          <property name="currentIndex">
@@ -2472,7 +2472,7 @@ parameters</string>
           <attribute name="title">
            <string>Status</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_16">
+          <layout class="QGridLayout" name="gridLayout_16" columnstretch="0,1">
            <property name="leftMargin">
             <number>4</number>
            </property>
@@ -2532,7 +2532,7 @@ parameters</string>
              </item>
             </layout>
            </item>
-           <item row="0" column="1" colspan="2">
+           <item row="0" column="1">
             <widget class="QGroupBox" name="groupBox17_2">
              <layout class="QGridLayout" name="gridLayout_14">
               <property name="leftMargin">
@@ -2720,7 +2720,70 @@ parameters</string>
              </layout>
             </widget>
            </item>
-           <item row="1" column="0" colspan="2">
+           <item row="1" column="0">
+            <widget class="QGroupBox" name="groupBox">
+             <property name="title">
+              <string>MCPD Bus Capabilities</string>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_32">
+              <item row="1" column="0">
+               <widget class="QLabel" name="label">
+                <property name="text">
+                 <string>Available</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="1">
+               <widget class="QComboBox" name="combo_activeBusCaps">
+                <property name="currentIndex">
+                 <number>1</number>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>0x1</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>0x2</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>0x4</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>0x7</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="label_2">
+                <property name="text">
+                 <string>Active</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QSpinBox" name="spin_availBusCaps">
+                <property name="enabled">
+                 <bool>false</bool>
+                </property>
+                <property name="prefix">
+                 <string>0x</string>
+                </property>
+                <property name="displayIntegerBase">
+                 <number>16</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="1" column="1">
             <widget class="QGroupBox" name="groupBox39">
              <property name="enabled">
               <bool>false</bool>
@@ -2767,19 +2830,6 @@ parameters</string>
               </item>
              </layout>
             </widget>
-           </item>
-           <item row="1" column="2">
-            <spacer name="horizontalSpacer_7">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>449</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
            </item>
           </layout>
          </widget>
@@ -3902,22 +3952,6 @@ Listfile</string>
   <connection>
    <sender>devid</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>MainWidget</receiver>
-   <slot>displayMpsdSlot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>devid</sender>
-   <signal>valueChanged(int)</signal>
    <receiver>devid_2</receiver>
    <slot>setValue(int)</slot>
    <hints>
@@ -3936,22 +3970,6 @@ Listfile</string>
    <signal>valueChanged(int)</signal>
    <receiver>devid</receiver>
    <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>devid_2</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>MainWidget</receiver>
-   <slot>displayMpsdSlot()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>20</x>
@@ -4144,70 +4162,6 @@ Listfile</string>
    <signal>clicked()</signal>
    <receiver>MainWidget</receiver>
    <slot>m2ResetSlot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>mcpdId</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>MainWidget</receiver>
-   <slot>displayMcpdSlot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>module</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>MainWidget</receiver>
-   <slot>displayMpsdSlot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tabWidget2</sender>
-   <signal>currentChanged(int)</signal>
-   <receiver>MainWidget</receiver>
-   <slot>displayMcpdSlot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tabWidget5</sender>
-   <signal>currentChanged(int)</signal>
-   <receiver>MainWidget</receiver>
-   <slot>displayMcpdSlot()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>20</x>

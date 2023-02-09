@@ -43,6 +43,8 @@
 #define SENDSERIAL 18
 #define READSERIAL 19
 #define SCANPERI 20
+#define GET_BUS_CAPABILITIES 22
+#define SET_BUS_CAPABILITIES 23
 
 // internal commands
 #define WRITEFPGA 30

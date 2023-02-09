@@ -89,6 +89,7 @@ public:
     void readListfile(QString readfilename);
     void draw(void);
     void scanPeriph(unsigned short id);
+    void dispMcpd(void);
     void dispMpsd(void);
     void initHardware(void);
     bool loadSetup(bool ask);

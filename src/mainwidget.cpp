@@ -46,6 +46,7 @@ MainWidget::MainWidget(QWidget* parent)
     : QWidget(parent)
 {
     setupUi(this);
+
     theApp = (mesydaq2 *) parent;
     pBuffer = (unsigned short *) &cmdBuffer;
     height = 480;
@@ -87,6 +88,7 @@ MainWidget::MainWidget(QWidget* parent)
     connect( cmdThisPc, SIGNAL( toggled(bool) ), cmdIpAddress1, SLOT( setDisabled(bool) ), Qt::UniqueConnection);
     connect( cmdThisPc, SIGNAL( toggled(bool) ), cmdIpAddress2, SLOT( setDisabled(bool) ), Qt::UniqueConnection);
     connect( cmdThisPc, SIGNAL( toggled(bool) ), cmdIpAddress3, SLOT( setDisabled(bool) ), Qt::UniqueConnection);
+    connect(combo_activeBusCaps, qOverload<int>(&QComboBox::currentIndexChanged), this, &MainWidget::setMcpdBusCapabilitiesSlot);
     connect( comgain, SIGNAL( toggled(bool) ), channel, SLOT( setDisabled(bool) ), Qt::UniqueConnection);
     connect( counterMon1box, SIGNAL( valueChanged(int) ), this, SLOT( assignCounterSlot() ), Qt::UniqueConnection);
     connect( counterMon2box, SIGNAL( valueChanged(int) ), this, SLOT( assignCounterSlot() ), Qt::UniqueConnection);
@@ -285,6 +287,17 @@ void MainWidget::setMcpdIdSlot()
     cmdBuffer[0] = mcpdId->value();
     cmdBuffer[1] = SETID;
     cmdBuffer[2] = id;
+    theApp->sendCommand(pBuffer);
+}
+
+void MainWidget::setMcpdBusCapabilitiesSlot()
+{
+    unsigned caps = combo_activeBusCaps->currentText().toUInt(nullptr, 0);
+    theApp->logMessage(QSL("Setting MCPD bus capabilities to 0x%1").arg(caps, 0, 16),
+        LOG_LEVEL_INFO);
+    cmdBuffer[0] = mcpdId->value();
+    cmdBuffer[1] = SET_BUS_CAPABILITIES;
+    cmdBuffer[2] = caps;
     theApp->sendCommand(pBuffer);
 }
 
@@ -1005,6 +1018,8 @@ void MainWidget::setRunIdSlot()
  */
 void MainWidget::displayMcpdSlot(void)
 {
+    qDebug() << "MainWidget::displayMcpdSlot";
+
     QString str;
     unsigned short values[4];
     // retrieve displayed ID
@@ -1057,6 +1072,17 @@ void MainWidget::displayMcpdSlot(void)
         mcpdConfigText1->setText("Configured");
     else
         mcpdConfigText1->setText("Not configured");
+
+    // bus capabilities
+    {
+        QSignalBlocker sb(combo_activeBusCaps);
+        auto mcpd = theApp->myMcpd[id];
+        auto activeCaps = mcpd->getActiveBusCapabilities();
+        combo_activeBusCaps->setCurrentText(QSL("0x%1").arg(activeCaps, 0, 16));
+
+        auto availCaps = mcpd->getAvailableBusCapabilities();
+        spin_availBusCaps->setValue(availCaps);
+    }
 }
 
 
@@ -1065,6 +1091,7 @@ void MainWidget::displayMcpdSlot(void)
  */
 void MainWidget::displayMpsdSlot(void)
 {
+    qDebug() << "MainWidget::displayMpsdSlot";
     QString dstr;
 
     // retrieve displayed ID

@@ -65,6 +65,12 @@ public:
     unsigned short getAuxTimer(unsigned short timer);
     void stdInit(void);
     unsigned short getParamSource(unsigned short param);
+
+    void setBusCapabilities(unsigned activeCapabilities, unsigned availableCapabilities);
+    void setBusCapabilities(unsigned activeCapabilities);
+    unsigned getActiveBusCapabilities() const;
+    unsigned getAvailableBusCapabilities() const;
+
     bool setStream(unsigned short strm);
     bool getStream(void);
     bool serialize(QFile * fi);
@@ -118,6 +124,11 @@ protected:
 	unsigned short dac[2];
 	// two ADCs
 	unsigned short adc[2];
+
+    // (flueke): Bus capabilities, 3 bits, Time, Position, Amplitude, no idea
+    // which bit means what :)
+    unsigned activeBusCapabilities_ = 0;
+    unsigned availableBusCapabilities_ = 0;
 
 	// one output, one input string for RS-232
 	QString outString;
