@@ -919,6 +919,7 @@ void mesydaq2::draw(void)
     unsigned int chan = 0;
     // eight-fold display?
     if(mainWin->eightFoldBox->isChecked()){
+        // FIXME: make this work with the new pixmap drawing somehow!
         // call draw functions eight times
         for(unsigned char c = 0; c < 8; c++){
             // amplitude or position?
