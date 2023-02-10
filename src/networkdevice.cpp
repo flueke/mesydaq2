@@ -80,25 +80,41 @@ qint64 networkDevice::sendBuffer(unsigned char id, PMDP_PACKET buf)
             LOG_LEVEL_INFO);
 	}
 
+
 	auto hostname = getAddress(id);
-	auto destHostInfo = QHostInfo::fromName(hostname); // result should be cached by qt i think
 
-	if (destHostInfo.error())
-	{
-		theApp->logMessage(
-			QSL("Host lookup for '%1' failed: %2")
-			.arg(hostname)
-			.arg(destHostInfo.errorString()),
-			LOG_LEVEL_ERROR
-			);
-		return -1;
-	}
+    QHostAddress destAddr(hostname);
 
-	const auto destAddr = destHostInfo.addresses().first();
+    if (destAddr.isNull())
+    {
+        theApp->logMessage(
+            QSL("networkDevice::sendBuffer: host lookup for '%1'...").arg(hostname),
+            LOG_LEVEL_TRACE);
+
+        auto destHostInfo = QHostInfo::fromName(hostname); // result should be cached by qt i think
+
+        if (destHostInfo.error())
+        {
+            theApp->logMessage(
+                QSL("Host lookup for '%1' failed: %2")
+                .arg(hostname)
+                .arg(destHostInfo.errorString()),
+                LOG_LEVEL_ERROR
+                );
+            return -1;
+        }
+
+        destAddr = destHostInfo.addresses().first();
+
+        theApp->logMessage(
+            QSL("networkDevice::sendBuffer: host lookup for '%1' complete: %2").arg(hostname).arg(destAddr.toString()),
+            LOG_LEVEL_TRACE);
+    }
+
 	auto result = socket_->writeDatagram(reinterpret_cast<const char *>(buf), sizeof(*buf), destAddr, 54321);
 
     theApp->logMessage(
-        QSL("networkDevice::sendBuffer(): writeDatagram result = %1").arg(result),
+        QSL("networkDevice::sendBuffer: writeDatagram result = %1").arg(result),
         LOG_LEVEL_TRACE);
 
 	return result;
