@@ -4,7 +4,7 @@ mesydaq configuration file   20.05.09 16.51.37
 configPath = /home/robert/measfiles
 histogramPath = /home/robert/measfiles
 listfilePath = /home/robert/measfiles
-debugLevel = 5
+debugLevel = 1
 monitor1 = 0 0
 monitor2 = 0 1
 

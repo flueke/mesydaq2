@@ -32,3 +32,5 @@ if (WIN32)
     target_link_libraries(mesydaq2 PRIVATE ws2_32)
     #target_link_libraries(mesydaq2 PRIVATE ws2_32 winmm)
 endif(WIN32)
+
+install(TARGETS mesydaq2 RUNTIME DESTINATION bin LIBRARY DESTINATION lib)

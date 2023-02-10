@@ -17,3 +17,5 @@ SET(CMAKE_INSTALL_RPATH "$ORIGIN/../lib:$ORIGIN/")
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
 add_subdirectory(src)
+
+install(FILES extras/example_configs/mesycfg.mcfg TYPE BIN)
