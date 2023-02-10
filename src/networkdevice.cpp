@@ -74,7 +74,10 @@ qint64 networkDevice::sendBuffer(unsigned char id, PMDP_PACKET buf)
 				LOG_LEVEL_ERROR);
 		}
 
-		qDebug() << "bound to adress" << socket_->localAddress().toString() << ", port" << socket_->localPort();
+        theApp->logMessage(QSL("Bound to address %1:%2")
+            .arg(socket_->localAddress().toString())
+            .arg(socket_->localPort()),
+            LOG_LEVEL_INFO);
 	}
 
 	auto hostname = getAddress(id);
@@ -93,6 +96,11 @@ qint64 networkDevice::sendBuffer(unsigned char id, PMDP_PACKET buf)
 
 	const auto destAddr = destHostInfo.addresses().first();
 	auto result = socket_->writeDatagram(reinterpret_cast<const char *>(buf), sizeof(*buf), destAddr, 54321);
+
+    theApp->logMessage(
+        QSL("networkDevice::sendBuffer(): writeDatagram result = %1").arg(result),
+        LOG_LEVEL_TRACE);
+
 	return result;
 }
 
