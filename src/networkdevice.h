@@ -52,6 +52,8 @@ private:
 	PMDP_PACKET netBuf, recBuf;
     mesydaq2 * theApp;
 
+    QMap<QString, QHostAddress> lookupCache_;
+
 private slots:
 	void readSocketData();
 };

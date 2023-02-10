@@ -25,6 +25,10 @@
 #include "mesydaq2.h"
 #include "mcpd8.h"
 
+// Super hacky cache invalidation. Lookups under windows are just too slow for
+// some reason :(
+static const int InvalidateCacheInterval_ms = 5 * 60 * 1000;
+
 networkDevice::networkDevice(QObject *parent)
  : QObject(parent)
  , socket_(new QUdpSocket(this))
@@ -34,6 +38,11 @@ networkDevice::networkDevice(QObject *parent)
 	theApp = qobject_cast<mesydaq2 *>(parent);
 
 	connect(socket_, &QUdpSocket::readyRead, this, &networkDevice::readSocketData);
+
+    auto invalidateCacheTimer = new QTimer(this);
+    connect(invalidateCacheTimer, &QTimer::timeout,
+            this, [this] { lookupCache_.clear(); });
+    invalidateCacheTimer->start(InvalidateCacheInterval_ms);
 }
 
 networkDevice::~networkDevice()
@@ -87,28 +96,41 @@ qint64 networkDevice::sendBuffer(unsigned char id, PMDP_PACKET buf)
 
     if (destAddr.isNull())
     {
-        theApp->logMessage(
-            QSL("networkDevice::sendBuffer: host lookup for '%1'...").arg(hostname),
-            LOG_LEVEL_TRACE);
-
-        auto destHostInfo = QHostInfo::fromName(hostname); // result should be cached by qt i think
-
-        if (destHostInfo.error())
+        // hacky dns lookup cache because it's too slow for me under windows :(
+        if (lookupCache_.contains(hostname))
+        {
+            destAddr = lookupCache_.value(hostname);
+            theApp->logMessage(
+                QSL("networkDevice::sendBuffer: using cached lookup result for '%1': %2")
+                .arg(hostname).arg(destAddr.toString()),
+                LOG_LEVEL_TRACE);
+        }
+        else
         {
             theApp->logMessage(
-                QSL("Host lookup for '%1' failed: %2")
-                .arg(hostname)
-                .arg(destHostInfo.errorString()),
-                LOG_LEVEL_ERROR
-                );
-            return -1;
+                QSL("networkDevice::sendBuffer: host lookup for '%1'...").arg(hostname),
+                LOG_LEVEL_TRACE);
+
+            auto destHostInfo = QHostInfo::fromName(hostname); // result should be cached by qt i think
+
+            if (destHostInfo.error())
+            {
+                theApp->logMessage(
+                    QSL("Host lookup for '%1' failed: %2")
+                    .arg(hostname)
+                    .arg(destHostInfo.errorString()),
+                    LOG_LEVEL_ERROR
+                    );
+                return -1;
+            }
+
+            destAddr = destHostInfo.addresses().first();
+            lookupCache_.insert(hostname, destAddr);
+
+            theApp->logMessage(
+                QSL("networkDevice::sendBuffer: host lookup for '%1' complete: %2").arg(hostname).arg(destAddr.toString()),
+                LOG_LEVEL_TRACE);
         }
-
-        destAddr = destHostInfo.addresses().first();
-
-        theApp->logMessage(
-            QSL("networkDevice::sendBuffer: host lookup for '%1' complete: %2").arg(hostname).arg(destAddr.toString()),
-            LOG_LEVEL_TRACE);
     }
 
 	auto result = socket_->writeDatagram(reinterpret_cast<const char *>(buf), sizeof(*buf), destAddr, 54321);
