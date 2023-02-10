@@ -1035,7 +1035,7 @@ void MainWidget::setRunIdSlot()
  */
 void MainWidget::displayMcpdSlot(void)
 {
-    qDebug() << "MainWidget::displayMcpdSlot";
+    theApp->logMessage(QSL("MainWidget::displayMcpdSlot"), LOG_LEVEL_TRACE);
 
     QString str;
     unsigned short values[4];
@@ -1108,7 +1108,7 @@ void MainWidget::displayMcpdSlot(void)
  */
 void MainWidget::displayMpsdSlot(void)
 {
-    qDebug() << "MainWidget::displayMpsdSlot";
+    theApp->logMessage(QSL("MainWidget::displayMpsdSlot"), LOG_LEVEL_TRACE);
     QString dstr;
 
     // retrieve displayed ID
