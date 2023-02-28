@@ -506,6 +506,8 @@ void mcpd8::setIpAddress(QString addrStr)
     for (int i = 0; i < parts.size() && i < 4; ++i)
         ipAddress[i] = parts[i].toUInt();
 
+    buildIpStr();
+
     // and finally set inetAddr
     memset(&inetAddr, 0, sizeof(inetAddr));
     inetAddr.sin_family = AF_INET;
