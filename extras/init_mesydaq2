@@ -1,0 +1,8 @@
+#!/bin/bash
+
+export MESYDAQ2=$(readlink -f $(dirname "${BASH_SOURCE[0]}")/../)
+
+echo "Setting up environment for mesydaq2 in $MESYDAQ2: PATH, LD_LIBRARY_PATH"
+
+export PATH="${MESYDAQ2}/bin:${PATH}"
+export LD_LIBRARY_PATH="${MESYDAQ2}/lib:${LD_LIBRARY_PATH}"
