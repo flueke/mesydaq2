@@ -61,8 +61,10 @@ add_subdirectory(src)
 
 # Copy the default 192.168.168.121 config to the build directory for things to
 # work.
-FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/extras/example_configs/mesycfg.mcfg
-    DESTINATION ${CMAKE_BINARY_DIR})
+if (NOT EXISTS ${CMAKE_BINARY_DIR}/mesycfg.mcfg)
+    FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/extras/example_configs/mesycfg.mcfg
+        DESTINATION ${CMAKE_BINARY_DIR})
+endif()
 
 # Also install the default config to the binary directory.
 install(FILES extras/example_configs/mesycfg.mcfg TYPE BIN)
