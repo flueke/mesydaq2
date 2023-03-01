@@ -30,6 +30,9 @@
 #include "measurement.h"
 #include "controlinterface.h"
 
+#include <QAction>
+#include <QMenu>
+#include <QMenuBar>
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qdatetime.h>
@@ -70,6 +73,11 @@ mesydaq2::mesydaq2()
     meas = new measurement(this);
     cInt = new controlInterface(this);
     configfilename.sprintf("mesycfg.mcfg");
+
+    auto menuFile = new QMenu();
+    menuBar()->addMenu(menuFile);
+    auto actionQuit = menuFile->addAction("Quit", this, &QMainWindow::close, QKeySequence("Ctrl+Q"));
+    actionQuit->setShortcutContext(Qt::ApplicationShortcut);
 }
 
 mesydaq2::~mesydaq2()
