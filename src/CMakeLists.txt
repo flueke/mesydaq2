@@ -4,7 +4,10 @@ set(CMAKE_AUTOUIC ON)
 
 find_package(Qt5 COMPONENTS Network Widgets REQUIRED)
 
+configure_file("git_sha1.cc.in" "git_sha1.cc" @ONLY)
+
 add_executable(mesydaq2
+    "${CMAKE_CURRENT_BINARY_DIR}/git_sha1.cc"
     controlinterface.cpp
     datacruncher.cpp
     histogram.cpp
