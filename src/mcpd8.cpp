@@ -610,7 +610,7 @@ void mcpd8::timeout()
 
     timeoutCounter++;
 
-    if (timeoutCounter > 5 && online)
+    if (timeoutCounter >= 3 && online)
     {
         online = false;
         pstring.sprintf("timeout #%d in mcpd-8 id %d. Device set offline", timeoutCounter, id);
