@@ -503,7 +503,7 @@ void MainWidget::setThresholdSlot()
     cmdBuffer[2] = addr;
     unsigned threshpotival = theApp->myMpsd[addr]->calcThreshpoti(thresh);
     cmdBuffer[3] = threshpotival;
-    qDebug("MainWidget::setThresholdSlot(): threshval=%u %, calculated threshpotival=%u",
+    qDebug("MainWidget::setThresholdSlot(): threshval=%u %%, calculated threshpotival=%u",
         thresh, threshpotival);
     theApp->sendCommand(pBuffer);
 }
@@ -1120,8 +1120,8 @@ void MainWidget::displayMpsdSlot(void)
     QString dstr;
 
     // retrieve displayed ID
-    unsigned char id = devid_2->value();
-    unsigned char mod = module->value();
+    unsigned id = devid_2->value();
+    unsigned mod = module->value();
 
     // Status display:
     if(theApp->myMpsd[8*id]->getMpsdId())
@@ -1170,13 +1170,15 @@ void MainWidget::displayMpsdSlot(void)
     auto gainval = theApp->myMpsd[8*id+mod]->getGainval(chan, 0);
     dstr.sprintf("%1.2f", gainval);
     gain->setText(dstr);
-    qDebug("gainval for mcpd=%d, bus=%d, chan=%d: %lf", id, mod, chan, gainval);
+    theApp->logMessage(QSL("MinWidget::displayMpsdSlot: gainval for mcpd=%1, bus=%2, chan=%3: %4")
+        .arg(id).arg(mod).arg(chan).arg(gainval), LOG_LEVEL_DEBUG);
 
     // threshold:
     auto thresholdval = theApp->myMpsd[8*id+mod]->getThreshold(0);
     dstr.sprintf("%d", thresholdval);
     threshold->setText(dstr);
-    qDebug("thresholdval for mcpd=%d, bus=%d, chan=%d: %lf", id, mod, chan, thresholdval);
+    theApp->logMessage(QSL("thresholdval for mcpd=%1, bus=%2, chan=%3: %4")
+        .arg(id).arg(mod).arg(chan).arg(thresholdval), LOG_LEVEL_DEBUG);
 
     // pulser: // on/off
     {
@@ -1302,11 +1304,11 @@ void MainWidget::linlogSlot()
 {
     if(log->isChecked()){
         dispLog = true;
-        qDebug("log");
+        qDebug("linlogSlot: log");
     }
     else{
         dispLog = false;
-        qDebug("lin");
+        qDebug("linlogSlot: lin");
     }
 
     redrawSlot();
