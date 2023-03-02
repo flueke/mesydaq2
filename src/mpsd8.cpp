@@ -29,21 +29,29 @@ mpsd8::mpsd8(QObject *parent)
     mcpdId = 0;
     mpsdId = 0;
     busNum = 0;
+
+    /* Note (flueke): for the arrays below index 0 represents the last value read
+     * from the hardware, index 0 is the last value set in the gui or loaded from
+     * config and sent to the hardware. */
+
     for (unsigned char c = 0; c < 9; c++)
     {
+        gainpoti[c][0] = 92;
+        gainval[c][0] = 1.0;
         gainpoti[c][1] = 92;
         gainval[c][1] = 1.0;
     }
     comgain = true;
-    threshpoti[1] = 44;
-    threshval[1] = 20;
+    threshpoti[1] = 22;
+    threshval[1] = 10;
     pulsamp[1] = 50;
     pulspoti[1] = 38;
     pulspos[1] = 2;
     pulser[1] = false;
     ampmode[1] = false;
-    threshpoti[0] = 44;
-    threshval[0] = 20;
+
+    threshpoti[0] = 22;
+    threshval[0] = 10;
     pulsamp[0] = 50;
     pulspoti[0] = 38;
     pulspos[0] = 2;
