@@ -1546,9 +1546,9 @@ void mesydaq2::initMcpd(unsigned char id)
     commandBuffer[2] = 0x4; // the capability value to set
     sendCommand(commandBuffer);
 
-    logMessage(QSL("initialized MCPD ID %d, active bus capabilities=0x%02x")
+    logMessage(QSL("initialized MCPD ID %1, active bus capabilities=0x%2")
         .arg(id)
-        .arg(myMcpd[id]->getActiveBusCapabilities()),
+        .arg(myMcpd[id]->getActiveBusCapabilities(), 2, 16, QLatin1Char('0')),
         LOG_LEVEL_INFO
         );
 #else
