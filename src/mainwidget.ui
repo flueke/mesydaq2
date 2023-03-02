@@ -176,9 +176,6 @@
          </property>
          <item row="7" column="1" colspan="2">
           <widget class="QSpinBox" name="dispMpsd">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
            <property name="maximum">
             <number>7</number>
            </property>
@@ -186,9 +183,6 @@
          </item>
          <item row="8" column="1" colspan="2">
           <widget class="QSpinBox" name="dispChan">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
            <property name="maximum">
             <number>15</number>
            </property>
@@ -311,9 +305,6 @@
          </item>
          <item row="6" column="1" colspan="2">
           <widget class="QSpinBox" name="dispMcpd">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
            <property name="maximum">
             <number>7</number>
            </property>
@@ -3258,26 +3249,6 @@ parameters</string>
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="1">
-                 <widget class="QCheckBox" name="comgain">
-                  <property name="text">
-                   <string>common</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="2">
-                 <widget class="QLabel" name="textLabel1_4_2_3">
-                  <property name="text">
-                   <string>Chan</string>
-                  </property>
-                  <property name="wordWrap">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
                 <item row="0" column="3">
                  <widget class="QSpinBox" name="channel">
                   <property name="enabled">
@@ -3288,13 +3259,20 @@ parameters</string>
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="4">
-                 <widget class="QLabel" name="textLabel1_4_2_3_3_3">
+                <item row="1" column="0">
+                 <widget class="QLabel" name="textLabel1_4_2_3_3">
                   <property name="text">
-                   <string>Gain (0.5-1.88)</string>
+                   <string>Threshold</string>
                   </property>
                   <property name="wordWrap">
                    <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="7">
+                 <widget class="QPushButton" name="setThreshold">
+                  <property name="text">
+                   <string>set &amp;threshold</string>
                   </property>
                  </widget>
                 </item>
@@ -3308,17 +3286,27 @@ parameters</string>
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="6">
-                 <widget class="QPushButton" name="setGain">
+                <item row="1" column="5">
+                 <widget class="QLineEdit" name="threshold">
                   <property name="text">
-                   <string>set gain</string>
+                   <string>10</string>
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="textLabel1_4_2_3_3">
+                <item row="0" column="1">
+                 <widget class="QCheckBox" name="comgain">
                   <property name="text">
-                   <string>Threshold</string>
+                   <string>common</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="4">
+                 <widget class="QLabel" name="textLabel1_4_2_3_3_3">
+                  <property name="text">
+                   <string>Gain (0.5-1.88)</string>
                   </property>
                   <property name="wordWrap">
                    <bool>false</bool>
@@ -3335,17 +3323,46 @@ parameters</string>
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="5">
-                 <widget class="QLineEdit" name="threshold">
+                <item row="0" column="7">
+                 <widget class="QPushButton" name="setGain">
                   <property name="text">
-                   <string>10</string>
+                   <string>set gain</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="2">
+                 <widget class="QLabel" name="textLabel1_4_2_3">
+                  <property name="text">
+                   <string>Chan</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="6">
+                 <widget class="QDoubleSpinBox" name="spin_gain">
+                  <property name="minimum">
+                   <double>0.500000000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>1.880000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.010000000000000</double>
                   </property>
                  </widget>
                 </item>
                 <item row="1" column="6">
-                 <widget class="QPushButton" name="setThreshold">
-                  <property name="text">
-                   <string>set &amp;threshold</string>
+                 <widget class="QSpinBox" name="spin_threshold">
+                  <property name="suffix">
+                   <string> %</string>
+                  </property>
+                  <property name="maximum">
+                   <number>100</number>
+                  </property>
+                  <property name="singleStep">
+                   <number>1</number>
                   </property>
                  </widget>
                 </item>
@@ -3777,13 +3794,13 @@ parameters</string>
        </widget>
        <widget class="QWidget" name="TabPage5">
         <attribute name="title">
-         <string>Protocol</string>
+         <string>Log</string>
         </attribute>
         <layout class="QGridLayout" name="gridLayout_27">
          <item row="0" column="0">
           <widget class="QLabel" name="textLabel1_2_3_2_3_2_2">
            <property name="text">
-            <string>Application protocol:</string>
+            <string>Application log:</string>
            </property>
            <property name="wordWrap">
             <bool>false</bool>
@@ -3806,7 +3823,7 @@ parameters</string>
          <item row="1" column="1">
           <widget class="QComboBox" name="debugLevelBox">
            <property name="toolTip">
-            <string>change protocol level</string>
+            <string>change log level</string>
            </property>
            <item>
             <property name="text">
@@ -3930,102 +3947,6 @@ parameters</string>
    <signal>clicked()</signal>
    <receiver>MainWidget</receiver>
    <slot>clearMpsdSlot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dispAll</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>dispMcpd</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dispAll</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>dispMpsd</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dispAll</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>dispChan</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dispAll</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>clearMcpd</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dispAll</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>clearMpsd</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>dispAll</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>clearChan</receiver>
-   <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>20</x>
