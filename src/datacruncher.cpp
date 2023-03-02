@@ -91,7 +91,7 @@ void dataCruncher::analyzeCmd(PMDP_PACKET pPacket, unsigned char daq, histogram 
 		case SETGAIN:
 			// extract the set gain values:
 			// set common gain:
-			if(pPacket->bufferLength == 21){
+			if(pPacket->bufferLength >= 21){
 				for(unsigned char c = 0; c < 8; c++){
 					devnum = 8*pPacket->deviceId+pPacket->data[0];
 					if(pPacket->data[2+c] != theApp->myMpsd[devnum]->getGainpoti(c, 1)){
