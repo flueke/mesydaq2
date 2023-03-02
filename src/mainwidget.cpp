@@ -105,12 +105,14 @@ MainWidget::MainWidget(QWidget* parent)
     connect( devid_2, SIGNAL( valueChanged(int) ), this, SLOT( displayMpsdSlot() ), Qt::UniqueConnection);
     connect( devid, SIGNAL( valueChanged(int) ), devid_2, SLOT( setValue(int) ), Qt::UniqueConnection);
     connect( devid, SIGNAL( valueChanged(int) ), this, SLOT( displayMpsdSlot() ), Qt::UniqueConnection);
+    #if 0
     connect( dispAll, SIGNAL( toggled(bool) ), clearChan, SLOT( setDisabled(bool) ), Qt::UniqueConnection);
     connect( dispAll, SIGNAL( toggled(bool) ), clearMcpd, SLOT( setDisabled(bool) ), Qt::UniqueConnection);
     connect( dispAll, SIGNAL( toggled(bool) ), clearMpsd, SLOT( setDisabled(bool) ), Qt::UniqueConnection);
     connect( dispAll, SIGNAL( toggled(bool) ), dispChan, SLOT( setDisabled(bool) ), Qt::UniqueConnection);
     connect( dispAll, SIGNAL( toggled(bool) ), dispMcpd, SLOT( setDisabled(bool) ), Qt::UniqueConnection);
     connect( dispAll, SIGNAL( toggled(bool) ), dispMpsd, SLOT( setDisabled(bool) ), Qt::UniqueConnection);
+    #endif
     connect( eightFoldBox, SIGNAL( toggled(bool) ), dispAll, SLOT( setDisabled(bool) ), Qt::UniqueConnection);
     connect( eightFoldBox, SIGNAL( toggled(bool) ), dispChan, SLOT( setDisabled(bool) ), Qt::UniqueConnection);
     connect( eightFoldBox, SIGNAL( toggled(bool) ), dispChan, SLOT( setDisabled(bool) ), Qt::UniqueConnection);
