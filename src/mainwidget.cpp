@@ -483,8 +483,10 @@ void MainWidget::setGainSlot()
     else
         cmdBuffer[3] = chan;
 
-    cmdBuffer[4] = theApp->myMpsd[addr]->calcGainpoti(gainval);
-    qDebug("set gain to potival: %d", cmdBuffer[4]);
+    unsigned gainpotival = theApp->myMpsd[addr]->calcGainpoti(gainval);
+    cmdBuffer[4] = gainpotival;
+    qDebug("MainWidget::setGainSlot(): gainval=%.2lf, calculated potival=%u",
+        gainval, gainpotival);
     theApp->sendCommand(pBuffer);
 }
 
@@ -497,7 +499,10 @@ void MainWidget::setThresholdSlot()
     cmdBuffer[0] = id;
     cmdBuffer[1] = SETTHRESH;
     cmdBuffer[2] = addr;
-    cmdBuffer[3] = theApp->myMpsd[addr]->calcThreshpoti(thresh);
+    unsigned threshpotival = theApp->myMpsd[addr]->calcThreshpoti(thresh);
+    cmdBuffer[3] = threshpotival;
+    qDebug("MainWidget::setThresholdSlot(): threshval=%u %, calculated threshpotival=%u",
+        thresh, threshpotival);
     theApp->sendCommand(pBuffer);
 }
 
@@ -688,7 +693,7 @@ void MainWidget::drawData(void)
         str.sprintf("showing: ");
         if(dispAll->isChecked()){
             if(dispAllPos->isChecked())
-                str.append("position sum (all channels)");
+               str.append("position sum (all channels)");
             else
                 str.append("amplitude sum (all channels)");
         }
@@ -1160,12 +1165,16 @@ void MainWidget::displayMpsdSlot(void)
 
     // gain:
     unsigned char chan = channel->value();
-    dstr.sprintf("%1.2f", theApp->myMpsd[8*id+mod]->getGainval(chan, 0));
+    auto gainval = theApp->myMpsd[8*id+mod]->getGainval(chan, 0);
+    dstr.sprintf("%1.2f", gainval);
     gain->setText(dstr);
+    qDebug("gainval for mcpd=%d, bus=%d, chan=%d: %lf", id, mod, chan, gainval);
 
     // threshold:
-    dstr.sprintf("%d", theApp->myMpsd[8*id+mod]->getThreshold(0));
+    auto thresholdval = theApp->myMpsd[8*id+mod]->getThreshold(0);
+    dstr.sprintf("%d", thresholdval);
     threshold->setText(dstr);
+    qDebug("thresholdval for mcpd=%d, bus=%d, chan=%d: %lf", id, mod, chan, thresholdval);
 
     // pulser: // on/off
     {
