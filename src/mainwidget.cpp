@@ -105,7 +105,6 @@ MainWidget::MainWidget(QWidget* parent)
     connect( devid_2, SIGNAL( valueChanged(int) ), this, SLOT( displayMpsdSlot() ), Qt::UniqueConnection);
     connect( devid, SIGNAL( valueChanged(int) ), devid_2, SLOT( setValue(int) ), Qt::UniqueConnection);
     connect( devid, SIGNAL( valueChanged(int) ), this, SLOT( displayMpsdSlot() ), Qt::UniqueConnection);
-    connect( dispAll, SIGNAL( toggled(bool) ), buttonGroup10, SLOT( setEnabled(bool) ), Qt::UniqueConnection);
     connect( dispAll, SIGNAL( toggled(bool) ), clearChan, SLOT( setDisabled(bool) ), Qt::UniqueConnection);
     connect( dispAll, SIGNAL( toggled(bool) ), clearMcpd, SLOT( setDisabled(bool) ), Qt::UniqueConnection);
     connect( dispAll, SIGNAL( toggled(bool) ), clearMpsd, SLOT( setDisabled(bool) ), Qt::UniqueConnection);
