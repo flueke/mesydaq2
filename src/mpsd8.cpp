@@ -20,6 +20,7 @@
 #include "mpsd8.h"
 #include "mesydaq2.h"
 
+#include <cstring>
 #include <qtextstream.h>
 
 mpsd8::mpsd8(QObject *parent)
@@ -57,6 +58,9 @@ mpsd8::mpsd8(QObject *parent)
     pulspos[0] = 2;
     pulser[0] = false;
     ampmode[0] = false;
+
+    std::memset(pulschan, 0, sizeof(pulschan));
+    std::memset(pulser, 0, sizeof(pulschan));
 
     // set calibration factors for gain, threshold and pulser calculation
     g1 = 0.5;
