@@ -3239,67 +3239,26 @@ parameters</string>
                 <property name="spacing">
                  <number>4</number>
                 </property>
-                <item row="0" column="0">
-                 <widget class="QLabel" name="textLabel1_4_2_3_2">
-                  <property name="text">
-                   <string>Gain</string>
-                  </property>
-                  <property name="wordWrap">
-                   <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="3">
-                 <widget class="QSpinBox" name="channel">
-                  <property name="enabled">
-                   <bool>false</bool>
+                <item row="0" column="5">
+                 <widget class="QDoubleSpinBox" name="spin_gain">
+                  <property name="minimum">
+                   <double>0.500000000000000</double>
                   </property>
                   <property name="maximum">
-                   <number>255</number>
+                   <double>1.880000000000000</double>
+                  </property>
+                  <property name="singleStep">
+                   <double>0.010000000000000</double>
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="textLabel1_4_2_3_3">
+                <item row="0" column="2">
+                 <widget class="QLabel" name="textLabel1_4_2_3">
                   <property name="text">
-                   <string>Threshold</string>
+                   <string>Chan</string>
                   </property>
                   <property name="wordWrap">
                    <bool>false</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="7">
-                 <widget class="QPushButton" name="setThreshold">
-                  <property name="text">
-                   <string>set &amp;threshold</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="5">
-                 <widget class="QLineEdit" name="gain">
-                  <property name="text">
-                   <string>1</string>
-                  </property>
-                  <property name="cursorPosition">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="5">
-                 <widget class="QLineEdit" name="threshold">
-                  <property name="text">
-                   <string>10</string>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="1">
-                 <widget class="QCheckBox" name="comgain">
-                  <property name="text">
-                   <string>common</string>
-                  </property>
-                  <property name="checked">
-                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -3323,37 +3282,27 @@ parameters</string>
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="7">
-                 <widget class="QPushButton" name="setGain">
+                <item row="0" column="1">
+                 <widget class="QCheckBox" name="comgain">
                   <property name="text">
-                   <string>set gain</string>
+                   <string>common</string>
+                  </property>
+                  <property name="checked">
+                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="2">
-                 <widget class="QLabel" name="textLabel1_4_2_3">
-                  <property name="text">
-                   <string>Chan</string>
-                  </property>
-                  <property name="wordWrap">
+                <item row="0" column="3">
+                 <widget class="QSpinBox" name="channel">
+                  <property name="enabled">
                    <bool>false</bool>
                   </property>
-                 </widget>
-                </item>
-                <item row="0" column="6">
-                 <widget class="QDoubleSpinBox" name="spin_gain">
-                  <property name="minimum">
-                   <double>0.500000000000000</double>
-                  </property>
                   <property name="maximum">
-                   <double>1.880000000000000</double>
-                  </property>
-                  <property name="singleStep">
-                   <double>0.010000000000000</double>
+                   <number>255</number>
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="6">
+                <item row="1" column="5">
                  <widget class="QSpinBox" name="spin_threshold">
                   <property name="suffix">
                    <string> %</string>
@@ -3363,6 +3312,40 @@ parameters</string>
                   </property>
                   <property name="singleStep">
                    <number>1</number>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="6">
+                 <widget class="QPushButton" name="setGain">
+                  <property name="text">
+                   <string>set gain</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="textLabel1_4_2_3_2">
+                  <property name="text">
+                   <string>Gain</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="textLabel1_4_2_3_3">
+                  <property name="text">
+                   <string>Threshold</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>false</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="6">
+                 <widget class="QPushButton" name="setThreshold">
+                  <property name="text">
+                   <string>set &amp;threshold</string>
                   </property>
                  </widget>
                 </item>

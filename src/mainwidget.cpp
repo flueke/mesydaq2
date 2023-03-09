@@ -470,7 +470,7 @@ void MainWidget::setGainSlot()
     unsigned short id = (unsigned short) devid->value();
     unsigned short addr = module->value();
     unsigned short chan = channel->text().toUInt(&ok, 0);
-    float gainval = gain->text().toFloat(&ok);
+    auto gainval = spin_gain->value();
 
     if(gainval < 0.5)
         gainval = 0.5;
@@ -497,7 +497,8 @@ void MainWidget::setThresholdSlot()
     bool ok;
     unsigned short id = (unsigned short) devid->value();
     unsigned short addr = module->value();
-    unsigned short thresh = threshold->text().toUInt(&ok, 0);
+    unsigned short thresh = spin_threshold->value();
+
     cmdBuffer[0] = id;
     cmdBuffer[1] = SETTHRESH;
     cmdBuffer[2] = addr;
@@ -1168,15 +1169,13 @@ void MainWidget::displayMpsdSlot(void)
     // gain:
     unsigned char chan = channel->value();
     auto gainval = theApp->myMpsd[8*id+mod]->getGainval(chan, 0);
-    dstr.sprintf("%1.2f", gainval);
-    gain->setText(dstr);
+    spin_gain->setValue(gainval);
     theApp->logMessage(QSL("MinWidget::displayMpsdSlot: gainval for mcpd=%1, bus=%2, chan=%3: %4")
         .arg(id).arg(mod).arg(chan).arg(gainval), LOG_LEVEL_DEBUG);
 
     // threshold:
     auto thresholdval = theApp->myMpsd[8*id+mod]->getThreshold(0);
-    dstr.sprintf("%d", thresholdval);
-    threshold->setText(dstr);
+    spin_threshold->setValue(thresholdval);
     theApp->logMessage(QSL("thresholdval for mcpd=%1, bus=%2, chan=%3: %4")
         .arg(id).arg(mod).arg(chan).arg(thresholdval), LOG_LEVEL_DEBUG);
 
