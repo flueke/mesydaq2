@@ -102,7 +102,7 @@ if (WIN32)
         install(DIRECTORY "${MESYTEC_CPACK_DEPLOY_DIR}/" DESTINATION . USE_SOURCE_PERMISSIONS)
     endif()
 
-    set(CPACK_GENERATOR "NSIS;ZIP")
+    set(CPACK_GENERATOR "ZIP") # FIXME: no NSIS for now. start menu entry is not created
     set(CPACK_SOURCE_GENERATOR "ZIP")
     set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL "ON")
     set(CPACK_NSIS_PACKAGE_NAME "mesydaq2")
